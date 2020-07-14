@@ -1,10 +1,9 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.kit.research.model.opentracing.Span;
-import de.kit.research.model.opentracing.Trace;
-import de.kit.research.model.opentracing.TraceRecord;
+import de.kit.research.model.inputreader.opentracing.Span;
+import de.kit.research.model.inputreader.opentracing.Trace;
+import de.kit.research.model.inputreader.opentracing.TraceRecord;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package de.kit.research.model.opentracing;
+package de.kit.research.model.inputreader.opentracing;
 
 public class Reference {
 

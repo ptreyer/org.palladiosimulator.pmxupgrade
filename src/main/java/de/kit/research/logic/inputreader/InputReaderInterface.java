@@ -1,8 +1,7 @@
 package de.kit.research.logic.inputreader;
 
-import de.kit.research.model.InputObjectWrapper;
+import de.kit.research.model.inputreader.InputObjectWrapper;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface InputReaderInterface {
