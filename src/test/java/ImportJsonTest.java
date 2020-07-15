@@ -13,13 +13,14 @@ public class ImportJsonTest {
     @Test
     void test() {
         ObjectMapper mapper = new ObjectMapper();
-        File initialFile = new File("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\trace1.json");
+        File initialFile = new File("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination.json");
         try {
             InputStream targetStream = new FileInputStream(initialFile);
             TraceRecord traceRecord = mapper.readValue(targetStream, TraceRecord.class);
             System.out.println(traceRecord);
 
             for (Trace trace : traceRecord.getData()) {
+                System.out.println("-----");
                 System.out.println("Trace: ");
                 System.out.println(trace.getTraceID());
                 for (Span span : trace.getSpans()) {
