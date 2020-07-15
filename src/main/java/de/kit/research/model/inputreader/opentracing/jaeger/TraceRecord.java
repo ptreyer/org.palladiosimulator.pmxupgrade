@@ -1,4 +1,4 @@
-package de.kit.research.model.inputreader.opentracing;
+package de.kit.research.model.inputreader.opentracing.jaeger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

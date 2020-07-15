@@ -1,4 +1,4 @@
-package de.kit.research.model.inputreader.opentracing;
+package de.kit.research.model.inputreader.opentracing.jaeger;
 
 import java.util.HashMap;
 import java.util.List;
