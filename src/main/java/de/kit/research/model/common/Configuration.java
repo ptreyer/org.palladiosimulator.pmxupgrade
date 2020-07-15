@@ -9,6 +9,8 @@ public final class Configuration extends Properties {
 
 	private String inputfileName;
 	private String outputDirectory;
+	private long ignoreBeforeTimestamp;
+	private long ignoreAfterTimestamp;
 	private HashMap<String, Integer> numCores;
 
 	/**
@@ -42,6 +44,22 @@ public final class Configuration extends Properties {
 
 	public void setOutputDirectory(String outputDirectory) {
 		this.outputDirectory = outputDirectory;
+	}
+
+	public long getIgnoreBeforeTimestamp() {
+		return ignoreBeforeTimestamp;
+	}
+
+	public void setIgnoreBeforeTimestamp(long ignoreBeforeTimestamp) {
+		this.ignoreBeforeTimestamp = ignoreBeforeTimestamp;
+	}
+
+	public long getIgnoreAfterTimestamp() {
+		return ignoreAfterTimestamp;
+	}
+
+	public void setIgnoreAfterTimestamp(long ignoreAfterTimestamp) {
+		this.ignoreAfterTimestamp = ignoreAfterTimestamp;
 	}
 
 	public HashMap<String, Integer> getNumCores() {

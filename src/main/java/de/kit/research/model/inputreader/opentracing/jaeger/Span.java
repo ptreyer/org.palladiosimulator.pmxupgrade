@@ -9,8 +9,8 @@ public class Span {
 	private int flags;
 	private String operationName;
 	private List<Reference> references;
-    private long startTime;
-    private long duration;
+    private Long startTime;
+    private Long duration;
     private List<Tag> tags; 
     
     private List<Log> logs; 
@@ -61,19 +61,19 @@ public class Span {
 		this.references = references;
 	}
 
-	public long getStartTime() {
+	public Long getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(long startTime) {
+	public void setStartTime(Long startTime) {
 		this.startTime = startTime;
 	}
 
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
-	public void setDuration(long duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 
@@ -109,6 +109,6 @@ public class Span {
 		this.warnings = warnings;
 	}
 
-    
-	
+
+
 }

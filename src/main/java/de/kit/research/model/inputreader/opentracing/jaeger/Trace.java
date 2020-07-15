@@ -1,5 +1,7 @@
 package de.kit.research.model.inputreader.opentracing.jaeger;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,6 +10,9 @@ public class Trace {
 	private String traceID;
 	private List<Span> spans;
 	private HashMap<String, Process> processes;
+
+	@JsonIgnore
+	private Long startTime;
 
 	private int warnings;
 
@@ -33,6 +38,14 @@ public class Trace {
 
 	public void setProcesses(HashMap<String, Process> processes) {
 		this.processes = processes;
+	}
+
+	public Long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Long startTime) {
+		this.startTime = startTime;
 	}
 
 	public int getWarnings() {
