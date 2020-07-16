@@ -1,6 +1,7 @@
 package de.kit.research.model.inputreader.opentracing.jaeger;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Span {
 
@@ -62,7 +63,7 @@ public class Span {
 	}
 
 	public Long getStartTime() {
-		return startTime;
+		return TimeUnit.NANOSECONDS.toMicros(startTime);
 	}
 
 	public void setStartTime(Long startTime) {

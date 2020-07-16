@@ -19,6 +19,9 @@ public class TraceRecord extends InputObjectWrapper {
 	
 	private List<Trace> data;
 
+	public TraceRecord() {
+	}
+
 	public TraceRecord(List<Trace> data) {
 		this.data = data;
 	}
