@@ -15,8 +15,11 @@ public class TimestampFilter implements AbstractTraceProcessingFilter {
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
         List<Trace> tracesToFilter = prepareFiltering(traceRecord).getData();
 
-        tracesToFilter.removeIf(p -> p.getStartTime() < configuration.getIgnoreBeforeTimestamp());
-        tracesToFilter.removeIf(p -> p.getStartTime() > configuration.getIgnoreAfterTimestamp());
+        if (configuration.getIgnoreBeforeTimestamp() != null)
+            tracesToFilter.removeIf(p -> p.getStartTime() < configuration.getIgnoreBeforeTimestamp());
+
+        if (configuration.getIgnoreAfterTimestamp() != null)
+            tracesToFilter.removeIf(p -> p.getStartTime() > configuration.getIgnoreAfterTimestamp());
 
         return new TraceRecord(tracesToFilter);
     }
