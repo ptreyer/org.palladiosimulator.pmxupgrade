@@ -8,6 +8,6 @@ public class CPUFilter implements AbstractTraceProcessingFilter {
 
     @Override
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
-        return null;
+        return traceRecord;
     }
 }
