@@ -21,16 +21,16 @@ public abstract class AbstractSystemSubRepository { // NOPMD (abstract without a
 		this.systemFactory = systemFactory;
 	}
 
+	protected final SystemModelRepository getSystemFactory() {
+		return this.systemFactory;
+	}
+
 	/**
 	 * This method delivers the next ID and increments the ID counter atomically.
-	 * 
+	 *
 	 * @return The next ID.
 	 */
 	protected final int getAndIncrementNextId() {
 		return this.nextId.getAndIncrement();
-	}
-
-	protected final SystemModelRepository getSystemFactory() {
-		return this.systemFactory;
 	}
 }

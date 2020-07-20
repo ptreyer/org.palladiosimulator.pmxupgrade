@@ -10,4 +10,5 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
         return traceRecord;
     }
+    
 }

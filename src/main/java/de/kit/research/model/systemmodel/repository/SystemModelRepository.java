@@ -2,6 +2,8 @@ package de.kit.research.model.systemmodel.repository;
 
 public class SystemModelRepository {
 
+	public static final String ROOT_NODE_LABEL = "'Entry'";
+
 	private final TypeRepository typeRepositoryFactory;
 	private final AssemblyRepository assemblyFactory;
 	private final ExecutionEnvironmentRepository executionEnvironmentFactory;

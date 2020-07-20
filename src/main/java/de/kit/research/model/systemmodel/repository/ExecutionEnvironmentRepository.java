@@ -19,8 +19,8 @@ public class ExecutionEnvironmentRepository extends AbstractSystemSubRepository 
 	/** The root execution container. */
 	public static final ExecutionContainer ROOT_EXECUTION_CONTAINER = new RootExecutionContainer();
 
-	private final Map<String, ExecutionContainer> executionContainersByName = new Hashtable<String, ExecutionContainer>(); // NOPMD (UseConcurrentHashMap)
-	private final Map<Integer, ExecutionContainer> executionContainersById = new Hashtable<Integer, ExecutionContainer>(); // NOPMD (UseConcurrentHashMap)
+	private final Map<String, ExecutionContainer> executionContainersByName = new Hashtable<>();
+	private final Map<String, ExecutionContainer> executionContainersById = new Hashtable<>();
 
 	/**
 	 * Creates a new instance of this class using the given parameters.
@@ -51,7 +51,7 @@ public class ExecutionEnvironmentRepository extends AbstractSystemSubRepository 
 	 * 
 	 * @return The container for the given ID if it exists; null otherwise.
 	 */
-	public final ExecutionContainer lookupExecutionContainerByContainerId(final int containerId) {
+	public final ExecutionContainer lookupExecutionContainerByContainerId(final String containerId) {
 		return this.executionContainersById.get(containerId);
 	}
 
@@ -67,13 +67,17 @@ public class ExecutionEnvironmentRepository extends AbstractSystemSubRepository 
 	 */
 	public final ExecutionContainer createAndRegisterExecutionContainer(final String namedIdentifier, final String name) {
 		if (this.executionContainersByName.containsKey(namedIdentifier)) {
-			throw new IllegalArgumentException("Element with name " + namedIdentifier + "exists already");
+			throw new IllegalArgumentException("Element with name " + namedIdentifier + " exists already");
 		}
-		final int id = this.getAndIncrementNextId();
-		final ExecutionContainer newInst = new ExecutionContainer(id, null, name);
-		this.executionContainersById.put(id, newInst);
+		final ExecutionContainer newInst = new ExecutionContainer(namedIdentifier, null, name);
+		this.executionContainersById.put(namedIdentifier, newInst);
 		this.executionContainersByName.put(namedIdentifier, newInst);
 		return newInst;
+	}
+
+	public final boolean exists(final String namedIdentifier){
+		if (this.executionContainersByName.containsKey(namedIdentifier)) return true;
+		return false;
 	}
 
 	/**
