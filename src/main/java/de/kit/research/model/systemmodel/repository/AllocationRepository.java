@@ -1,8 +1,8 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.systemmodel.AllocationComponent;
-import de.kit.research.model.systemmodel.AssemblyComponent;
-import de.kit.research.model.systemmodel.ExecutionContainer;
+import de.kit.research.model.systemmodel.component.AllocationComponent;
+import de.kit.research.model.systemmodel.component.AssemblyComponent;
+import de.kit.research.model.systemmodel.component.ExecutionContainer;
 
 import java.util.Collection;
 import java.util.Hashtable;

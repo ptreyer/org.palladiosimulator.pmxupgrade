@@ -14,7 +14,9 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.component;
+
+import de.kit.research.model.systemmodel.ISystemModelElement;
 
 import java.util.ArrayList;
 import java.util.Collection;

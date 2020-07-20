@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 import de.kit.research.model.exception.InvalidTraceException;
 

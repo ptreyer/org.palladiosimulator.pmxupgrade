@@ -1,4 +1,4 @@
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 import java.util.Collections;
 import java.util.Comparator;

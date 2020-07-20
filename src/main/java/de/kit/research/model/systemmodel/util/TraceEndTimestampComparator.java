@@ -1,6 +1,6 @@
 package de.kit.research.model.systemmodel.util;
 
-import de.kit.research.model.systemmodel.AbstractTrace;
+import de.kit.research.model.systemmodel.trace.AbstractTrace;
 
 import java.io.Serializable;
 import java.util.Comparator;

@@ -1,7 +1,7 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.systemmodel.AssemblyComponent;
-import de.kit.research.model.systemmodel.Operation;
+import de.kit.research.model.systemmodel.component.AssemblyComponent;
+import de.kit.research.model.systemmodel.trace.Operation;
 import de.kit.research.model.systemmodel.util.AssemblyComponentOperationPair;
 
 import java.util.Collection;

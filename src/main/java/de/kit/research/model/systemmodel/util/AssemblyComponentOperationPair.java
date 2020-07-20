@@ -16,9 +16,9 @@
 
 package de.kit.research.model.systemmodel.util;
 
-import de.kit.research.model.systemmodel.AssemblyComponent;
+import de.kit.research.model.systemmodel.component.AssemblyComponent;
 import de.kit.research.model.systemmodel.ISystemModelElement;
-import de.kit.research.model.systemmodel.Operation;
+import de.kit.research.model.systemmodel.trace.Operation;
 
 /**
  * This class represents a pair consisting of an {@link Operation} and an {@link AssemblyComponent}.

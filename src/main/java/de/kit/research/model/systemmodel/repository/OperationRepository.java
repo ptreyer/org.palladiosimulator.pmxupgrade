@@ -1,7 +1,7 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.systemmodel.ComponentType;
-import de.kit.research.model.systemmodel.Operation;
+import de.kit.research.model.systemmodel.component.ComponentType;
+import de.kit.research.model.systemmodel.trace.Operation;
 import de.kit.research.model.systemmodel.util.Signature;
 
 import java.util.Collection;

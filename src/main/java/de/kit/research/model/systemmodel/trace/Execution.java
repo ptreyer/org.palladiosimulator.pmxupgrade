@@ -14,7 +14,9 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
+
+import de.kit.research.model.systemmodel.component.AllocationComponent;
 
 /**
  * This class represents an execution within the trace analysis tool.

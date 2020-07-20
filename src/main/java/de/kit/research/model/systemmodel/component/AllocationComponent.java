@@ -14,7 +14,9 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.component;
+
+import de.kit.research.model.systemmodel.ISystemModelElement;
 
 /**
  * 
@@ -22,43 +24,34 @@ package de.kit.research.model.systemmodel;
  * 
  * @since 1.1
  */
-public class AssemblyComponent implements ISystemModelElement {
-	private final int id;
-	private final String name;
-	private final ComponentType type;
+public class AllocationComponent implements ISystemModelElement {
 
-	/**
-	 * Creates a new instance of this class using the given parameters.
-	 * 
-	 * @param id
-	 *            The ID of this assembly component.
-	 * @param name
-	 *            The name of this component.
-	 * @param type
-	 *            The type of this component.
-	 */
-	public AssemblyComponent(final int id, final String name, final ComponentType type) {
+	private final int id;
+	private final AssemblyComponent assemblyComponent;
+	private final ExecutionContainer executionContainer;
+
+	public AllocationComponent(final int id, final AssemblyComponent assemblyComponent, final ExecutionContainer executionContainer) {
 		this.id = id;
-		this.name = name;
-		this.type = type;
+		this.assemblyComponent = assemblyComponent;
+		this.executionContainer = executionContainer;
 	}
 
 	public final int getId() {
 		return this.id;
 	}
 
-	public final String getName() {
-		return this.name;
+	public final AssemblyComponent getAssemblyComponent() {
+		return this.assemblyComponent;
 	}
 
-	public final ComponentType getType() {
-		return this.type;
+	public final ExecutionContainer getExecutionContainer() {
+		return this.executionContainer;
 	}
 
 	@Override
 	public final String toString() {
 		final StringBuilder strBuild = new StringBuilder();
-		strBuild.append(this.name).append(':').append(this.type.getFullQualifiedName());
+		strBuild.append(this.executionContainer.getName()).append("::").append(this.assemblyComponent.toString());
 		return strBuild.toString();
 	}
 
@@ -69,28 +62,15 @@ public class AssemblyComponent implements ISystemModelElement {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof AssemblyComponent)) {
+		if (!(obj instanceof AllocationComponent)) {
 			return false;
 		}
-		final AssemblyComponent other = (AssemblyComponent) obj;
+		final AllocationComponent other = (AllocationComponent) obj;
 		return other.id == this.id;
-	}
-
-	/**
-	 * Denotes whether this assembly component is a root component.
-	 * 
-	 * @return See above
-	 */
-	public boolean isRootComponent() {
-		return false;
 	}
 
 	@Override
 	public String getIdentifier() {
-		if (this.getType() == null) {
-			return this.getName();
-		} else {
-			return this.getType().getFullQualifiedName();
-		}
+		return this.getAssemblyComponent().getName();
 	}
 }

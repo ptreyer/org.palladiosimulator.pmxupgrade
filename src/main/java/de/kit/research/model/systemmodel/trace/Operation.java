@@ -1,5 +1,6 @@
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
+import de.kit.research.model.systemmodel.component.ComponentType;
 import de.kit.research.model.systemmodel.repository.AbstractSystemSubRepository;
 import de.kit.research.model.systemmodel.util.Signature;
 

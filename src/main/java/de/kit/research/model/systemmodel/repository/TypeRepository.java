@@ -1,6 +1,6 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.systemmodel.ComponentType;
+import de.kit.research.model.systemmodel.component.ComponentType;
 
 import java.util.Collection;
 import java.util.Hashtable;

@@ -1,7 +1,11 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.common.Configuration;
-import de.kit.research.model.systemmodel.*;
+import de.kit.research.model.systemmodel.component.AllocationComponent;
+import de.kit.research.model.systemmodel.component.AssemblyComponent;
+import de.kit.research.model.systemmodel.component.ComponentType;
+import de.kit.research.model.systemmodel.component.ExecutionContainer;
+import de.kit.research.model.systemmodel.trace.Execution;
+import de.kit.research.model.systemmodel.trace.Operation;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

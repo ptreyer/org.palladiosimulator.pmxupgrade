@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 /**
  * This class stores trace meta-information, such as the trace ID. This kept separate from the actual trace

@@ -14,34 +14,31 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.component;
 
-import de.kit.research.model.systemmodel.util.TraceStartTimestampComparator;
-
-import java.util.Comparator;
+import de.kit.research.model.systemmodel.repository.AbstractSystemSubRepository;
+import de.kit.research.model.systemmodel.repository.SystemModelRepository;
+import de.kit.research.model.systemmodel.repository.TypeRepository;
 
 /**
- * Specialized sub-class for sessions which are derived from execution traces (see {@link ExecutionTrace}).
+ * This class represents a root assembly component.
  * 
  * @author Holger Knoche
- * @since 1.10
+ * 
+ * @since 1.6
  * 
  */
-public class ExecutionTraceBasedSession extends AbstractSession<ExecutionTrace> {
+public class RootAssemblyComponent extends AssemblyComponent {
 
 	/**
-	 * Creates a new execution trace-based session with the given session ID.
-	 * 
-	 * @param sessionId
-	 *            The session ID to use
+	 * Creates a new root assembly component.
 	 */
-	public ExecutionTraceBasedSession(final String sessionId) {
-		super(sessionId);
+	public RootAssemblyComponent() {
+		super(AbstractSystemSubRepository.ROOT_ELEMENT_ID, SystemModelRepository.ROOT_NODE_LABEL, TypeRepository.ROOT_COMPONENT);
 	}
 
 	@Override
-	protected Comparator<? super ExecutionTrace> getOrderComparator() {
-		return new TraceStartTimestampComparator();
+	public boolean isRootComponent() {
+		return true;
 	}
-
 }

@@ -1,4 +1,4 @@
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.component;
 
 import de.kit.research.model.systemmodel.repository.AbstractSystemSubRepository;
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;

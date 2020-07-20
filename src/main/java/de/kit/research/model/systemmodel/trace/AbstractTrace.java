@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 /**
  * This is the abstract base for a trace (like a message trace e.g.).

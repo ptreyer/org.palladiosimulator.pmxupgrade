@@ -1,7 +1,7 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.systemmodel.ExecutionContainer;
-import de.kit.research.model.systemmodel.RootExecutionContainer;
+import de.kit.research.model.systemmodel.component.ExecutionContainer;
+import de.kit.research.model.systemmodel.component.RootExecutionContainer;
 
 import java.util.Collection;
 import java.util.Hashtable;

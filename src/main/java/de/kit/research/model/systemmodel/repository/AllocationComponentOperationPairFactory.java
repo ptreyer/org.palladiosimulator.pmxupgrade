@@ -1,7 +1,7 @@
 package de.kit.research.model.systemmodel.repository;
 
-import de.kit.research.model.systemmodel.AllocationComponent;
-import de.kit.research.model.systemmodel.Operation;
+import de.kit.research.model.systemmodel.component.AllocationComponent;
+import de.kit.research.model.systemmodel.trace.Operation;
 import de.kit.research.model.systemmodel.util.AllocationComponentOperationPair;
 
 import java.util.Collection;

@@ -14,16 +14,16 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 /**
- * A specified class of messages which represent synchronous calls.
+ * A specified class of messages which represent synchronous replies.
  * 
  * @author Andre van Hoorn
  * 
  * @since 1.1
  */
-public class SynchronousCallMessage extends AbstractMessage {
+public class SynchronousReplyMessage extends AbstractMessage {
 
 	/**
 	 * Creates a new instance of this class using the given parameters.
@@ -35,19 +35,19 @@ public class SynchronousCallMessage extends AbstractMessage {
 	 * @param receivingExecution
 	 *            The {@link Execution} object which received the message.
 	 */
-	public SynchronousCallMessage(final long timestamp, final Execution sendingExecution, final Execution receivingExecution) {
+	public SynchronousReplyMessage(final long timestamp, final Execution sendingExecution, final Execution receivingExecution) {
 		super(timestamp, sendingExecution, receivingExecution);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof SynchronousCallMessage)) {
+		if (!(obj instanceof SynchronousReplyMessage)) {
 			return false;
 		}
 		if (this == obj) {
 			return true;
 		}
-		final SynchronousCallMessage other = (SynchronousCallMessage) obj;
+		final SynchronousReplyMessage other = (SynchronousReplyMessage) obj;
 
 		return (this.getTimestamp() == other.getTimestamp()) && this.getSendingExecution().equals(other.getSendingExecution())
 				&& this.getReceivingExecution().equals(other.getReceivingExecution());

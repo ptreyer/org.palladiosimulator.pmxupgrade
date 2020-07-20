@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 /**
  * This object represents an somehow invalid trace of executions.

@@ -1,6 +1,9 @@
-package de.kit.research.model.systemmodel;
+package de.kit.research.model.systemmodel.trace;
 
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;
+import de.kit.research.model.systemmodel.trace.Execution;
+import de.kit.research.model.systemmodel.trace.Operation;
+import de.kit.research.model.systemmodel.trace.SynchronousCallMessage;
 
 /**
  * An abstract base for messages which can later be used and combined in a  kieker.tools.traceAnalysis.systemModel.MessageTrace.
