@@ -18,7 +18,7 @@ public class ImportJsonTest {
     @Test
     void readData() {
         ObjectMapper mapper = new ObjectMapper();
-        File initialFile = new File("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination.json");
+        File initialFile = new File("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination2.json");
         try {
             InputStream targetStream = new FileInputStream(initialFile);
             TraceRecord traceRecord = mapper.readValue(targetStream, TraceRecord.class);

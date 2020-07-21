@@ -6,8 +6,6 @@ import de.kit.research.model.inputreader.opentracing.jaeger.TraceRecord;
 import de.kit.research.model.systemmodel.repository.ExecutionEnvironmentRepository;
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;
 
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class ComponentDetectionService {

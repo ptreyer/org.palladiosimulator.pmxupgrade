@@ -14,7 +14,7 @@ public class DataProcessingTest {
     @Test
     void detectComponents() throws PMXException {
         Configuration configuration = new Configuration();
-        configuration.setInputfileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination.json");
+        configuration.setInputfileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination2.json");
 
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();

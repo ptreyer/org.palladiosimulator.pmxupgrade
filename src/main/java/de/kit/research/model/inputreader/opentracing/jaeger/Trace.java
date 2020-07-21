@@ -1,10 +1,12 @@
 package de.kit.research.model.inputreader.opentracing.jaeger;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.HashMap;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Trace {
 
 	private String traceID;
@@ -13,8 +15,6 @@ public class Trace {
 
 	@JsonIgnore
 	private Long startTime;
-
-	private int warnings;
 
 	public String getTraceID() {
 		return traceID;
@@ -48,11 +48,4 @@ public class Trace {
 		this.startTime = startTime;
 	}
 
-	public int getWarnings() {
-		return warnings;
-	}
-
-	public void setWarnings(int warnings) {
-		this.warnings = warnings;
-	}
 }

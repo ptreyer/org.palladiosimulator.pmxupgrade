@@ -1,8 +1,11 @@
 package de.kit.research.model.inputreader.opentracing.jaeger;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Span {
 
 	private String traceID;
@@ -17,11 +20,6 @@ public class Span {
     private List<Log> logs; 
     private String processID;
     
-    /** to verify
-     * 
-     */
-    private int warnings;
-
 	public String getTraceID() {
 		return traceID;
 	}
@@ -101,15 +99,5 @@ public class Span {
 	public void setProcessID(String processID) {
 		this.processID = processID;
 	}
-
-	public int getWarnings() {
-		return warnings;
-	}
-
-	public void setWarnings(int warnings) {
-		this.warnings = warnings;
-	}
-
-
 
 }
