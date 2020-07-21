@@ -1,103 +1,131 @@
 package de.kit.research.model.inputreader.opentracing.jaeger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.codehaus.plexus.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Span {
 
-	private String traceID;
-	private String spanID;
-	private int flags;
-	private String operationName;
-	private List<Reference> references;
+    private String traceID;
+    private String spanID;
+    private int flags;
+    private String operationName;
+    private List<Reference> references;
     private Long startTime;
     private Long duration;
-    private List<Tag> tags; 
-    
-    private List<Log> logs; 
+    private List<Tag> tags;
+
+    private List<Log> logs;
     private String processID;
-    
-	public String getTraceID() {
-		return traceID;
-	}
 
-	public void setTraceID(String traceID) {
-		this.traceID = traceID;
-	}
+    private List<String> operationParameters;
+    private String operationReturnType;
 
-	public String getSpanID() {
-		return spanID;
-	}
+    public String getTraceID() {
+        return traceID;
+    }
 
-	public void setSpanID(String spanID) {
-		this.spanID = spanID;
-	}
+    public void setTraceID(String traceID) {
+        this.traceID = traceID;
+    }
 
-	public int getFlags() {
-		return flags;
-	}
+    public String getSpanID() {
+        return spanID;
+    }
 
-	public void setFlags(int flags) {
-		this.flags = flags;
-	}
+    public void setSpanID(String spanID) {
+        this.spanID = spanID;
+    }
 
-	public String getOperationName() {
-		return operationName;
-	}
+    public int getFlags() {
+        return flags;
+    }
 
-	public void setOperationName(String operationName) {
-		this.operationName = operationName;
-	}
+    public void setFlags(int flags) {
+        this.flags = flags;
+    }
 
-	public List<Reference> getReferences() {
-		return references;
-	}
+    public String getOperationName() {
+        return operationName;
+    }
 
-	public void setReferences(List<Reference> references) {
-		this.references = references;
-	}
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
+    }
 
-	public Long getStartTime() {
-		return TimeUnit.NANOSECONDS.toMicros(startTime);
-	}
+    public List<Reference> getReferences() {
+        return references;
+    }
 
-	public void setStartTime(Long startTime) {
-		this.startTime = startTime;
-	}
+    public void setReferences(List<Reference> references) {
+        this.references = references;
+    }
 
-	public Long getDuration() {
-		return duration;
-	}
+    public Long getStartTime() {
+        return TimeUnit.NANOSECONDS.toMicros(startTime);
+    }
 
-	public void setDuration(Long duration) {
-		this.duration = duration;
-	}
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
 
-	public List<Tag> getTags() {
-		return tags;
-	}
+    public Long getDuration() {
+        return duration;
+    }
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
+    public void setDuration(Long duration) {
+        this.duration = duration;
+    }
 
-	public List<Log> getLogs() {
-		return logs;
-	}
+    public List<Tag> getTags() {
+        return tags;
+    }
 
-	public void setLogs(List<Log> logs) {
-		this.logs = logs;
-	}
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
-	public String getProcessID() {
-		return processID;
-	}
+    public List<Log> getLogs() {
+        return logs;
+    }
 
-	public void setProcessID(String processID) {
-		this.processID = processID;
-	}
+    public void setLogs(List<Log> logs) {
+        this.logs = logs;
+    }
+
+    public String getProcessID() {
+        return processID;
+    }
+
+    public void setProcessID(String processID) {
+        this.processID = processID;
+    }
+
+    public List<String> getParameters() {
+        if (operationParameters == null) {
+            operationParameters = new ArrayList<>();
+            this.getTags().forEach(t -> {
+                if (StringUtils.equalsIgnoreCase(t.getKey(), "paramType")) {
+                    operationParameters.addAll(Arrays.asList(StringUtils.split(t.getValue(), ",")));
+                }
+            });
+        }
+        return operationParameters;
+    }
+
+    public String getReturnType() {
+        if (StringUtils.isEmpty(operationReturnType)) {
+            this.getTags().forEach(t -> {
+                if (StringUtils.equalsIgnoreCase(t.getKey(), "returnType"))
+                    operationReturnType = t.getValue();
+            });
+        }
+        return operationReturnType;
+    }
 
 }

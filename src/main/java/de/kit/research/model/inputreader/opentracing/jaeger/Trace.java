@@ -9,43 +9,43 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Trace {
 
-	private String traceID;
-	private List<Span> spans;
-	private HashMap<String, Process> processes;
+    private String traceID;
+    private List<Span> spans;
+    private HashMap<String, Process> processes;
 
-	@JsonIgnore
-	private Long startTime;
+    @JsonIgnore
+    private Long startTime;
 
-	public String getTraceID() {
-		return traceID;
-	}
+    public String getTraceID() {
+        return traceID;
+    }
 
-	public void setTraceID(String traceID) {
-		this.traceID = traceID;
-	}
+    public void setTraceID(String traceID) {
+        this.traceID = traceID;
+    }
 
-	public List<Span> getSpans() {
-		return spans;
-	}
+    public List<Span> getSpans() {
+        return spans;
+    }
 
-	public void setSpans(List<Span> spans) {
-		this.spans = spans;
-	}
+    public void setSpans(List<Span> spans) {
+        this.spans = spans;
+    }
 
-	public HashMap<String, Process> getProcesses() {
-		return processes;
-	}
+    public HashMap<String, Process> getProcesses() {
+        return processes;
+    }
 
-	public void setProcesses(HashMap<String, Process> processes) {
-		this.processes = processes;
-	}
+    public void setProcesses(HashMap<String, Process> processes) {
+        this.processes = processes;
+    }
 
-	public Long getStartTime() {
-		return startTime;
-	}
+    public Long getStartTime() {
+        return startTime;
+    }
 
-	public void setStartTime(Long startTime) {
-		this.startTime = startTime;
-	}
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
 
 }
