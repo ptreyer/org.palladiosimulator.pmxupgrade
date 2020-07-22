@@ -32,7 +32,7 @@ public class FilterTest {
     @Test
     void importJSON() throws PMXException {
         Configuration configuration = new Configuration();
-        configuration.setInputfileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination.json");
+        configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination.json");
 
         Long time = Long.parseLong("1594631346638");
         configuration.setIgnoreAfterTimestamp(time);

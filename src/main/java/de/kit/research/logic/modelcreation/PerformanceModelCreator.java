@@ -1,7 +1,6 @@
 package de.kit.research.logic.modelcreation;
 
 import de.kit.research.logic.modelcreation.builder.IModelBuilder;
-import de.kit.research.logic.modelcreation.builder.ModelBuilder;
 import de.kit.research.model.systemmodel.component.AllocationComponent;
 import de.kit.research.model.systemmodel.component.AssemblyComponent;
 import de.kit.research.model.systemmodel.component.ComponentType;

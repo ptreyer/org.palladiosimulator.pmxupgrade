@@ -13,7 +13,7 @@ public class InputReaderOpenTracingImpl implements InputReaderInterface {
     @Override
     public InputObjectWrapper readTracingData(Configuration configuration) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        File initialFile = new File(configuration.getInputfileName());
+        File initialFile = new File(configuration.getInputFileName());
         InputStream targetStream = new FileInputStream(initialFile);
         return mapper.readValue(targetStream, TraceRecord.class);
     }

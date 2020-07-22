@@ -9,7 +9,7 @@ public final class Configuration extends Properties {
 
     private static final long serialVersionUID = 3364877592243422259L;
 
-    private String inputfileName;
+    private String inputFileName;
     private String outputDirectory;
     private String tracer;
     private List<String> traceIDsToFilter;
@@ -33,12 +33,12 @@ public final class Configuration extends Properties {
         super(defaults);
     }
 
-    public String getInputfileName() {
-        return inputfileName;
+    public String getInputFileName() {
+        return inputFileName;
     }
 
-    public void setInputfileName(String inputfileName) {
-        this.inputfileName = inputfileName;
+    public void setInputFileName(String inputFileName) {
+        this.inputFileName = inputFileName;
     }
 
     public List<String> getTraceIDsToFilter() {

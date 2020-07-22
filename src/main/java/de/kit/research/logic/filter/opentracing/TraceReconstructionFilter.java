@@ -8,6 +8,10 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
 
     @Override
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
+
+
+
+
         return traceRecord;
     }
     
