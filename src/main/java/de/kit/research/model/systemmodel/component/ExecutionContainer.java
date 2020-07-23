@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class ExecutionContainer implements ISystemModelElement {
-	private final String id;
+	private final int id;
 	private final String name;
 	private final ExecutionContainer parent;
 	private final Collection<ExecutionContainer> childContainers = Collections.synchronizedList(new ArrayList<>());
@@ -22,7 +22,7 @@ public class ExecutionContainer implements ISystemModelElement {
 	 * @param name
 	 *            The name of this container.
 	 */
-	public ExecutionContainer(final String id, final ExecutionContainer parent, final String name) {
+	public ExecutionContainer(final int id, final ExecutionContainer parent, final String name) {
 		this.id = id;
 		this.name = name;
 		this.parent = parent;
@@ -33,7 +33,7 @@ public class ExecutionContainer implements ISystemModelElement {
 	 * 
 	 * @return The ID.
 	 */
-	public final String getId() {
+	public final int getId() {
 		return this.id;
 	}
 

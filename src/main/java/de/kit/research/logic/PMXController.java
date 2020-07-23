@@ -2,6 +2,7 @@ package de.kit.research.logic;
 
 import de.kit.research.logic.filter.opentracing.TimestampFilter;
 import de.kit.research.logic.filter.opentracing.TraceIdFilter;
+import de.kit.research.logic.filter.opentracing.TraceReconstructionFilter;
 import de.kit.research.logic.inputreader.InputReaderInterface;
 import de.kit.research.logic.inputreader.impl.InputReaderOpenTracingImpl;
 import de.kit.research.model.common.Configuration;
@@ -42,6 +43,9 @@ public class PMXController {
 
         TraceIdFilter traceIdFilter = new TraceIdFilter();
         traceRecord = traceIdFilter.filter(configuration, traceRecord);
+
+        TraceReconstructionFilter traceReconstructionFilter = new TraceReconstructionFilter();
+        traceRecord = traceReconstructionFilter.filter(configuration, traceRecord);
     }
 
     public void processTracingData(){

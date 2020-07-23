@@ -16,6 +16,7 @@ import de.kit.research.model.systemmodel.trace.Execution;
 import de.kit.research.model.systemmodel.trace.ExecutionTrace;
 import de.kit.research.model.systemmodel.trace.Operation;
 import de.kit.research.model.systemmodel.util.Signature;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TraceReconstructionFilter implements AbstractTraceProcessingFilter {
 
     private final String[] emptyArray = new String[0];
-    private SystemModelRepository systemModelRepository;
+    // TODO change
+    public SystemModelRepository systemModelRepository;
 
 
     @Override
@@ -50,13 +52,15 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
             String executionContainerName = p.getServiceName().toUpperCase() + "-SRV";
             systemModelRepository.getExecutionEnvironmentFactory()
                     .lookupExecutionContainerByNamedIdentifier(executionContainerName);
-            executionContainer.put(p.getId(), executionContainerName);
+            executionContainer.put((String) pair.getKey(), executionContainerName);
         }
 
         AtomicInteger number = new AtomicInteger(1);
         trace.getSpans().forEach(t -> {
             try {
-                executionTrace.add(mapExecutions(number.get(), trace, t, executionContainer, executionTrace));
+                Execution execution = mapExecutions(number.get(), trace, t, executionContainer, executionTrace);
+                if (execution != null)
+                    executionTrace.add(execution);
                 number.getAndIncrement();
             } catch (InvalidTraceException e) {
                 // TODO Exception handling
@@ -78,6 +82,10 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         final String allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
         final String operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
 
+        // TODO handleQueries
+        if(StringUtils.isEmpty(assemblyComponentTypeName))
+            return null;
+
         AllocationComponent allocInst = systemModelRepository.getAllocationFactory()
                 .lookupAllocationComponentInstanceByNamedIdentifier(allocationComponentName);
 
@@ -98,7 +106,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
                     .lookupExecutionContainerByNamedIdentifier(executionContainerName);
             if (execContainer == null) { // doesn't exist, yet
                 execContainer = systemModelRepository.getExecutionEnvironmentFactory()
-                        .createAndRegisterExecutionContainer(executionContainerName, executionContainerName);
+                        .createAndRegisterExecutionContainer(executionContainerName);
             }
             allocInst = systemModelRepository.getAllocationFactory()
                     .createAndRegisterAllocationComponentInstance(allocationComponentName, assemblyComponent, execContainer);

@@ -60,24 +60,22 @@ public class ExecutionEnvironmentRepository extends AbstractSystemSubRepository 
 	 * 
 	 * @param namedIdentifier
 	 *            The identifier of the new container.
-	 * @param name
-	 *            The name of the new container.
-	 * 
+	 *
 	 * @return The newly created execution container.
 	 */
-	public final ExecutionContainer createAndRegisterExecutionContainer(final String namedIdentifier, final String name) {
+	public final ExecutionContainer createAndRegisterExecutionContainer(final String namedIdentifier) {
 		if (this.executionContainersByName.containsKey(namedIdentifier)) {
 			throw new IllegalArgumentException("Element with name " + namedIdentifier + " exists already");
 		}
-		final ExecutionContainer newInst = new ExecutionContainer(namedIdentifier, null, name);
+		final int id = this.getAndIncrementNextId();
+		final ExecutionContainer newInst = new ExecutionContainer(id, null, namedIdentifier);
 		this.executionContainersById.put(namedIdentifier, newInst);
 		this.executionContainersByName.put(namedIdentifier, newInst);
 		return newInst;
 	}
 
 	public final boolean exists(final String namedIdentifier){
-		if (this.executionContainersByName.containsKey(namedIdentifier)) return true;
-		return false;
+		return this.executionContainersByName.containsKey(namedIdentifier);
 	}
 
 	/**

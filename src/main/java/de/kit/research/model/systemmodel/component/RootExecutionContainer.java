@@ -16,7 +16,7 @@ public class RootExecutionContainer extends ExecutionContainer {
 	 * Creates a new root execution container.
 	 */
 	public RootExecutionContainer() {
-		super(Integer.toString(AbstractSystemSubRepository.ROOT_ELEMENT_ID), null, SystemModelRepository.ROOT_NODE_LABEL);
+		super(AbstractSystemSubRepository.ROOT_ELEMENT_ID, null, SystemModelRepository.ROOT_NODE_LABEL);
 	}
 
 	@Override

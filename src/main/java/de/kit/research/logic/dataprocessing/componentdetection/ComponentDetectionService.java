@@ -24,7 +24,7 @@ public class ComponentDetectionService {
                 Entry pair = stringProcessEntry;
                 Process p = (Process) pair.getValue();
                 if (!executionEnvironmentRepository.exists(p.getId())) {
-                    executionEnvironmentRepository.createAndRegisterExecutionContainer(p.getId(), p.getServiceName());
+                    executionEnvironmentRepository.createAndRegisterExecutionContainer(p.getServiceName());
                 }
             }
         }
