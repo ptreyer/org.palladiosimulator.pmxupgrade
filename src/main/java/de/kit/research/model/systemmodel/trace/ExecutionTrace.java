@@ -26,8 +26,7 @@ public class ExecutionTrace extends AbstractTrace {
 	private long minTin = -1;
 	private long maxTout = -1;
 	private int maxEss = -1;
-	private final SortedSet<Execution> set = new TreeSet<>(ExecutionTrace.createExecutionTraceComparator());
-	private final SortedSet<Execution> unmodifiableExecutions = Collections.unmodifiableSortedSet(this.set);
+	private final List<Execution> set = new ArrayList<>();
 
 	/**
 	 * Creates a new instance of this class using the given parameters.
@@ -177,23 +176,6 @@ public class ExecutionTrace extends AbstractTrace {
 			mt = new MessageTrace(this.getTraceId(), this.getSessionId(), mSeq);
 			this.messageTrace.set(mt);
 			return mt;
-		}
-	}
-
-	/**
-	 * Returns a sorted set (unmodifiable) of {@link Execution}s in this trace.
-	 *
-	 * Note that the returned data structure is the (wrapped )internal data structure of this {@link ExecutionTrace} object, to which further elements may be added
-	 * by the kieker.tools.traceAnalysis.systemModel.ExecutionTrace#add(Execution) method. Consider to create a copy
-	 * of the returned list, while
-	 * synchronizing on this (i.e., the {@link ExecutionTrace}) object.
-	 *
-	 * @return the sorted set of {@link Execution}s in this trace
-	 */
-	public final SortedSet<Execution> getTraceAsSortedExecutionSet() {
-		// The justification why this works can be found in #1537.
-		synchronized (this) {
-			return this.unmodifiableExecutions;
 		}
 	}
 

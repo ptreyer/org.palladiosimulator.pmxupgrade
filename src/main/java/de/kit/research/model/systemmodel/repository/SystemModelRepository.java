@@ -4,6 +4,7 @@ import de.kit.research.model.systemmodel.component.AllocationComponent;
 import de.kit.research.model.systemmodel.component.AssemblyComponent;
 import de.kit.research.model.systemmodel.component.ComponentType;
 import de.kit.research.model.systemmodel.component.ExecutionContainer;
+import de.kit.research.model.systemmodel.trace.Execution;
 import de.kit.research.model.systemmodel.trace.Operation;
 
 import java.io.FileNotFoundException;
@@ -13,6 +14,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 public class SystemModelRepository {
+
+	public static final Execution ROOT_EXECUTION =
+			new Execution(OperationRepository.ROOT_OPERATION, AllocationRepository.ROOT_ALLOCATION_COMPONENT, "-1", "-1", -1, -1, -1, -1, false);
 
 	private static final String ENCODING = "UTF-8";
 	public static final String ROOT_NODE_LABEL = "'Entry'";

@@ -16,7 +16,7 @@ public class TraceReconstructionFilterTest {
     @Test
     void filter() throws PMXException, FileNotFoundException, UnsupportedEncodingException {
         Configuration configuration = new Configuration();
-        configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination3.json");
+        configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\trace1.json");
 
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
