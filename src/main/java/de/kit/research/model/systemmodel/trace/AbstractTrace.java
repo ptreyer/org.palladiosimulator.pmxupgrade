@@ -1,19 +1,3 @@
-/***************************************************************************
- * Copyright 2015 Kieker Project (http://kieker-monitoring.net)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ***************************************************************************/
-
 package de.kit.research.model.systemmodel.trace;
 
 /**
@@ -39,7 +23,7 @@ public abstract class AbstractTrace {
 	 * Default constructor.
 	 */
 	protected AbstractTrace() {
-		this(-1, DEFAULT_SESSION_ID);
+		this("", DEFAULT_SESSION_ID);
 	}
 
 	/**
@@ -48,7 +32,7 @@ public abstract class AbstractTrace {
 	 * @param traceId
 	 *            The trace ID to use for the new trace
 	 */
-	public AbstractTrace(final long traceId) {
+	public AbstractTrace(final String traceId) {
 		this(traceId, DEFAULT_SESSION_ID);
 	}
 
@@ -60,7 +44,7 @@ public abstract class AbstractTrace {
 	 * @param sessionId
 	 *            The session ID to use for the new trace
 	 */
-	public AbstractTrace(final long traceId, final String sessionId) {
+	public AbstractTrace(final String traceId, final String sessionId) {
 		this.traceInformation = new TraceInformation(traceId, sessionId);
 	}
 
@@ -78,7 +62,7 @@ public abstract class AbstractTrace {
 	 * 
 	 * @return See above
 	 */
-	public long getTraceId() {
+	public String getTraceId() {
 		return this.traceInformation.getTraceId();
 	}
 
@@ -89,15 +73,6 @@ public abstract class AbstractTrace {
 	 */
 	public String getSessionId() {
 		return this.traceInformation.getSessionId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		// On purpose, we are not considering the sessionId here
-		return (int) (this.getTraceId() ^ (this.getTraceId() >>> 32));
 	}
 
 	@Override

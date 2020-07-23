@@ -20,8 +20,8 @@ public class OperationRepository extends AbstractSystemSubRepository {
 	public static final Operation ROOT_OPERATION = new Operation(AbstractSystemSubRepository.ROOT_ELEMENT_ID, TypeRepository.ROOT_COMPONENT,
 			ROOT_SIGNATURE);
 
-	private final Map<String, Operation> operationsByName = new Hashtable<String, Operation>(); // NOPMD (UseConcurrentHashMap)
-	private final Map<Integer, Operation> operationsById = new Hashtable<Integer, Operation>(); // NOPMD (UseConcurrentHashMap)
+	private final Map<String, Operation> operationsByName = new Hashtable<>();
+	private final Map<Integer, Operation> operationsById = new Hashtable<>();
 
 	/**
 	 * Creates a new instance of this class using the given parameters.

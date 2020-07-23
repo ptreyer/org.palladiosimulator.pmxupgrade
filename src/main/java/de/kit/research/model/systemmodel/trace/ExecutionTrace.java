@@ -1,16 +1,10 @@
 package de.kit.research.model.systemmodel.trace;
 
 import de.kit.research.model.exception.InvalidTraceException;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.Stack;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -41,7 +35,7 @@ public class ExecutionTrace extends AbstractTrace {
 	 * @param traceId
 	 *            The ID of this trace.
 	 */
-	public ExecutionTrace(final long traceId) {
+	public ExecutionTrace(final String traceId) {
 		super(traceId);
 	}
 
@@ -53,7 +47,7 @@ public class ExecutionTrace extends AbstractTrace {
 	 * @param sessionId
 	 *            The ID of the current session.
 	 */
-	public ExecutionTrace(final long traceId, final String sessionId) {
+	public ExecutionTrace(final String traceId, final String sessionId) {
 		super(traceId, sessionId);
 	}
 
@@ -68,7 +62,7 @@ public class ExecutionTrace extends AbstractTrace {
 	 */
 	public void add(final Execution execution) throws InvalidTraceException {
 		synchronized (this) {
-			if (this.getTraceId() != execution.getTraceId()) {
+			if (!StringUtils.equalsIgnoreCase(this.getTraceId(), execution.getTraceId())) {
 				throw new InvalidTraceException("TraceId of new record (" + execution.getTraceId() + ") differs from Id of this trace (" + this.getTraceId() + ")");
 			}
 			if ((this.minTin < 0) || (execution.getTin() < this.minTin)) {
@@ -325,7 +319,7 @@ public class ExecutionTrace extends AbstractTrace {
 				return true;
 			}
 			final ExecutionTrace other = (ExecutionTrace) obj;
-			if (this.getTraceId() != other.getTraceId()) {
+			if (!StringUtils.equalsIgnoreCase(this.getTraceId(),other.getTraceId())) {
 				return false;
 			}
 			// Note that we are using a TreeSet which is not using the Object's equals
@@ -340,7 +334,7 @@ public class ExecutionTrace extends AbstractTrace {
 	 *
 	 * @return A comparator instance to compare execution objects.
 	 */
-	public static final Comparator<Execution> createExecutionTraceComparator() {
+	public static Comparator<Execution> createExecutionTraceComparator() {
 		return new ExecutionTraceComparator();
 	}
 
@@ -377,10 +371,8 @@ public class ExecutionTrace extends AbstractTrace {
 			}
 
 			// 1. criterion: trace id
-			if (e1.getTraceId() < e2.getTraceId()) {
-				return -1;
-			} else if (e1.getTraceId() > e2.getTraceId()) {
-				return 1;
+			if (StringUtils.equalsIgnoreCase(e1.getTraceId(), e2.getTraceId())) {
+				return 0;
 			}
 
 			// At this location: trace ids equal

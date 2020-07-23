@@ -1,19 +1,3 @@
-/***************************************************************************
- * Copyright 2015 Kieker Project (http://kieker-monitoring.net)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ***************************************************************************/
-
 package de.kit.research.model.systemmodel.trace;
 
 import java.util.Collections;
@@ -42,7 +26,7 @@ public class MessageTrace extends AbstractTrace {
 	 * @param seq
 	 *            The messages contained in this message trace
 	 */
-	public MessageTrace(final long traceId, final List<AbstractMessage> seq) {
+	public MessageTrace(final String traceId, final List<AbstractMessage> seq) {
 		this(traceId, AbstractTrace.DEFAULT_SESSION_ID, seq);
 	}
 
@@ -56,7 +40,7 @@ public class MessageTrace extends AbstractTrace {
 	 * @param seq
 	 *            The list of messages this trace consists of.
 	 */
-	public MessageTrace(final long traceId, final String sessionId, final List<AbstractMessage> seq) {
+	public MessageTrace(final String traceId, final String sessionId, final List<AbstractMessage> seq) {
 		super(traceId, sessionId);
 		this.messages = seq;
 
@@ -88,9 +72,7 @@ public class MessageTrace extends AbstractTrace {
 	@Override
 	public String toString() {
 		final StringBuilder strBuild = new StringBuilder("Trace " + this.getTraceId() + ":\n");
-		final Iterator<AbstractMessage> it = this.messages.iterator();
-		while (it.hasNext()) {
-			final AbstractMessage m = it.next();
+		for (AbstractMessage m : this.messages) {
 			strBuild.append('<');
 			strBuild.append(m.toString());
 			strBuild.append(">\n");

@@ -1,22 +1,7 @@
-/***************************************************************************
- * Copyright 2015 Kieker Project (http://kieker-monitoring.net)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ***************************************************************************/
-
 package de.kit.research.model.systemmodel.trace;
 
 import de.kit.research.model.systemmodel.component.AllocationComponent;
+import org.apache.maven.shared.utils.StringUtils;
 
 /**
  * This class represents an execution within the trace analysis tool.
@@ -35,7 +20,7 @@ public class Execution {
 
 	private final Operation operation;
 	private final AllocationComponent allocationComponent;
-	private final long traceId;
+	private final String traceId;
 	private final String sessionId;
 	private final int eoi;
 	private final int ess;
@@ -66,7 +51,7 @@ public class Execution {
 	 * @param assumed
 	 *            Determines whether the execution is assumed or not.
 	 */
-	public Execution(final Operation op, final AllocationComponent allocationComponent, final long traceId, final String sessionId, final int eoi, final int ess,
+	public Execution(final Operation op, final AllocationComponent allocationComponent, final String traceId, final String sessionId, final int eoi, final int ess,
 			final long tin, final long tout, final boolean assumed) {
 		if (op == null) {
 			throw new NullPointerException("argument op must not be null");
@@ -109,7 +94,7 @@ public class Execution {
 	 * @param assumed
 	 *            Determines whether the execution is assumed or not.
 	 */
-	public Execution(final Operation op, final AllocationComponent allocationComponent, final long traceId, final int eoi, final int ess, final long tin,
+	public Execution(final Operation op, final AllocationComponent allocationComponent, final String traceId, final int eoi, final int ess, final long tin,
 			final long tout, final boolean assumed) {
 		this(op, allocationComponent, traceId, NO_SESSION_ID, eoi, ess, tin, tout, assumed);
 	}
@@ -148,7 +133,7 @@ public class Execution {
 		return this.tout;
 	}
 
-	public final long getTraceId() {
+	public final String getTraceId() {
 		return this.traceId;
 	}
 
@@ -175,23 +160,8 @@ public class Execution {
 		}
 		final Execution other = (Execution) obj;
 		return this.allocationComponent.equals(other.allocationComponent) && this.operation.equals(other.operation) && this.sessionId.equals(other.sessionId)
-				&& (this.traceId == other.traceId) && (this.eoi == other.eoi) && (this.ess == other.ess) && (this.tin == other.tin) && (this.tout == other.tout)
+				&& (StringUtils.equalsIgnoreCase(this.traceId,other.traceId)) && (this.eoi == other.eoi) && (this.ess == other.ess) && (this.tin == other.tin) && (this.tout == other.tout)
 				&& (this.assumed == other.assumed);
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 3;
-		hash = (43 * hash) + (this.operation != null ? this.operation.hashCode() : 0); // NOCS (inline ?)
-		hash = (43 * hash) + (this.allocationComponent != null ? this.allocationComponent.hashCode() : 0); // NOCS (inline ?)
-		hash = (43 * hash) + (int) (this.traceId ^ (this.traceId >>> 32));
-		hash = (43 * hash) + (this.sessionId != null ? this.sessionId.hashCode() : 0); // NOCS (inline ?)
-		hash = (43 * hash) + this.eoi;
-		hash = (43 * hash) + this.ess;
-		hash = (43 * hash) + (int) (this.tin ^ (this.tin >>> 32));
-		hash = (43 * hash) + (int) (this.tout ^ (this.tout >>> 32));
-		hash = (43 * hash) + (this.assumed ? 5643 : 5648); // NOCS (inline ?)
-		return hash;
 	}
 
 	@Override

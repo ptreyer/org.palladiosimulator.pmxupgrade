@@ -13,8 +13,8 @@ public class AllocationRepository extends AbstractSystemSubRepository {
 			new AllocationComponent(AbstractSystemSubRepository.ROOT_ELEMENT_ID, AssemblyRepository.ROOT_ASSEMBLY_COMPONENT,
 					ExecutionEnvironmentRepository.ROOT_EXECUTION_CONTAINER);
 
-	private final Map<String, AllocationComponent> allocationComponentInstancesByName = new Hashtable<String, AllocationComponent>(); // NOPMD (UseConcurrentHashMap)
-	private final Map<Integer, AllocationComponent> allocationComponentInstancesById = new Hashtable<Integer, AllocationComponent>(); // NOPMD (UseConcurrentHashMap)
+	private final Map<String, AllocationComponent> allocationComponentInstancesByName = new Hashtable<>();
+	private final Map<Integer, AllocationComponent> allocationComponentInstancesById = new Hashtable<>();
 
 	/**
 	 * Creates a new instance of this class using the given parameters.

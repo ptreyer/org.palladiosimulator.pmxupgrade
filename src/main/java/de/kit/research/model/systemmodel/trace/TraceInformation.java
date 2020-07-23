@@ -1,20 +1,6 @@
-/***************************************************************************
- * Copyright 2015 Kieker Project (http://kieker-monitoring.net)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ***************************************************************************/
-
 package de.kit.research.model.systemmodel.trace;
+
+import org.apache.maven.shared.utils.StringUtils;
 
 /**
  * This class stores trace meta-information, such as the trace ID. This kept separate from the actual trace
@@ -26,7 +12,7 @@ package de.kit.research.model.systemmodel.trace;
  */
 public class TraceInformation {
 
-	private final long traceId;
+	private final String traceId;
 	private final String sessionId;
 
 	/**
@@ -37,7 +23,7 @@ public class TraceInformation {
 	 * @param sessionId
 	 *            The session ID to use
 	 */
-	public TraceInformation(final long traceId, final String sessionId) {
+	public TraceInformation(final String traceId, final String sessionId) {
 		this.traceId = traceId;
 		this.sessionId = sessionId;
 	}
@@ -47,7 +33,7 @@ public class TraceInformation {
 	 * 
 	 * @return See above
 	 */
-	public long getTraceId() {
+	public String getTraceId() {
 		return this.traceId;
 	}
 
@@ -61,11 +47,6 @@ public class TraceInformation {
 	}
 
 	@Override
-	public int hashCode() {
-		return (int) this.getTraceId();
-	}
-
-	@Override
 	public boolean equals(final Object other) {
 		if (!(other instanceof TraceInformation)) {
 			return false;
@@ -73,7 +54,7 @@ public class TraceInformation {
 
 		// The equality currently relies only on the trace ID to facilitate trace coloring.
 		final TraceInformation otherTraceInformation = (TraceInformation) other;
-		return this.getTraceId() == otherTraceInformation.getTraceId();
+		return StringUtils.equalsIgnoreCase(this.getTraceId(),otherTraceInformation.getTraceId());
 	}
 
 }

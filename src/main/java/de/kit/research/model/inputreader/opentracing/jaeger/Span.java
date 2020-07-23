@@ -23,7 +23,8 @@ public class Span {
     private List<Log> logs;
     private String processID;
 
-    private List<String> operationParameters;
+    private String componentType;
+    private String[] operationParameters;
     private String operationReturnType;
 
     public String getTraceID() {
@@ -106,12 +107,22 @@ public class Span {
         this.processID = processID;
     }
 
-    public List<String> getParameters() {
+    public String getComponentType() {
+        if (StringUtils.isEmpty(componentType)) {
+            this.getTags().forEach(t -> {
+                if (StringUtils.equalsIgnoreCase(t.getKey(), "componentType"))
+                    componentType = t.getValue();
+            });
+        }
+        return componentType;
+    }
+
+
+    public String[] getParameters() {
         if (operationParameters == null) {
-            operationParameters = new ArrayList<>();
             this.getTags().forEach(t -> {
                 if (StringUtils.equalsIgnoreCase(t.getKey(), "paramType")) {
-                    operationParameters.addAll(Arrays.asList(StringUtils.split(t.getValue(), ",")));
+                    operationParameters = StringUtils.split(t.getValue(), ",");
                 }
             });
         }
