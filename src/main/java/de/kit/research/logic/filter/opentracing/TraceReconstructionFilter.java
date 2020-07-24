@@ -11,6 +11,8 @@ import de.kit.research.model.systemmodel.component.AllocationComponent;
 import de.kit.research.model.systemmodel.component.AssemblyComponent;
 import de.kit.research.model.systemmodel.component.ComponentType;
 import de.kit.research.model.systemmodel.component.ExecutionContainer;
+import de.kit.research.model.systemmodel.repository.AllocationRepository;
+import de.kit.research.model.systemmodel.repository.OperationRepository;
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;
 import de.kit.research.model.systemmodel.trace.Execution;
 import de.kit.research.model.systemmodel.trace.ExecutionTrace;
@@ -34,13 +36,15 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
     public SystemModelRepository systemModelRepository;
     public List<ExecutionTrace> executionTraces = new ArrayList<>();
 
+    public List<Execution> invalidExecutions = new ArrayList<>();
+
     @Override
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
         systemModelRepository = new SystemModelRepository();
 
         traceRecord.getData().forEach(t -> executionTraces.add(mapExectionTraces(t)));
 
-        executionTraces.forEach(this::mapMessageTraces);
+        executionTraces.forEach(t->mapMessageTraces(t, t.getTraceId()));
 
         return traceRecord;
     }
@@ -49,6 +53,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         numberOfValidExecutions.set(-1);
 
         ExecutionTrace executionTrace = new ExecutionTrace(trace.getTraceID());
+        invalidExecutions = new ArrayList<>();
 
         HashMap<String, String> executionContainer = new HashMap<>();
 
@@ -72,13 +77,11 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
             }
 
         });
-
+        executionTrace.getInvalidExecutions().addAll(invalidExecutions);
         return executionTrace;
     }
 
     private Execution mapExecution(Trace trace, Span span, HashMap<String, String> executionContainer) {
-        // Execution execution = new Execution();
-
         String executionContainerId = span.getProcessID();
 
         final String executionContainerName = executionContainer.get(executionContainerId);
@@ -87,9 +90,12 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         final String operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
 
         // TODO handleQueries
-        if (StringUtils.isEmpty(assemblyComponentTypeName))
+        if (StringUtils.isEmpty(assemblyComponentTypeName)) {
+            long tout = span.getStartTime() + span.getDuration();
+            Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
+            invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, true));
             return null;
-
+        }
         numberOfValidExecutions.getAndIncrement();
 
         AllocationComponent allocInst = systemModelRepository.getAllocationFactory()
@@ -127,15 +133,17 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         }
 
         long tout = span.getStartTime() + span.getDuration();
-        return new Execution(op, allocInst, trace.getTraceID(), Execution.NO_SESSION_ID, numberOfValidExecutions.get(), numberOfValidExecutions.get(), span.getStartTime(), tout, true);
+        return new Execution(op, allocInst, span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), numberOfValidExecutions.get(), numberOfValidExecutions.get(), span.getStartTime(), tout, true);
         //return new Execution(op, allocInst, trace.getTraceID(), Execution.NO_SESSION_ID, eoi, trace.getSpans().size(), span.getStartTime(), tout, true);
     }
 
-    private ExecutionTrace mapMessageTraces(ExecutionTrace executionTrace) {
+    private ExecutionTrace mapMessageTraces(ExecutionTrace executionTrace, String traceId) {
 
         try {
-            final MessageTrace messageTrace = executionTrace.toMessageTrace(SystemModelRepository.ROOT_EXECUTION);
+            Execution rootExecution =
+                    new Execution(OperationRepository.ROOT_OPERATION, AllocationRepository.ROOT_ALLOCATION_COMPONENT, traceId, "-1", "-1", "-1", -1, -1, -1, -1, false);
 
+            final MessageTrace messageTrace = executionTrace.toMessageTrace2(rootExecution);
         } catch (InvalidTraceException e) {
             e.printStackTrace();
         }

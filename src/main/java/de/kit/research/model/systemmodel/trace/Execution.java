@@ -21,7 +21,9 @@ public class Execution {
 	private final Operation operation;
 	private final AllocationComponent allocationComponent;
 	private final String traceId;
+	private final String spanId;
 	private final String sessionId;
+	private final String childOf;
 	private final int eoi;
 	private final int ess;
 	private final long tin;
@@ -31,28 +33,30 @@ public class Execution {
 
 	/**
 	 * Creates a new Execution instance.
-	 * 
 	 * @param op
 	 *            The operation of the execution.
 	 * @param allocationComponent
 	 *            The allocation component.
 	 * @param traceId
-	 *            The ID of the trace.
+	 *      The ID of the trace.
+	 * @param spanId
+	 * 		The ID of the span.
 	 * @param sessionId
-	 *            The ID of the session.
+*            The ID of the session.
+	 * @param childOf
+	 * 		The ID of the parent.
 	 * @param eoi
-	 *            The execution order index.
+*            The execution order index.
 	 * @param ess
-	 *            The execution stack size.
+*            The execution stack size.
 	 * @param tin
-	 *            The timestamp the execution started.
+*            The timestamp the execution started.
 	 * @param tout
-	 *            The timestamp the execution finished.
+*            The timestamp the execution finished.
 	 * @param assumed
-	 *            Determines whether the execution is assumed or not.
 	 */
-	public Execution(final Operation op, final AllocationComponent allocationComponent, final String traceId, final String sessionId, final int eoi, final int ess,
-			final long tin, final long tout, final boolean assumed) {
+	public Execution(final Operation op, final AllocationComponent allocationComponent, final String traceId, String spanId, final String sessionId, String childOf, final int eoi, final int ess,
+					 final long tin, final long tout, final boolean assumed) {
 		if (op == null) {
 			throw new NullPointerException("argument op must not be null");
 		}
@@ -63,6 +67,7 @@ public class Execution {
 			throw new NullPointerException("argument sessionId must not be null");
 		}
 
+		this.spanId = spanId;
 		this.operation = op;
 		this.allocationComponent = allocationComponent;
 		this.traceId = traceId;
@@ -72,31 +77,32 @@ public class Execution {
 		this.tin = tin;
 		this.tout = tout;
 		this.assumed = assumed;
+		this.childOf = childOf;
 	}
 
 	/**
 	 * Creates a new Execution instance. The sessionId is set to a default value.
-	 * 
 	 * @param op
 	 *            The operation of the execution.
 	 * @param allocationComponent
 	 *            The allocation component.
 	 * @param traceId
-	 *            The ID of the trace.
+*            The ID of the trace.
 	 * @param eoi
-	 *            The execution order index.
+*            The execution order index.
 	 * @param ess
-	 *            The execution stack size.
+*            The execution stack size.
 	 * @param tin
-	 *            The timestamp the execution started.
+*            The timestamp the execution started.
 	 * @param tout
-	 *            The timestamp the execution finished.
+*            The timestamp the execution finished.
 	 * @param assumed
-	 *            Determines whether the execution is assumed or not.
+	 * @param childOf
+	 * @param spanId
 	 */
 	public Execution(final Operation op, final AllocationComponent allocationComponent, final String traceId, final int eoi, final int ess, final long tin,
-			final long tout, final boolean assumed) {
-		this(op, allocationComponent, traceId, NO_SESSION_ID, eoi, ess, tin, tout, assumed);
+					 final long tout, final boolean assumed, String childOf, String spanId) {
+		this(op, allocationComponent, traceId, spanId, NO_SESSION_ID, childOf, eoi, ess, tin, tout, assumed);
 	}
 
 	public final AllocationComponent getAllocationComponent() {
@@ -137,6 +143,14 @@ public class Execution {
 		return this.traceId;
 	}
 
+	public String getSpanId() {
+		return spanId;
+	}
+
+	public String getChildOf() {
+		return childOf;
+	}
+
 	public boolean isAssumed() {
 		return this.assumed;
 	}
@@ -168,9 +182,6 @@ public class Execution {
 	public String toString() {
 		final StringBuilder strBuild = new StringBuilder(128);
 		strBuild.append(this.traceId);
-		strBuild.append('[').append(this.eoi).append(',').append(this.ess).append("] ");
-		strBuild.append(this.tin).append('-').append(this.tout).append(' ');
-		strBuild.append(this.allocationComponent.toString()).append('.');
 		strBuild.append(this.operation.getSignature().getName()).append(' ');
 
 		strBuild.append((this.sessionId != null) ? this.sessionId : NO_SESSION_ID); // NOCS

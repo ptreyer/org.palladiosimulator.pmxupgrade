@@ -1,6 +1,7 @@
 package de.kit.research.model.inputreader.opentracing.jaeger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Span {
     private String componentType;
     private String[] operationParameters;
     private String operationReturnType;
+    private String childOf;
 
     public String getTraceID() {
         return traceID;
@@ -137,6 +139,19 @@ public class Span {
             });
         }
         return operationReturnType;
+    }
+
+    public String getChildOf() {
+        if (StringUtils.isEmpty(childOf)) {
+            if (this.getReferences() == null)
+                return null;
+
+            this.getReferences().forEach(r -> {
+                if (StringUtils.equalsIgnoreCase(r.getRefType(), "CHILD_OF"))
+                    childOf = r.getSpanID();
+            });
+        }
+        return childOf;
     }
 
 }
