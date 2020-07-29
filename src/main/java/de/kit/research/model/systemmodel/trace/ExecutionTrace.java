@@ -1,10 +1,12 @@
 package de.kit.research.model.systemmodel.trace;
 
 import de.kit.research.model.exception.InvalidTraceException;
+import de.kit.research.model.inputreader.opentracing.jaeger.Span;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * This class is a container for a whole trace of executions (represented as instances of {@link Execution}).
@@ -17,7 +19,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ExecutionTrace extends AbstractTrace {
 
-    // private static final Log LOG = LogFactory.getLog(ExecutionTrace.class);
     private final AtomicReference<MessageTrace> messageTrace = new AtomicReference<>();
     private int minEoi = -1;
     private int maxEoi = -1;
@@ -34,16 +35,6 @@ public class ExecutionTrace extends AbstractTrace {
      */
     public ExecutionTrace(final String traceId) {
         super(traceId);
-    }
-
-    /**
-     * Creates a new instance of this class using the given parameters.
-     *
-     * @param traceId   The ID of this trace.
-     * @param sessionId The ID of the current session.
-     */
-    public ExecutionTrace(final String traceId, final String sessionId) {
-        super(traceId, sessionId);
     }
 
     /**
@@ -86,9 +77,8 @@ public class ExecutionTrace extends AbstractTrace {
      *
      * @param rootExecution The root execution object.
      * @return The resulting message trace.
-     * @throws InvalidTraceException If the given execution is somehow inconsistent or invalid.
      */
-    public MessageTrace toMessageTrace(final Execution rootExecution) throws InvalidTraceException {
+    public MessageTrace toMessageTrace(final Execution rootExecution) {
         synchronized (this) {
             MessageTrace mt = this.messageTrace.get();
             if (mt != null) {
@@ -97,97 +87,8 @@ public class ExecutionTrace extends AbstractTrace {
 
             final List<AbstractMessage> mSeq = new ArrayList<>();
             final Stack<AbstractMessage> curStack = new Stack<>();
-            final Iterator<Execution> eSeqIt = this.set.iterator();
 
-            Execution prevE = rootExecution;
-            int prevEoi = -1;
-            boolean expectingEntryCall = true; // used to make that entry call found in first iteration
-            while (eSeqIt.hasNext()) {
-                final Execution curE = eSeqIt.next();
-                if (expectingEntryCall && (curE.getEss() != 0)) {
-                    final InvalidTraceException ex = new InvalidTraceException("First execution must have ess " + "0 (found " + curE.getEss()
-                            + ")\n Causing execution: " + curE);
-                    // don't log and throw
-                    // LOG.error("Found invalid trace:" + ex.getMessage()); // don't need the stack trace here
-                    throw ex;
-                }
-                expectingEntryCall = false; // now we're happy
-                if (prevEoi != (curE.getEoi() - 1)) {
-                    final InvalidTraceException ex = new InvalidTraceException("Eois must increment by 1 --" + "but found sequence <" + prevEoi
-                            + "," + curE.getEoi() + ">" + "(Execution: " + curE + ")");
-                    // don't log and throw
-                    // LOG.error("Found invalid trace:" + ex.getMessage()); // don't need the stack trace here
-                    throw ex;
-                }
-                prevEoi = curE.getEoi();
-
-                // First, we might need to clean up the stack for the next execution callMessage
-                if ((!prevE.equals(rootExecution)) && (prevE.getEss() >= curE.getEss())) {
-                    Execution curReturnReceiver; // receiverComponentName of return message
-                    while (curStack.size() > curE.getEss()) {
-                        final AbstractMessage poppedCall = curStack.pop();
-                        prevE = poppedCall.getReceivingExecution();
-                        curReturnReceiver = poppedCall.getSendingExecution();
-                        final AbstractMessage m = new SynchronousReplyMessage(prevE.getTout(), prevE, curReturnReceiver);
-                        mSeq.add(m);
-                        prevE = curReturnReceiver;
-                    }
-                }
-                // Now, we handle the current execution callMessage
-                if (prevE.equals(rootExecution)) { // initial execution callMessage
-                    final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), rootExecution, curE);
-                    mSeq.add(m);
-                    curStack.push(m);
-                } else if ((prevE.getEss() + 1) == curE.getEss()) { // usual callMessage with senderComponentName and receiverComponentName
-                    final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), prevE, curE);
-                    mSeq.add(m);
-                    curStack.push(m);
-                } else if (prevE.getEss() < curE.getEss()) { // detect ess incrementation by > 1
-                    final InvalidTraceException ex = new InvalidTraceException("Ess are only allowed to increment by 1 --"
-                            + "but found sequence <" + prevE.getEss() + "," + curE.getEss() + ">" + "(Execution: " + curE + ")");
-                    // don't log and throw
-                    // LOG.error("Found invalid trace:" + ex.getMessage()); // don't need the stack trace here
-                    throw ex;
-                }
-                if (!eSeqIt.hasNext()) { // empty stack completely, since no more executions
-                    Execution curReturnReceiver; // receiverComponentName of return message
-                    while (!curStack.empty()) {
-                        final AbstractMessage poppedCall = curStack.pop();
-                        prevE = poppedCall.getReceivingExecution();
-                        curReturnReceiver = poppedCall.getSendingExecution();
-                        final AbstractMessage m = new SynchronousReplyMessage(prevE.getTout(), prevE, curReturnReceiver);
-                        mSeq.add(m);
-                        prevE = curReturnReceiver;
-                    }
-                }
-                prevE = curE; // prepair next loop
-            }
-            mt = new MessageTrace(this.getTraceId(), this.getSessionId(), mSeq);
-            this.messageTrace.set(mt);
-            return mt;
-        }
-    }
-
-    /**
-     * Returns the message trace representation for this trace.<br/>
-     * <p>
-     * The transformation to a message trace is only computed during the first execution of this method. After this, the stored reference is returned --- unless
-     * executions are added to the trace afterwards.
-     *
-     * @param rootExecution The root execution object.
-     * @return The resulting message trace.
-     * @throws InvalidTraceException If the given execution is somehow inconsistent or invalid.
-     */
-    public MessageTrace toMessageTrace2(final Execution rootExecution) throws InvalidTraceException {
-        synchronized (this) {
-            MessageTrace mt = this.messageTrace.get();
-            if (mt != null) {
-                return mt;
-            }
-
-            final List<AbstractMessage> mSeq = new ArrayList<>();
-            final Stack<AbstractMessage> curStack = new Stack<>();
-            final Iterator<Execution> eSeqIt = this.set.iterator();
+            final Iterator<Execution> eSeqIt = this.getSortedSet().iterator();
 
             Execution prevE = rootExecution;
 
@@ -203,6 +104,10 @@ public class ExecutionTrace extends AbstractTrace {
                     final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), rootExecution, curE);
                     mSeq.add(m);
                     curStack.push(m);
+                } else if (StringUtils.isEmpty(curE.getChildOf())) {
+                    final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), rootExecution, curE);
+                    mSeq.add(m);
+                    curStack.push(m);
                 } else {
                     Execution validPrevE = executions.get(curE.getChildOf());
                     if (validPrevE != null) {
@@ -214,6 +119,7 @@ public class ExecutionTrace extends AbstractTrace {
                         Execution invalidPrevE;
                         prevE = inExecutions.get(curE.getChildOf());
                         if (prevE != null) {
+                            // TODO Queries, currently: iterate till previous Node is no query
                             boolean invalid = true;
                             while (invalid) {
                                 validPrevE = executions.get(prevE.getChildOf());
@@ -223,13 +129,12 @@ public class ExecutionTrace extends AbstractTrace {
                                 } else {
                                     invalidPrevE = inExecutions.get(prevE.getChildOf());
                                     if (invalidPrevE == null) {
-                                        try {
-                                            throw new Exception("error");
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                        // TODO comment: nicht gefunden dann prev = root ansonsten weiter
+                                        prevE = rootExecution;
+                                        invalid = false;
+                                    } else {
+                                        prevE = invalidPrevE;
                                     }
-                                    prevE = invalidPrevE;
                                 }
                             }
                             final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), prevE, curE);
@@ -393,6 +298,12 @@ public class ExecutionTrace extends AbstractTrace {
             // method but the Set's Comparator, which we defined in this case.
             return this.set.equals(other.set);
         }
+    }
+
+    public List<Execution> getSortedSet() {
+        return this.set
+                .stream().sorted(Comparator.comparingLong(Execution::getTin))
+                .collect(Collectors.toList());
     }
 
 }

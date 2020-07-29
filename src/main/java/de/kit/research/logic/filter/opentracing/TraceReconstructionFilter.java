@@ -44,7 +44,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
 
         traceRecord.getData().forEach(t -> executionTraces.add(mapExectionTraces(t)));
 
-        executionTraces.forEach(t->mapMessageTraces(t, t.getTraceId()));
+        executionTraces.forEach(t -> mapMessageTraces(t, t.getTraceId()));
 
         return traceRecord;
     }
@@ -93,7 +93,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         if (StringUtils.isEmpty(assemblyComponentTypeName)) {
             long tout = span.getStartTime() + span.getDuration();
             Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
-            invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, true));
+            invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
             return null;
         }
         numberOfValidExecutions.getAndIncrement();
@@ -133,23 +133,14 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         }
 
         long tout = span.getStartTime() + span.getDuration();
-        return new Execution(op, allocInst, span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), numberOfValidExecutions.get(), numberOfValidExecutions.get(), span.getStartTime(), tout, true);
-        //return new Execution(op, allocInst, trace.getTraceID(), Execution.NO_SESSION_ID, eoi, trace.getSpans().size(), span.getStartTime(), tout, true);
+        return new Execution(op, allocInst, span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), numberOfValidExecutions.get(), numberOfValidExecutions.get(), span.getStartTime(), tout, false);
     }
 
-    private ExecutionTrace mapMessageTraces(ExecutionTrace executionTrace, String traceId) {
+    private void mapMessageTraces(ExecutionTrace executionTrace, String traceId) {
+        Execution rootExecution =
+                new Execution(OperationRepository.ROOT_OPERATION, AllocationRepository.ROOT_ALLOCATION_COMPONENT, "-1", "-1", "-1", "-1", -1, -1, -1, -1, false);
 
-        try {
-            Execution rootExecution =
-                    new Execution(OperationRepository.ROOT_OPERATION, AllocationRepository.ROOT_ALLOCATION_COMPONENT, traceId, "-1", "-1", "-1", -1, -1, -1, -1, false);
-
-            final MessageTrace messageTrace = executionTrace.toMessageTrace2(rootExecution);
-        } catch (InvalidTraceException e) {
-            e.printStackTrace();
-        }
-
-
-        return null;
+        executionTrace.toMessageTrace(rootExecution);
     }
 
 }
