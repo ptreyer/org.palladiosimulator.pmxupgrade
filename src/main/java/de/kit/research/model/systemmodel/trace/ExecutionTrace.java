@@ -351,6 +351,10 @@ public class ExecutionTrace extends AbstractTrace {
         return this.getMinTin();
     }
 
+    public MessageTrace getMessageTrace() {
+        return messageTrace.get();
+    }
+
     @Override
     public long getEndTimestamp() {
         return this.getMaxTout();
