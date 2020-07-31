@@ -34,7 +34,7 @@ public class ControlFlowTest {
 
         ControlFlowService service = new ControlFlowService();
 
-        AbstractDependencyGraph<AllocationComponentOperationPair> graph = service.resolveControlFlow(filter.systemModelRepository, filter.executionTraces);
+        AbstractDependencyGraph<AllocationComponentOperationPair> graph = service.resolveControlFlow(filter.executionTraces, filter.systemModelRepository);
 
         doWork(graph, filter.systemModelRepository);
 
@@ -47,7 +47,7 @@ public class ControlFlowTest {
             SystemModelRepository systemModelRepository) {
         Writer fw = null;
 
-        String outputFn = "output";
+        String outputFn = "output.txt";
 
 
         try {
@@ -77,8 +77,7 @@ public class ControlFlowTest {
 
                     String start = node.getEntity().getAllocationComponent().getAssemblyComponent().getType().getTypeName();
                     String end = outgoingEdge.getTarget().getEntity().getAllocationComponent().getAssemblyComponent().getType().getTypeName();
-//					builder.connectAssemblies(start, end);	//TODO
-//					log.info(start + " --> "+ end);
+
                     fw.append("\t").append(String.valueOf(outgoingEdge.getTarget().getId())).append(": ").append("(weight=").append(String.valueOf(outgoingEdge.getTargetWeight())).append(")");
                 }
                 fw.append("\n");
