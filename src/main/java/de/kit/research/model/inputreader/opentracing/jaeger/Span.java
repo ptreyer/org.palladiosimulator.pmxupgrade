@@ -154,4 +154,7 @@ public class Span {
         return childOf;
     }
 
+    public void setOperationParameters(String[] operationParameters) {
+        this.operationParameters = operationParameters;
+    }
 }

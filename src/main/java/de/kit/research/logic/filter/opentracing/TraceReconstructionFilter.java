@@ -16,7 +16,6 @@ import de.kit.research.model.systemmodel.repository.OperationRepository;
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;
 import de.kit.research.model.systemmodel.trace.Execution;
 import de.kit.research.model.systemmodel.trace.ExecutionTrace;
-import de.kit.research.model.systemmodel.trace.MessageTrace;
 import de.kit.research.model.systemmodel.trace.Operation;
 import de.kit.research.model.systemmodel.util.Signature;
 import org.codehaus.plexus.util.StringUtils;
@@ -85,16 +84,80 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         String executionContainerId = span.getProcessID();
 
         final String executionContainerName = executionContainer.get(executionContainerId);
-        final String assemblyComponentTypeName = span.getComponentType();
-        final String allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
-        final String operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+        String assemblyComponentTypeName = span.getComponentType();
+        String allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+        String operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
 
         // TODO handleQueries
         if (StringUtils.isEmpty(assemblyComponentTypeName)) {
+
             long tout = span.getStartTime() + span.getDuration();
-            Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
-            invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
-            return null;
+
+            if (StringUtils.equalsIgnoreCase(span.getSpanID(), span.getTraceID()) && span.getReferences() == null) {
+                // if first
+
+                if (StringUtils.equalsIgnoreCase(span.getOperationName(), "GET") | StringUtils.equalsIgnoreCase(span.getOperationName(), "POST") |
+                        StringUtils.equalsIgnoreCase(span.getOperationName(), "PUT") | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE")
+                        | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
+                    // if first and network
+
+                    assemblyComponentTypeName = "de.kit.research.generic.HttpForwarder";
+                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+                    span.setOperationName("networkCall");
+                    span.setOperationParameters(emptyArray);
+                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+
+
+                } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY")) {
+                    // if first and query
+
+                    assemblyComponentTypeName = "de.kit.research.generic.DatabaseForwarder";
+                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+                    span.setOperationName("databaseCall");
+                    span.setOperationParameters(emptyArray);
+                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+
+                } else {
+                    // invalid
+                    Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
+                    invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
+                    return null;
+
+                }
+            } else {
+                // not first
+
+                if (StringUtils.equalsIgnoreCase(span.getOperationName(), "GET") | StringUtils.equalsIgnoreCase(span.getOperationName(), "POST") |
+                        StringUtils.equalsIgnoreCase(span.getOperationName(), "PUT") | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE")
+                        | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
+                    // if not first and network
+
+                    assemblyComponentTypeName = "de.kit.research.generic.HttpForwarder";
+                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+                    span.setOperationName("networkCall");
+                    span.setOperationParameters(emptyArray);
+                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+
+
+                } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY")) {
+                    // if not first and query
+
+                    assemblyComponentTypeName = "de.kit.research.generic.DatabaseForwarder";
+                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+                    span.setOperationName("databaseCall");
+                    span.setOperationParameters(emptyArray);
+                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+
+                } else {
+                    // invalid
+                    Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
+                    invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
+                    return null;
+                }
+
+            }
+
+
         }
         numberOfValidExecutions.getAndIncrement();
 

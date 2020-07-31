@@ -140,6 +140,14 @@ public class ExecutionTrace extends AbstractTrace {
                             final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), prevE, curE);
                             mSeq.add(m);
                             curStack.push(m);
+                        } else {
+                            if (curStack.empty()) {
+                                // parent invalid -> root
+                                prevE = rootExecution;
+                                final AbstractMessage m = new SynchronousCallMessage(curE.getTin(), prevE, curE);
+                                mSeq.add(m);
+                                curStack.push(m);
+                            }
                         }
 
                     }
