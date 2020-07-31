@@ -1,5 +1,6 @@
 package de.kit.research.logic.dataprocessing.controlflow;
 
+import de.kit.research.logic.dataprocessing.controlflow.visualization.AbstractDependencyGraph;
 import de.kit.research.logic.dataprocessing.controlflow.visualization.FlowGraphCreationAdapter;
 import de.kit.research.logic.dataprocessing.controlflow.visualization.OperationAllocationDependencyGraph;
 import de.kit.research.model.systemmodel.repository.AbstractSystemSubRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ControlFlowService {
 
-    public SystemModelRepository resolveControlFlow(final SystemModelRepository systemModelRepository, final List<ExecutionTrace> executionTraces) {
+    public AbstractDependencyGraph<AllocationComponentOperationPair> resolveControlFlow(final SystemModelRepository systemModelRepository, final List<ExecutionTrace> executionTraces) {
 
         FlowGraphCreationAdapter adapter = new FlowGraphCreationAdapter(new OperationAllocationDependencyGraph(new AllocationComponentOperationPair(
                 AbstractSystemSubRepository.ROOT_ELEMENT_ID, OperationRepository.ROOT_OPERATION, AllocationRepository.ROOT_ALLOCATION_COMPONENT)));
@@ -22,7 +23,7 @@ public class ControlFlowService {
             adapter.inputMessageTraces(t.getMessageTrace(), systemModelRepository);
         }
 
-        return null;
+        return adapter.getGraph();
     }
 
 }

@@ -3,6 +3,7 @@ package de.kit.research.logic.dataprocessing.workload;
 import de.kit.research.logic.modelcreation.builder.ModelBuilder;
 import de.kit.research.model.systemmodel.trace.AbstractMessage;
 import de.kit.research.model.systemmodel.trace.Execution;
+import de.kit.research.model.systemmodel.trace.ExecutionTrace;
 import de.kit.research.model.systemmodel.trace.MessageTrace;
 
 import java.util.*;
@@ -11,9 +12,9 @@ public class WorkloadService {
 
     private static HashMap<String, List<Double>> workloadTimeSeriesMap;
 
-    public HashMap<String, List<Double>> analyzeWorkload(final List<MessageTrace> messageTraces){
+    public HashMap<String, List<Double>> analyzeWorkload(final List<ExecutionTrace> executionTraces) {
         workloadTimeSeriesMap = new HashMap<>();
-        messageTraces.forEach(this::analyzeMessageTrace);
+        executionTraces.stream().map(ExecutionTrace::getMessageTrace).forEach(this::analyzeMessageTrace);
         return workloadTimeSeriesMap;
     }
 

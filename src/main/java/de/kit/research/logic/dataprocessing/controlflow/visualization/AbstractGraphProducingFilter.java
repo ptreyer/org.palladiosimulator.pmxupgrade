@@ -36,7 +36,7 @@ public abstract class AbstractGraphProducingFilter<G extends AbstractGraph<?, ?,
      *
      * @return The graph.
      */
-    protected G getGraph() {
+    public G getGraph() {
         return this.graph;
     }
 
