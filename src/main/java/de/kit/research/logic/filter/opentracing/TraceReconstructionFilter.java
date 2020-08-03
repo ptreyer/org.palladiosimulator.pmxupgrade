@@ -108,7 +108,8 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
                     operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
 
 
-                } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY")) {
+                } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY") | StringUtils.equalsIgnoreCase(span.getOperationName(), "UPDATE")
+                        | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE") | StringUtils.equalsIgnoreCase(span.getOperationName(), "SELECT")) {
                     // if first and query
 
                     assemblyComponentTypeName = "de.kit.research.generic.DatabaseForwarder";
