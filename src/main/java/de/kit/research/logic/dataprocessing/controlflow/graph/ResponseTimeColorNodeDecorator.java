@@ -1,6 +1,6 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.Color;
+import de.kit.research.model.graph.Color;
 import de.kit.research.model.systemmodel.trace.AbstractMessage;
 
 import java.util.concurrent.TimeUnit;

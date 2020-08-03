@@ -1,8 +1,8 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractPayloadedVertex;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractVertexDecoration;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.IOriginRetentionPolicy;
+import de.kit.research.model.graph.AbstractPayloadedVertex;
+import de.kit.research.model.graph.AbstractVertexDecoration;
+import de.kit.research.model.graph.IOriginRetentionPolicy;
 import de.kit.research.model.systemmodel.ISystemModelElement;
 import de.kit.research.model.systemmodel.repository.AbstractSystemSubRepository;
 import de.kit.research.model.systemmodel.trace.TraceInformation;

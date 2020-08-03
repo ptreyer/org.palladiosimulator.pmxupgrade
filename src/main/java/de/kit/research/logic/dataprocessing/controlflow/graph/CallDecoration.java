@@ -1,6 +1,6 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractVertexDecoration;
+import de.kit.research.model.graph.AbstractVertexDecoration;
 
 public class CallDecoration extends AbstractVertexDecoration {
 

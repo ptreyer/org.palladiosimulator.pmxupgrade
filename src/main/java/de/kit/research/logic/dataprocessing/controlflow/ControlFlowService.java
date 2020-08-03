@@ -1,8 +1,8 @@
 package de.kit.research.logic.dataprocessing.controlflow;
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.AbstractDependencyGraph;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.FlowGraphCreationAdapter;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.OperationAllocationDependencyGraph;
+import de.kit.research.logic.dataprocessing.controlflow.graph.AbstractDependencyGraph;
+import de.kit.research.logic.dataprocessing.controlflow.graph.FlowGraphCreationAdapter;
+import de.kit.research.logic.dataprocessing.controlflow.graph.OperationAllocationDependencyGraph;
 import de.kit.research.model.systemmodel.repository.AbstractSystemSubRepository;
 import de.kit.research.model.systemmodel.repository.AllocationRepository;
 import de.kit.research.model.systemmodel.repository.OperationRepository;

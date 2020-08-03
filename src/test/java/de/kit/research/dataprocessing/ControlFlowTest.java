@@ -2,10 +2,10 @@ package de.kit.research.dataprocessing;
 
 import de.kit.research.logic.PMXController;
 import de.kit.research.logic.dataprocessing.controlflow.ControlFlowService;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.AbstractDependencyGraph;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.DependencyGraphNode;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.WeightedBidirectionalDependencyGraphEdge;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractGraph;
+import de.kit.research.logic.dataprocessing.controlflow.graph.AbstractDependencyGraph;
+import de.kit.research.logic.dataprocessing.controlflow.graph.DependencyGraphNode;
+import de.kit.research.logic.dataprocessing.controlflow.graph.WeightedBidirectionalDependencyGraphEdge;
+import de.kit.research.model.graph.AbstractGraph;
 import de.kit.research.logic.filter.opentracing.TraceReconstructionFilter;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.exception.PMXException;

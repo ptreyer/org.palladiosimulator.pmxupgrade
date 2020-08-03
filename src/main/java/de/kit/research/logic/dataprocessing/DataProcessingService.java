@@ -1,7 +1,7 @@
 package de.kit.research.logic.dataprocessing;
 
 import de.kit.research.logic.dataprocessing.controlflow.ControlFlowService;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.AbstractDependencyGraph;
+import de.kit.research.logic.dataprocessing.controlflow.graph.AbstractDependencyGraph;
 import de.kit.research.logic.dataprocessing.failureestimation.FailureEstimationService;
 import de.kit.research.logic.dataprocessing.resourcedemands.ResourceDemandEstimationService;
 import de.kit.research.logic.dataprocessing.workload.WorkloadService;

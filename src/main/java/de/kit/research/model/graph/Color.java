@@ -1,4 +1,4 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization.graph;
+package de.kit.research.model.graph;
 
 /**
  * (RGB-based) Color implementation for the visualization package.

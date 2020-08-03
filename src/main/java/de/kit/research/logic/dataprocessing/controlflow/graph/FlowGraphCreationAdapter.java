@@ -1,8 +1,5 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.AbstractDependencyGraph;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.AbstractDependencyGraphFilter;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.DependencyGraphNode;
 import de.kit.research.model.systemmodel.component.AllocationComponent;
 import de.kit.research.model.systemmodel.repository.AllocationComponentOperationPairFactory;
 import de.kit.research.model.systemmodel.repository.OperationRepository;

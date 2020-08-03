@@ -1,4 +1,4 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
 import java.util.concurrent.TimeUnit;
 

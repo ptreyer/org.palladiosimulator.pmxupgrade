@@ -1,4 +1,4 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization.graph;
+package de.kit.research.model.graph;
 
 /**
  * This is an abstract base for vertex decorations.

@@ -1,5 +1,5 @@
 
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
 import de.kit.research.model.systemmodel.util.AllocationComponentOperationPair;
 

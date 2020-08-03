@@ -1,7 +1,7 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractVertexDecoration;
+import de.kit.research.model.graph.AbstractVertexDecoration;
 import de.kit.research.model.systemmodel.trace.Execution;
 
 import java.util.concurrent.TimeUnit;

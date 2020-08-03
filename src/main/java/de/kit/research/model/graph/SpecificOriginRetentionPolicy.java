@@ -1,4 +1,4 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization.graph;
+package de.kit.research.model.graph;
 
 import java.util.HashSet;
 import java.util.Set;

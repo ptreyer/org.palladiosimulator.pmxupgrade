@@ -1,4 +1,4 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization.graph;
+package de.kit.research.model.graph;
 
 /**
  * This enumeration contains origin retention policy kinds, i.e. types of origin retention policies.

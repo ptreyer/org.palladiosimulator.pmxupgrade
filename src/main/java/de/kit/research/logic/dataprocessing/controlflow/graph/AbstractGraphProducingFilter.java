@@ -1,9 +1,9 @@
-package de.kit.research.logic.dataprocessing.controlflow.visualization;
+package de.kit.research.logic.dataprocessing.controlflow.graph;
 
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractGraph;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.AbstractGraphElement;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.IOriginRetentionPolicy;
-import de.kit.research.logic.dataprocessing.controlflow.visualization.graph.NoOriginRetentionPolicy;
+import de.kit.research.model.graph.AbstractGraph;
+import de.kit.research.model.graph.AbstractGraphElement;
+import de.kit.research.model.graph.IOriginRetentionPolicy;
+import de.kit.research.model.graph.NoOriginRetentionPolicy;
 import de.kit.research.model.exception.AnalysisConfigurationException;
 
 /**
