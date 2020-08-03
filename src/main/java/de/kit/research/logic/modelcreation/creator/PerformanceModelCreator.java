@@ -1,4 +1,4 @@
-package de.kit.research.logic.modelcreation;
+package de.kit.research.logic.modelcreation.creator;
 
 import de.kit.research.logic.modelcreation.builder.IModelBuilder;
 import de.kit.research.model.systemmodel.component.AllocationComponent;
