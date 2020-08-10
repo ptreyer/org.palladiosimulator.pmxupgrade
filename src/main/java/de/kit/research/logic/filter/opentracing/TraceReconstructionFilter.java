@@ -1,8 +1,9 @@
 package de.kit.research.logic.filter.opentracing;
 
-import de.kit.research.logic.filter.AbstractTraceProcessingFilter;
+import de.kit.research.logic.filter.AbstractTraceReconstructionFilter;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.exception.InvalidTraceException;
+import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import de.kit.research.model.inputreader.opentracing.jaeger.Process;
 import de.kit.research.model.inputreader.opentracing.jaeger.Span;
 import de.kit.research.model.inputreader.opentracing.jaeger.Trace;
@@ -26,26 +27,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TraceReconstructionFilter implements AbstractTraceProcessingFilter {
+public class TraceReconstructionFilter implements AbstractTraceReconstructionFilter {
 
     private final String[] emptyArray = new String[0];
-    AtomicInteger numberOfValidExecutions = new AtomicInteger(-1);
+    private AtomicInteger numberOfValidExecutions = new AtomicInteger(-1);
 
-    // TODO change
-    public SystemModelRepository systemModelRepository;
-    public List<ExecutionTrace> executionTraces = new ArrayList<>();
+    private SystemModelRepository systemModelRepository;
+    private List<ExecutionTrace> executionTraces = new ArrayList<>();
 
-    public List<Execution> invalidExecutions = new ArrayList<>();
+    // TODO unnecessary
+    private List<Execution> invalidExecutions = new ArrayList<>();
 
     @Override
-    public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
+    public ProcessingObjectWrapper filter(Configuration configuration, TraceRecord traceRecord) {
         systemModelRepository = new SystemModelRepository();
 
         traceRecord.getData().forEach(t -> executionTraces.add(mapExectionTraces(t)));
+        executionTraces.forEach(this::mapMessageTraces);
 
-        executionTraces.forEach(t -> mapMessageTraces(t, t.getTraceId()));
-
-        return traceRecord;
+        return new ProcessingObjectWrapper(systemModelRepository, executionTraces, invalidExecutions);
     }
 
     private ExecutionTrace mapExectionTraces(Trace trace) {
@@ -67,7 +67,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
 
         trace.getSpans().forEach(t -> {
             try {
-                Execution execution = mapExecution(trace, t, executionContainer);
+                Execution execution = mapExecution(t, executionContainer);
                 if (execution != null)
                     executionTrace.add(execution);
             } catch (InvalidTraceException e) {
@@ -80,7 +80,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         return executionTrace;
     }
 
-    private Execution mapExecution(Trace trace, Span span, HashMap<String, String> executionContainer) {
+    private Execution mapExecution(Span span, HashMap<String, String> executionContainer) {
         String executionContainerId = span.getProcessID();
 
         final String executionContainerName = executionContainer.get(executionContainerId);
@@ -200,7 +200,7 @@ public class TraceReconstructionFilter implements AbstractTraceProcessingFilter 
         return new Execution(op, allocInst, span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), numberOfValidExecutions.get(), numberOfValidExecutions.get(), span.getStartTime(), tout, false);
     }
 
-    private void mapMessageTraces(ExecutionTrace executionTrace, String traceId) {
+    private void mapMessageTraces(ExecutionTrace executionTrace) {
         Execution rootExecution =
                 new Execution(OperationRepository.ROOT_OPERATION, AllocationRepository.ROOT_ALLOCATION_COMPONENT, "-1", "-1", "-1", "-1", -1, -1, -1, -1, false);
 

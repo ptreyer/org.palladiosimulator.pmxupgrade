@@ -36,5 +36,8 @@ public class DataProcessingService {
         // TODO
     }
 
+    public void resolveParametricDependencies(){
+        // TODO
+    }
 
 }

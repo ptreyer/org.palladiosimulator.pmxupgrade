@@ -9,6 +9,7 @@ import de.kit.research.model.graph.AbstractGraph;
 import de.kit.research.logic.filter.opentracing.TraceReconstructionFilter;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.exception.PMXException;
+import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import de.kit.research.model.systemmodel.component.AllocationComponent;
 import de.kit.research.model.systemmodel.component.AssemblyComponent;
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;
@@ -30,13 +31,13 @@ public class ControlFlowTest {
 
         TraceReconstructionFilter filter = new TraceReconstructionFilter();
 
-        filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
 
         ControlFlowService service = new ControlFlowService();
 
-        AbstractDependencyGraph<AllocationComponentOperationPair> graph = service.resolveControlFlow(filter.executionTraces, filter.systemModelRepository);
+        AbstractDependencyGraph<AllocationComponentOperationPair> graph = service.resolveControlFlow(processingObjectWrapper.getExecutionTraces(), processingObjectWrapper.getSystemModelRepository());
 
-        doWork(graph, filter.systemModelRepository);
+        doWork(graph, processingObjectWrapper.getSystemModelRepository());
 
         System.out.println("finish");
 

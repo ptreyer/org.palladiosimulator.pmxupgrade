@@ -2,10 +2,10 @@ package de.kit.research.dataprocessing;
 
 import de.kit.research.logic.PMXController;
 import de.kit.research.logic.dataprocessing.DataProcessingService;
-import de.kit.research.logic.dataprocessing.controlflow.ControlFlowService;
 import de.kit.research.logic.filter.opentracing.TraceReconstructionFilter;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.exception.PMXException;
+import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import org.junit.jupiter.api.Test;
 
 public class WorkloadTest {
@@ -20,10 +20,10 @@ public class WorkloadTest {
 
         TraceReconstructionFilter filter = new TraceReconstructionFilter();
 
-        filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
 
         DataProcessingService service = new DataProcessingService();
-        service.analyzeWorkload(filter.executionTraces);
+        service.analyzeWorkload(processingObjectWrapper.getExecutionTraces());
 
         System.out.println("finish");
 

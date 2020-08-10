@@ -5,14 +5,11 @@ import de.kit.research.model.common.Configuration;
 import de.kit.research.model.exception.PMXException;
 import de.kit.research.model.inputreader.opentracing.jaeger.Span;
 import de.kit.research.model.inputreader.opentracing.jaeger.Trace;
-import de.kit.research.model.inputreader.opentracing.jaeger.TraceRecord;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +40,7 @@ public class FilterTest {
 
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
-        pmxController.initAndExecuteFilter();
+        pmxController.initAndExecuteFilters();
 
         for (Trace trace : pmxController.getTraceRecord().getData()) {
             System.out.println("-----");
