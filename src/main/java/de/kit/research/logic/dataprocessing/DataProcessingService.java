@@ -5,6 +5,7 @@ import de.kit.research.logic.dataprocessing.controlflow.graph.AbstractDependency
 import de.kit.research.logic.dataprocessing.failureestimation.FailureEstimationService;
 import de.kit.research.logic.dataprocessing.resourcedemands.ResourceDemandEstimationService;
 import de.kit.research.logic.dataprocessing.workload.WorkloadService;
+import de.kit.research.model.common.Configuration;
 import de.kit.research.model.systemmodel.repository.SystemModelRepository;
 import de.kit.research.model.systemmodel.trace.ExecutionTrace;
 import de.kit.research.model.systemmodel.util.AllocationComponentOperationPair;
@@ -16,7 +17,7 @@ public class DataProcessingService {
 
     private ControlFlowService controlFlowService = new ControlFlowService();
     private WorkloadService workloadService = new WorkloadService();
-    private ResourceDemandEstimationService resourceDemandEstimationService = new ResourceDemandEstimationService();
+    private ResourceDemandEstimationService resourceDemandEstimationService = new ResourceDemandEstimationService(new Configuration());
     private FailureEstimationService failureEstimationService = new FailureEstimationService();
 
 

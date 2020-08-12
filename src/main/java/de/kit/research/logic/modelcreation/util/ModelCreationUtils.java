@@ -3,7 +3,6 @@ package de.kit.research.logic.modelcreation.util;
 public class ModelCreationUtils {
 
     public static String createMethodKey(String signatureName, String componentName) {
-        //	signatureName = signatureName.replace("<init>", "constructor");
         signatureName = signatureName.replace("<", "");
         signatureName = signatureName.replace(">", "");
         signatureName = componentName + signatureName;
