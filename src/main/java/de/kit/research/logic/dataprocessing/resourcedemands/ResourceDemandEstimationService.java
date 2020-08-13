@@ -47,10 +47,10 @@ public class ResourceDemandEstimationService {
     }
 
 
- //   public void inputUtilizationLogs(final CPUUtilizationRecord record) {
- //       //TODO Check it is loggingTimestamp or timestamp
-  //      addResourceLog(Time.NANOSECONDS.convertTo(record.getLoggingTimestamp(), Time.SECONDS), record.getHostname(), "CPU", record.getTotalUtilization());
-  //  }
+    //   public void inputUtilizationLogs(final CPUUtilizationRecord record) {
+    //       //TODO Check it is loggingTimestamp or timestamp
+    //      addResourceLog(Time.NANOSECONDS.convertTo(record.getLoggingTimestamp(), Time.SECONDS), record.getHostname(), "CPU", record.getTotalUtilization());
+    //  }
 
     public void inputMessageTraces(final MessageTrace mt) {
         Map<Execution, Double> externalCallTime = new HashMap<>();
@@ -72,7 +72,7 @@ public class ResourceDemandEstimationService {
                         .getExecutionContainer()
                         .equals(receiver.getAllocationComponent()
                                 .getExecutionContainer())) {
-                    if(!sender.getAllocationComponent().getAssemblyComponent().getName().equals("'Entry'")){
+                    if (!sender.getAllocationComponent().getAssemblyComponent().getName().equals("'Entry'")) {
                         // sender != receiver
                         //log.info("Network ("+sender.getAllocationComponent().getExecutionContainer().getName()+ " == >" + receiver.getAllocationComponent().getExecutionContainer().getName()+"): "
                         //	+ (sender.getTout() - receiver.getTin())
@@ -104,26 +104,26 @@ public class ResourceDemandEstimationService {
                 log.error("time < 0: time = " + time);
             }
 
-            if(externalTime - time > 0.001 * time) {		// measurement >10% uncertain
+            if (externalTime - time > 0.001 * time) {        // measurement >10% uncertain
                 //TODO External calls
                 boolean error = true;
                 AllocationComponent ac = execution.getAllocationComponent();
-                for(Execution sub: externalCallMethods.get(execution)){
-                    if(!ac.equals(sub.getAllocationComponent())){
+                for (Execution sub : externalCallMethods.get(execution)) {
+                    if (!ac.equals(sub.getAllocationComponent())) {
                         error = false;
                     }
                 }
 
-                if(error){
-                    log.error("time < external time (trace id "+execution.getTraceId()+") "+execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " "+execution.getOperation().getSignature().getName());
-                    log.error("\t"+ "time = " + time  );
-                    log.error("\t"+ "exte = " + externalTime);
-                    if(externalCallMethods.get(execution) != null){
-                        for(Execution sub : externalCallMethods.get(execution)){
-                            log.error("\t"+"       "+(sub.getTout() -sub.getTin()) +" << "+sub.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " "+ sub.getOperation().getSignature().getName() + "(trace id "+sub.getTraceId()+") ");
+                if (error) {
+                    log.error("time < external time (trace id " + execution.getTraceId() + ") " + execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " " + execution.getOperation().getSignature().getName());
+                    log.error("\t" + "time = " + time);
+                    log.error("\t" + "exte = " + externalTime);
+                    if (externalCallMethods.get(execution) != null) {
+                        for (Execution sub : externalCallMethods.get(execution)) {
+                            log.error("\t" + "       " + (sub.getTout() - sub.getTin()) + " << " + sub.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " " + sub.getOperation().getSignature().getName() + "(trace id " + sub.getTraceId() + ") ");
                         }
                     }
-                }else{
+                } else {
                     log.warn(execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " "
                             + execution.getOperation().getSignature().getName()
                             + " has been abortet before external call response (trace id " + execution.getTraceId()
@@ -145,7 +145,7 @@ public class ResourceDemandEstimationService {
     }
 
     public static void addNetworkLog(double timestamp, double delay) {
-        if(networkTimeSeries== null){
+        if (networkTimeSeries == null) {
             double[] timeValue = new double[1];
             timeValue[0] = timestamp;
             tools.descartes.librede.linalg.Vector time = LinAlg.vector(timeValue);
@@ -154,14 +154,14 @@ public class ResourceDemandEstimationService {
             values[0] = delay;
             Matrix data = LinAlg.matrix(values);
             networkTimeSeries = new TimeSeries(time, data);
-        }else{
+        } else {
             networkTimeSeries = networkTimeSeries.addSample(timestamp, delay);
         }
     }
 
-    public static synchronized void addResourceLog(double timestamp, String host, String resource, double utilization){
+    public static synchronized void addResourceLog(double timestamp, String host, String resource, double utilization) {
         TimeSeries timeSeries;
-        String key = resource+"_"+host;
+        String key = resource + "_" + host;
         if (!resourceTimeSeriesMap.containsKey(key)) {
             double[] timeValue = new double[1];
             timeValue[0] = timestamp;
@@ -183,8 +183,8 @@ public class ResourceDemandEstimationService {
     public static synchronized void addExecutionLog(double timestamp,
                                                     String interfaceName, String host, double exTime) {
         TimeSeries timeSeries;
-        String key = interfaceName+ModelBuilder.seperatorChar+host;
-        if(exTime < 0 ){
+        String key = interfaceName + ModelBuilder.seperatorChar + host;
+        if (exTime < 0) {
             //log.error("negative execution time. " +host+" "+interfaceName + ": "+exTime);
             //exTime = Math.abs(exTime);
             exTime = 0;
@@ -200,18 +200,17 @@ public class ResourceDemandEstimationService {
             values[0] = exTime;
             Matrix data = LinAlg.matrix(values);
             timeSeries = new TimeSeries(time, data);
-            serviceTimeSeriesMap.put(key, timeSeries);
         } else {
             timeSeries = serviceTimeSeriesMap.get(key);
             timeSeries = timeSeries.addSample(timestamp, exTime);
-            serviceTimeSeriesMap.put(key, timeSeries);
         }
+        serviceTimeSeriesMap.put(key, timeSeries);
     }
 
 
     public HashMap<String, Double> terminate() {
-        if(serviceTimeSeriesMap.keySet().isEmpty()){
-            log.error("could not extract service times to estimate resource demands");	//No service execution logs could be found
+        if (serviceTimeSeriesMap.keySet().isEmpty()) {
+            log.error("could not extract service times to estimate resource demands");    //No service execution logs could be found
             return null;
         }
 
@@ -228,7 +227,7 @@ public class ResourceDemandEstimationService {
             log.info("\tservices: |" + sb.toString());
 
             /** Run LibReDE */
-            try{
+            try {
                 Integer cores = null;
                 if (numCores.containsKey(host)) {
                     cores = numCores.get(host);
@@ -258,7 +257,7 @@ public class ResourceDemandEstimationService {
                     double rd = x.get(i);
                     resourceDemandMap.put(serviceName, rd);
                 }
-            }catch(StackOverflowError e){
+            } catch (StackOverflowError e) {
                 log.error(e);
             }
         }

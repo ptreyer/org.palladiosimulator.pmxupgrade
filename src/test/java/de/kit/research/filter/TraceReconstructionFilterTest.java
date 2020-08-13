@@ -4,6 +4,7 @@ import de.kit.research.logic.PMXController;
 import de.kit.research.logic.filter.opentracing.TraceReconstructionFilter;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.exception.PMXException;
+import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import de.kit.research.model.inputreader.opentracing.jaeger.Span;
 import de.kit.research.model.inputreader.opentracing.jaeger.Trace;
 import org.junit.jupiter.api.Test;
@@ -23,9 +24,9 @@ public class TraceReconstructionFilterTest {
 
         TraceReconstructionFilter filter = new TraceReconstructionFilter();
 
-        filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper result = filter.filter(configuration, pmxController.getTraceRecord());
 
-        filter.systemModelRepository.saveSystemToHTMLFile("test.html");
+        result.getSystemModelRepository().saveSystemToHTMLFile("test.html");
 
         System.out.println("finish");
     }

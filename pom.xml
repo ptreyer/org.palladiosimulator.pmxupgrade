@@ -24,6 +24,11 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.11.1</version>
         </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.eclipse.emf</groupId>
@@ -56,26 +61,28 @@
         </dependency>
         <dependency>
             <groupId>tools.descartes.librede</groupId>
-            <artifactId>estimation</artifactId>
-            <version>1.1.0.201911221332</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/tools.descartes.librede.estimation_1.1.0.201911221332.jar</systemPath>
+            <artifactId>tools.descartes.librede.estimation</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>tools.descartes.librede</groupId>
-            <artifactId>linalg</artifactId>
-            <version>1.1.0.201911221332</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/tools.descartes.librede.linalg_1.1.0.201911221332.jar</systemPath>
+            <artifactId>tools.descartes.librede.linalg</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>tools.descartes.librede</groupId>
-            <artifactId>model</artifactId>
-            <version>1.1.0.201911221332</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/tools.descartes.librede.model_1.1.0.201911221332.jar</systemPath>
+            <artifactId>tools.descartes.librede.model</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>custom-librede</id>
+            <name>tools.descartes.librede</name>
+            <url>https://se4.informatik.uni-wuerzburg.de/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
 </project>
