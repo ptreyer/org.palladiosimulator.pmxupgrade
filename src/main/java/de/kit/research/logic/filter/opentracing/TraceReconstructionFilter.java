@@ -101,7 +101,7 @@ public class TraceReconstructionFilter implements AbstractTraceReconstructionFil
                         | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
                     // if first and network
 
-                    assemblyComponentTypeName = "de.kit.research.generic.HttpForwarder";
+                    assemblyComponentTypeName = "de.kit.research.generic.HttpClient";
                     allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
                     span.setOperationName("networkCall");
                     span.setOperationParameters(emptyArray);
@@ -112,7 +112,7 @@ public class TraceReconstructionFilter implements AbstractTraceReconstructionFil
                         | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE") | StringUtils.equalsIgnoreCase(span.getOperationName(), "SELECT")) {
                     // if first and query
 
-                    assemblyComponentTypeName = "de.kit.research.generic.DatabaseForwarder";
+                    assemblyComponentTypeName = "de.kit.research.generic.DatabaseDriver";
                     allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
                     span.setOperationName("databaseCall");
                     span.setOperationParameters(emptyArray);
@@ -133,7 +133,7 @@ public class TraceReconstructionFilter implements AbstractTraceReconstructionFil
                         | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
                     // if not first and network
 
-                    assemblyComponentTypeName = "de.kit.research.generic.HttpForwarder";
+                    assemblyComponentTypeName = "de.kit.research.generic.HttpClient";
                     allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
                     span.setOperationName("networkCall");
                     span.setOperationParameters(emptyArray);
@@ -143,7 +143,7 @@ public class TraceReconstructionFilter implements AbstractTraceReconstructionFil
                 } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY")) {
                     // if not first and query
 
-                    assemblyComponentTypeName = "de.kit.research.generic.DatabaseForwarder";
+                    assemblyComponentTypeName = "de.kit.research.generic.DatabaseDriver";
                     allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
                     span.setOperationName("databaseCall");
                     span.setOperationParameters(emptyArray);
