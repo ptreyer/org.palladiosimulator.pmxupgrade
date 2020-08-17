@@ -29,8 +29,12 @@ public class DataProcessingService {
         return controlFlowService.resolveControlFlow(executionTraces, systemModelRepository);
     }
 
-    public void calculateResourceDemands(){
-        // TODO
+    public void calculateResourceDemands(List<ExecutionTrace> executionTraces, SystemModelRepository systemModelRepository){
+        for (ExecutionTrace executionTrace : executionTraces) {
+            resourceDemandEstimationService.inputMessageTraces(executionTrace.getMessageTrace());
+        }
+        HashMap<String, Double> estimationResults = resourceDemandEstimationService.terminate();
+        System.out.println("");
     }
 
     public void calculateFailureProbabilities(){

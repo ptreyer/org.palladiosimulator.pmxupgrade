@@ -31,12 +31,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>ecore</artifactId>
-            <version>2.2.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.13.3</version>
@@ -60,6 +54,13 @@
             <version>2.19.0</version>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+            <version>2.22.0</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>tools.descartes.librede</groupId>
             <artifactId>tools.descartes.librede.estimation</artifactId>
             <version>1.1.0-SNAPSHOT</version>
@@ -74,6 +75,18 @@
             <artifactId>tools.descartes.librede.model</artifactId>
             <version>1.1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>colt</groupId>
+            <artifactId>colt</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+
 
     </dependencies>
 

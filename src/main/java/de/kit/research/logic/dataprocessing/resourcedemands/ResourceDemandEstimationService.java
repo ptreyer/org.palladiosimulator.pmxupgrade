@@ -9,6 +9,7 @@ import de.kit.research.model.systemmodel.trace.Execution;
 import de.kit.research.model.systemmodel.trace.MessageTrace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.plexus.util.StringUtils;
 import tools.descartes.librede.LibredeResults;
 import tools.descartes.librede.ResultTable;
 import tools.descartes.librede.approach.IEstimationApproach;
@@ -72,11 +73,7 @@ public class ResourceDemandEstimationService {
                         .getExecutionContainer()
                         .equals(receiver.getAllocationComponent()
                                 .getExecutionContainer())) {
-                    if (!sender.getAllocationComponent().getAssemblyComponent().getName().equals("'Entry'")) {
-                        // sender != receiver
-                        //log.info("Network ("+sender.getAllocationComponent().getExecutionContainer().getName()+ " == >" + receiver.getAllocationComponent().getExecutionContainer().getName()+"): "
-                        //	+ (sender.getTout() - receiver.getTin())
-                        //);
+                    if (!StringUtils.equalsIgnoreCase(sender.getAllocationComponent().getAssemblyComponent().getName(), "'Entry'")) {
                         double networkDelay = (receiver.getTin() - sender.getTout());
                         double timestamp = sender.getTout();
                         addNetworkLog(timestamp, networkDelay);
