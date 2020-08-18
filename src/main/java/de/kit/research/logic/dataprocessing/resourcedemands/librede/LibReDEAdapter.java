@@ -1,6 +1,5 @@
 package de.kit.research.logic.dataprocessing.resourcedemands.librede;
 
-import de.kit.research.logic.modelcreation.PerformanceModelCreationService;
 import de.kit.research.logic.modelcreation.builder.ModelBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

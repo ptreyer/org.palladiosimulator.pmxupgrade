@@ -14,7 +14,7 @@ public class DataProcessingTest {
     @Test
     void detectComponents() throws PMXException {
         Configuration configuration = new Configuration();
-        configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination2.json");
+        configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination3.json");
 
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
@@ -26,8 +26,8 @@ public class DataProcessingTest {
 
         TraceRecord traceRecord = (TraceRecord) pmxController.getInputObjectWrapper();
 
-        ComponentDetectionService service = new ComponentDetectionService();
-        systemModelRepository = service.detectComponents(systemModelRepository, traceRecord);
+        //ComponentDetectionService service = new ComponentDetectionService();
+        //systemModelRepository = service.detectComponents(systemModelRepository, traceRecord);
 
         for (ExecutionContainer container: systemModelRepository.getExecutionEnvironmentFactory().getExecutionContainers()){
             System.out.println("Container: " + container.getIdentifier());
