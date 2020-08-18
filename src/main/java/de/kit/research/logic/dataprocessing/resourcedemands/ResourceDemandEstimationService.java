@@ -47,9 +47,7 @@ public class ResourceDemandEstimationService {
         resourceTimeSeriesMap = new HashMap<>();
     }
 
-
     //   public void inputUtilizationLogs(final CPUUtilizationRecord record) {
-    //       //TODO Check it is loggingTimestamp or timestamp
     //      addResourceLog(Time.NANOSECONDS.convertTo(record.getLoggingTimestamp(), Time.SECONDS), record.getHostname(), "CPU", record.getTotalUtilization());
     //  }
 
@@ -61,28 +59,35 @@ public class ResourceDemandEstimationService {
         for (AbstractMessage message : messages) {
             Execution sender = message.getSendingExecution();
             Execution receiver = message.getReceivingExecution();
+
+            // check if receiver comes after sender
             if (sender.getEss() < receiver.getEss()) {
+
+                // put sender and receiver in list
                 if (!externalCallTime.containsKey(sender)) {
                     externalCallTime.put(sender, (double) 0);
                 }
                 if (!externalCallTime.containsKey(receiver)) {
                     externalCallTime.put(receiver, (double) 0);
                 }
-                // Time lost at linking resources
+
+                // Time lost at linking resources -> add network delay
                 if (!sender.getAllocationComponent()
                         .getExecutionContainer()
                         .equals(receiver.getAllocationComponent()
                                 .getExecutionContainer())) {
-                    if (!StringUtils.equalsIgnoreCase(sender.getAllocationComponent().getAssemblyComponent().getName(), "'Entry'")) {
+                    if (!StringUtils.contains(sender.getAllocationComponent().getAssemblyComponent().getName(), "Entry")) {
                         double networkDelay = (receiver.getTin() - sender.getTout());
                         double timestamp = sender.getTout();
                         addNetworkLog(timestamp, networkDelay);
                     }
                 }
 
+                // ad externalCallTime
                 double externalTime = (receiver.getTout() - receiver.getTin());
                 externalCallTime.put(sender, externalCallTime.get(sender) + externalTime);
 
+                // add externalCallMethod
                 List<Execution> list = externalCallMethods.get(sender);
                 list = (list == null) ? new ArrayList<>() : list;
                 list.add(receiver);
@@ -91,7 +96,8 @@ public class ResourceDemandEstimationService {
         }
 
         for (Execution execution : externalCallTime.keySet()) {
-            if (execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName().contains("Entry")) {
+            // ignore entry calls
+            if (StringUtils.contains(execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName(), "Entry")) {
                 continue;
             }
 
@@ -102,12 +108,12 @@ public class ResourceDemandEstimationService {
             }
 
             if (externalTime - time > 0.001 * time) {        // measurement >10% uncertain
-                //TODO External calls
                 boolean error = true;
                 AllocationComponent ac = execution.getAllocationComponent();
                 for (Execution sub : externalCallMethods.get(execution)) {
                     if (!ac.equals(sub.getAllocationComponent())) {
                         error = false;
+                        break;
                     }
                 }
 
@@ -137,8 +143,6 @@ public class ResourceDemandEstimationService {
                             .getExecutionContainer().getName(),
                     (time - externalTime));
         }
-        // //Auflï¿½sung der Zeimessung < 1ms
-        // // Michael Kupperberg auflï¿½sung von Timern
     }
 
     public static void addNetworkLog(double timestamp, double delay) {
@@ -182,8 +186,6 @@ public class ResourceDemandEstimationService {
         TimeSeries timeSeries;
         String key = interfaceName + ModelBuilder.seperatorChar + host;
         if (exTime < 0) {
-            //log.error("negative execution time. " +host+" "+interfaceName + ": "+exTime);
-            //exTime = Math.abs(exTime);
             exTime = 0;
         }
 
@@ -212,7 +214,7 @@ public class ResourceDemandEstimationService {
         }
 
         HashMap<String, Double> resourceDemandMap = new HashMap<>();
-        // TODO Librede logging in separate file
+
         for (String host : hosts) {
             StringBuilder sb = new StringBuilder();
             for (String service : serviceTimeSeriesMap.keySet()) {
@@ -223,7 +225,6 @@ public class ResourceDemandEstimationService {
             log.info("Estimate resource demands on [" + host + "]");
             log.info("\tservices: |" + sb.toString());
 
-            /** Run LibReDE */
             try {
                 Integer cores = null;
                 if (numCores.containsKey(host)) {
@@ -249,7 +250,6 @@ public class ResourceDemandEstimationService {
                 ResultTable resultTable = estimates.getEstimates(approach, 0);
                 tools.descartes.librede.linalg.Vector x = resultTable.getLastEstimates();
                 for (int i = 0; i < x.rows(); i++) {
-                    // String resourceName = resultTable.getResource(i).getName();
                     String serviceName = resultTable.getService(i).getName();
                     double rd = x.get(i);
                     resourceDemandMap.put(serviceName, rd);
@@ -268,15 +268,12 @@ public class ResourceDemandEstimationService {
                 stdDev += Math.abs(d - averageDelay);
             }
             stdDev = stdDev / networkDelayVector.rows();
-            // log.info("\taverageDelay "+averageDelay+", stdDev "+stdDev);
             if (stdDev > 0.5 * averageDelay) {
                 log.info("\tstandard deviation for network delays high (" + stdDev + ") compared to average delay ("
                         + averageDelay + "). Maybe extend model with network package size parameters.");
-                // log.info("\t==> network model accuracy INsufficient");
             } else {
                 log.info("\tstandard deviation for network delays (" + stdDev + ") is ok compared to average delay ("
                         + averageDelay + ")");
-                // log.info("\t==> network model accuracy sufficient");
             }
             resourceDemandMap.put("Network", averageDelay);
         }

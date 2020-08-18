@@ -54,7 +54,6 @@ public class LibReDEAdapter {
             resource.setDataSource(dataSourceConfiguration);
         }
 
-
         mapServicesToResources(workloadDescription);
 
         configuration.getInput().getObservations().addAll(serviceObservations);
@@ -65,9 +64,7 @@ public class LibReDEAdapter {
 
         Map<String, IDataSource> x = new HashMap<>();
         x.put("key", dataSource);
-        LibredeResults libredeResults = Librede.execute(configuration, x);
-        /** Receive results from LibReDE */
-        return libredeResults;
+        return Librede.execute(configuration, x);
     }
 
     public static void mapServicesToResources(WorkloadDescription workloadDescription) {
@@ -78,7 +75,6 @@ public class LibReDEAdapter {
                 service.getTasks().add(rd);
             }
 
-            //TODO
             ExternalCall ext = ConfigurationFactory.eINSTANCE.createExternalCall();
             ext.setCalledService(service);
             service.getTasks().add(ext);
@@ -91,13 +87,10 @@ public class LibReDEAdapter {
                                                                   InMemoryDataSource dataSource, WorkloadDescription workloadDescription) {
         List<TraceConfiguration> traceConfigurations = new ArrayList<>();
         for (String resourceName : resourceTimeSeriesMap.keySet()) {
-            // log.info("Enter number of CPU cores for "+host);
-            // cpu.setNumberOfServers(getInputInt());
             if (resourceName.replace("CPU", "").endsWith(ModelBuilder.seperatorChar + host)) {
                 log.info("\tnumber of servers for " + resourceName + " = 1");
                 TraceConfiguration traceConfiguration = addResourceToLibReDE(dataSource, workloadDescription, host,
                         resourceName.split("_" + host)[0], 1, resourceTimeSeriesMap.get(resourceName));
-                //conf.getInput().getObservations().add(traceConfiguration);
                 traceConfigurations.add(traceConfiguration);
             }
         }
@@ -142,8 +135,6 @@ public class LibReDEAdapter {
         Resource resource = ConfigurationFactory.eINSTANCE.createResource();
         String key = resourceName + ModelBuilder.seperatorChar + host;
         resource.setName(key);
-        // log.info("Enter number of CPU cores for "+host);
-        // cpu.setNumberOfServers(getInputInt());
         resource.setNumberOfServers(numServers);
         workloadDescription.getResources().add(resource);
         double averageTimeIncrement = timeSeries.getAverageTimeIncrement();
@@ -176,7 +167,6 @@ public class LibReDEAdapter {
         InputSpecification inputSpecification = ConfigurationFactory.eINSTANCE
                 .createInputSpecification();
         conf.setInput(inputSpecification);
-
 
         //set output
         OutputSpecification outputSpecification = ConfigurationFactory.eINSTANCE

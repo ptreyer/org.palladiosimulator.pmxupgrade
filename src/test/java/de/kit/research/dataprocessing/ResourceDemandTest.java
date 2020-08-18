@@ -8,6 +8,8 @@ import de.kit.research.model.exception.PMXException;
 import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 public class ResourceDemandTest {
 
     @Test
@@ -23,9 +25,9 @@ public class ResourceDemandTest {
         ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
 
         DataProcessingService service = new DataProcessingService();
-        service.calculateResourceDemands(processingObjectWrapper.getExecutionTraces(), processingObjectWrapper.getSystemModelRepository());
+        HashMap<String, Double> estimationResults =  service.calculateResourceDemands(processingObjectWrapper.getExecutionTraces());
 
-        System.out.println("finish");
+        System.out.println("HashMap<String, Double>: " + estimationResults.size());
 
     }
 }
