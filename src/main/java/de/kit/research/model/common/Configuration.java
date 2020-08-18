@@ -11,10 +11,7 @@ public final class Configuration extends Properties {
 
     private String inputFileName;
     private String outputDirectory;
-    private String tracer;
     private List<String> traceIDsToFilter;
-    private Long ignoreBeforeTimestamp;
-    private Long ignoreAfterTimestamp;
     private HashMap<String, Integer> numCores;
 
     /**
@@ -51,36 +48,12 @@ public final class Configuration extends Properties {
         this.traceIDsToFilter = traceIDsToFilter;
     }
 
-    public String getTracer() {
-        return tracer;
-    }
-
-    public void setTracer(String tracer) {
-        this.tracer = tracer;
-    }
-
     public String getOutputDirectory() {
         return outputDirectory;
     }
 
     public void setOutputDirectory(String outputDirectory) {
         this.outputDirectory = outputDirectory;
-    }
-
-    public Long getIgnoreBeforeTimestamp() {
-        return ignoreBeforeTimestamp;
-    }
-
-    public void setIgnoreBeforeTimestamp(Long ignoreBeforeTimestamp) {
-        this.ignoreBeforeTimestamp = ignoreBeforeTimestamp;
-    }
-
-    public Long getIgnoreAfterTimestamp() {
-        return ignoreAfterTimestamp;
-    }
-
-    public void setIgnoreAfterTimestamp(Long ignoreAfterTimestamp) {
-        this.ignoreAfterTimestamp = ignoreAfterTimestamp;
     }
 
     public HashMap<String, Integer> getNumCores() {

@@ -2,5 +2,9 @@ package de.kit.research.model.constants;
 
 public class PMXConstants {
 
-    public static final String FEHLER_DATENEINLESE = "Fehler beim Einlesen der Tracing-Daten";
+    public static final String ERROR_DATAINPUT = "Error while Reading the tracing data";
+    public static final String ERROR_CONFIG = "Configuration is null";
+    public static final String ERROR_CONFIG_OUTPUT_DIR = "OutputDirectory is empty";
+    public static final String ERROR_CONFIG_INPUT_DIR = "InputFileName is empty";
+
 }

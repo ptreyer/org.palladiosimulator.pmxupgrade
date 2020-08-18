@@ -26,9 +26,6 @@ public abstract class ModelBuilder implements IModelBuilder {
     private final Map<String, EObject> assemblyMap;
     private final Map<String, EObject> connectorMap;
     private final Map<String, EObject> seffMap;
-    public Map<String, EObject> dataTypeMap;
-
-    public static String branding = "extracted using PMX - www.descartes.tools/pmx";
 
     public static String seperatorChar = "#";
 
@@ -98,10 +95,6 @@ public abstract class ModelBuilder implements IModelBuilder {
     }
 
     public void addConnectionToAssemblies(String requiringAssemblyName, String providingAssemblyName) {
-        // if(providingAssemblyName.equals(requiringAssemblyName)){
-        // log.error("Cannot self-connect assembly "+providingAssemblyName);
-        // return;
-        // }
         String key = "Connector " + "Assembly_"
                 + requiringAssemblyName + " <" + requiringAssemblyName + ">"
                 + " -> " + "Assembly_" + providingAssemblyName + " <"
@@ -141,7 +134,6 @@ public abstract class ModelBuilder implements IModelBuilder {
 
     public static String applyNameFixes(String componentName) {
         if (componentName.contains("$")) {
-            //log.info("FIX:" + componentName + " ==> "+componentName.split("\\$")[0]);
             componentName = componentName.split("\\$")[0];    //JAVA $
         }
         return componentName;
@@ -243,7 +235,6 @@ public abstract class ModelBuilder implements IModelBuilder {
 
         return seff;
     }
-
 
     private boolean hasComponentBeenAdded(String componentName) {
         return componentMap.containsKey(componentName);

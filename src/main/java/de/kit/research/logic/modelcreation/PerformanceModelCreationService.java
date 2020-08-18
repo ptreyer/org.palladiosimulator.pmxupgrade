@@ -18,6 +18,7 @@ import de.kit.research.model.systemmodel.trace.TraceInformation;
 import de.kit.research.model.systemmodel.util.AllocationComponentOperationPair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,8 +41,8 @@ public class PerformanceModelCreationService {
     private AbstractGraph<DependencyGraphNode<AllocationComponentOperationPair>, WeightedBidirectionalDependencyGraphEdge<AllocationComponentOperationPair>, TraceInformation> operationGraph;
     private HashMap<String, Double> resourceDemands;
     private HashMap<String, List<Double>> workload;
-    private SystemModelRepository systemModelRepository;
-    private HashMap<String, Integer> numCores;
+    private final SystemModelRepository systemModelRepository;
+    private final HashMap<String, Integer> numCores;
 
 
     public PerformanceModelCreationService(final Configuration configuration, IModelBuilder builder, SystemModelRepository systemModelRepository) {
@@ -75,14 +76,14 @@ public class PerformanceModelCreationService {
             throw new PMXException("No operation graph has been passed!");
         }
         if (resourceDemands == null) {
-            throw new PMXException("\tNo resource demand set has been passed!");
+            throw new PMXException("No resource demand set has been passed!");
         } else if (resourceDemands.keySet().isEmpty()) {
-            throw new PMXException("\tPassed resource demand set is empty!");
+            throw new PMXException("Passed resource demand set is empty!");
         }
         if (workload == null) {
-            throw new PMXException("\tNo workload set has been passed!");
+            throw new PMXException("No workload set has been passed!");
         } else if (workload.keySet().isEmpty()) {
-            throw new PMXException("\tPassed workload is empty!");
+            throw new PMXException("Passed workload is empty!");
         }
 
         buildPerformanceModel(operationGraph, resourceDemands, workload,
@@ -110,7 +111,7 @@ public class PerformanceModelCreationService {
             String hostName = node.getEntity().getAllocationComponent()
                     .getExecutionContainer().getName();
 
-            if (componentName.equals("'Entry'")) {
+            if (StringUtils.contains(componentName, "Entry")) {
                 continue; // System entry node
             }
             builder.addAssembly(componentName + ModelBuilder.seperatorChar + hostName);

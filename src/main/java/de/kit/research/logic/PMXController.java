@@ -1,8 +1,6 @@
 package de.kit.research.logic;
 
 import de.kit.research.logic.dataprocessing.DataProcessingService;
-import de.kit.research.logic.dataprocessing.controlflow.graph.AbstractDependencyGraph;
-import de.kit.research.logic.dataprocessing.controlflow.graph.CallDecoration;
 import de.kit.research.logic.dataprocessing.controlflow.graph.DependencyGraphNode;
 import de.kit.research.logic.dataprocessing.controlflow.graph.WeightedBidirectionalDependencyGraphEdge;
 import de.kit.research.logic.filter.opentracing.TimestampFilter;
@@ -11,10 +9,8 @@ import de.kit.research.logic.filter.opentracing.TraceReconstructionFilter;
 import de.kit.research.logic.inputreader.InputReaderInterface;
 import de.kit.research.logic.inputreader.impl.InputReaderOpenTracingImpl;
 import de.kit.research.logic.modelcreation.PerformanceModelCreationService;
-import de.kit.research.logic.modelcreation.builder.CSVBuilder;
 import de.kit.research.logic.modelcreation.builder.IModelBuilder;
 import de.kit.research.logic.modelcreation.builder.ModelBuilder;
-import de.kit.research.logic.modelcreation.creator.PerformanceModelCreator;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.constants.PMXConstants;
 import de.kit.research.model.exception.PMXException;
@@ -22,47 +18,53 @@ import de.kit.research.model.graph.AbstractGraph;
 import de.kit.research.model.inputreader.InputObjectWrapper;
 import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import de.kit.research.model.inputreader.opentracing.jaeger.TraceRecord;
-import de.kit.research.model.systemmodel.component.AssemblyComponent;
-import de.kit.research.model.systemmodel.repository.SystemModelRepository;
-import de.kit.research.model.systemmodel.trace.ExternalCall;
-import de.kit.research.model.systemmodel.trace.Operation;
 import de.kit.research.model.systemmodel.trace.TraceInformation;
 import de.kit.research.model.systemmodel.util.AllocationComponentOperationPair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.plexus.util.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
+// TODO change method signature
 public class PMXController {
 
-    private static final Logger log = LogManager.getLogger(PMXController.class);
-
-    private InputReaderInterface inputReaderInterface;
-    private DataProcessingService dataProcessingService;
-    private PerformanceModelCreationService performanceModelCreationService;
-
-    private IModelBuilder builder;
+    private final InputReaderInterface inputReaderInterface;
+    private final DataProcessingService dataProcessingService;
+    private IModelBuilder modelBuilder;
 
     private Configuration configuration;
     private InputObjectWrapper inputObjectWrapper;
     private TraceRecord traceRecord;
     private ProcessingObjectWrapper processingObjectWrapper;
-
     private HashMap<String, List<Double>> workload;
     private AbstractGraph<DependencyGraphNode<AllocationComponentOperationPair>, WeightedBidirectionalDependencyGraphEdge<AllocationComponentOperationPair>, TraceInformation> operationGraph;
     private HashMap<String, Double> resourceDemands;
 
-    public PMXController(Configuration configuration) {
-        // TODO validate config
+    public PMXController(Configuration configuration) throws PMXException {
+        validateConfiguration(configuration);
+
         this.configuration = configuration;
         inputReaderInterface = new InputReaderOpenTracingImpl();
         dataProcessingService = new DataProcessingService();
+    }
 
+    public PMXController(Configuration configuration, IModelBuilder modelBuilder) throws PMXException {
+        validateConfiguration(configuration);
+
+        this.configuration = configuration;
+        this.modelBuilder = modelBuilder;
+        inputReaderInterface = new InputReaderOpenTracingImpl();
+        dataProcessingService = new DataProcessingService();
+    }
+
+    public void buildPerformanceModel() throws PMXException {
+        readTracingData();
+        initAndExecuteFilters();
+        processTracingData();
+        createModel();
     }
 
     public void readTracingData() throws PMXException {
@@ -70,7 +72,7 @@ public class PMXController {
             inputObjectWrapper = inputReaderInterface.readTracingData(configuration);
             traceRecord = (TraceRecord) inputObjectWrapper;
         } catch (IOException e) {
-            throw new PMXException(PMXConstants.FEHLER_DATENEINLESE);
+            throw new PMXException(PMXConstants.ERROR_DATAINPUT);
         }
     }
 
@@ -89,18 +91,28 @@ public class PMXController {
         workload = dataProcessingService.analyzeWorkload(processingObjectWrapper.getExecutionTraces());
         operationGraph = dataProcessingService.resolveControlFlow(processingObjectWrapper.getExecutionTraces(), processingObjectWrapper.getSystemModelRepository());
         resourceDemands = dataProcessingService.calculateResourceDemands(processingObjectWrapper.getExecutionTraces());
-
-        // TODO call DataProcessingService
+        // TODO call FailureEstimation
     }
 
-    public void createPerformanceModel() throws PMXException {
-        performanceModelCreationService = new PerformanceModelCreationService(configuration, getBuilder(), processingObjectWrapper.getSystemModelRepository());
+    public void createModel() throws PMXException {
+        PerformanceModelCreationService performanceModelCreationService = new PerformanceModelCreationService(configuration, getModelBuilder(), processingObjectWrapper.getSystemModelRepository());
         performanceModelCreationService.inputWorkload(workload);
         performanceModelCreationService.inputGraph(operationGraph);
         performanceModelCreationService.inputResourceDemands(resourceDemands);
-        // performanceModelCreationService.addCPUCoreNumbers();
 
         performanceModelCreationService.createPerformanceModel();
+    }
+
+    private void validateConfiguration(Configuration configuration) throws PMXException {
+        if (configuration == null) {
+            throw new PMXException(PMXConstants.ERROR_CONFIG);
+        }
+        if (StringUtils.isEmpty(configuration.getOutputDirectory())) {
+            throw new PMXException(PMXConstants.ERROR_CONFIG_OUTPUT_DIR);
+        }
+        if (StringUtils.isEmpty(configuration.getInputFileName())) {
+            throw new PMXException(PMXConstants.ERROR_CONFIG_INPUT_DIR);
+        }
     }
 
     public InputObjectWrapper getInputObjectWrapper() {
@@ -127,14 +139,14 @@ public class PMXController {
         this.traceRecord = traceRecord;
     }
 
-    public IModelBuilder getBuilder() {
-        if (builder == null) {
-            log.error("builder not initialized");
+    public IModelBuilder getModelBuilder() throws PMXException {
+        if (modelBuilder == null) {
+            throw new PMXException("builder not initialized");
         }
-        return builder;
+        return modelBuilder;
     }
 
-    public void setBuilder(IModelBuilder builder) {
-        this.builder = builder;
+    public void setModelBuilder(IModelBuilder builder) {
+        this.modelBuilder = builder;
     }
 }
