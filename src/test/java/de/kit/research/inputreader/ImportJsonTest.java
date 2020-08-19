@@ -43,6 +43,7 @@ public class ImportJsonTest {
     void importJSON() throws PMXException {
         Configuration configuration = new Configuration();
         configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination.json");
+        configuration.setOutputDirectory("/test");
 
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();

@@ -7,11 +7,11 @@ import java.util.Properties;
 
 public final class Configuration extends Properties {
 
-    private static final long serialVersionUID = 3364877592243422259L;
-
     private String inputFileName;
     private String outputDirectory;
     private List<String> traceIDsToFilter;
+    private Long ignoreBeforeTimestamp;
+    private Long ignoreAfterTimestamp;
     private HashMap<String, Integer> numCores;
 
     /**
@@ -54,6 +54,22 @@ public final class Configuration extends Properties {
 
     public void setOutputDirectory(String outputDirectory) {
         this.outputDirectory = outputDirectory;
+    }
+
+    public Long getIgnoreBeforeTimestamp() {
+        return ignoreBeforeTimestamp;
+    }
+
+    public void setIgnoreBeforeTimestamp(Long ignoreBeforeTimestamp) {
+        this.ignoreBeforeTimestamp = ignoreBeforeTimestamp;
+    }
+
+    public Long getIgnoreAfterTimestamp() {
+        return ignoreAfterTimestamp;
+    }
+
+    public void setIgnoreAfterTimestamp(Long ignoreAfterTimestamp) {
+        this.ignoreAfterTimestamp = ignoreAfterTimestamp;
     }
 
     public HashMap<String, Integer> getNumCores() {

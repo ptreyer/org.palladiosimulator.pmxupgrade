@@ -6,10 +6,6 @@ import de.kit.research.model.systemmodel.util.Signature;
 
 /**
  * This class represents an operation within the trace analysis tool. It consists of the component type and a signature.
- * 
- * @author Andre van Hoorn
- * 
- * @since 1.1
  */
 public class Operation {
 

@@ -25,6 +25,7 @@ public class ControlFlowTest {
     void filter() throws PMXException {
         Configuration configuration = new Configuration();
         configuration.setInputFileName("C:\\Users\\ptreyer\\workspace\\pmxupgrade\\src\\test\\resources\\json\\combination3.json");
+        configuration.setOutputDirectory("/test");
 
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();

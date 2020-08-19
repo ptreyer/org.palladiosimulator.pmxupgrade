@@ -10,7 +10,6 @@ import de.kit.research.logic.inputreader.InputReaderInterface;
 import de.kit.research.logic.inputreader.impl.InputReaderOpenTracingImpl;
 import de.kit.research.logic.modelcreation.PerformanceModelCreationService;
 import de.kit.research.logic.modelcreation.builder.IModelBuilder;
-import de.kit.research.logic.modelcreation.builder.ModelBuilder;
 import de.kit.research.model.common.Configuration;
 import de.kit.research.model.constants.PMXConstants;
 import de.kit.research.model.exception.PMXException;
@@ -20,8 +19,6 @@ import de.kit.research.model.inputreader.ProcessingObjectWrapper;
 import de.kit.research.model.inputreader.opentracing.jaeger.TraceRecord;
 import de.kit.research.model.systemmodel.trace.TraceInformation;
 import de.kit.research.model.systemmodel.util.AllocationComponentOperationPair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
@@ -72,7 +69,7 @@ public class PMXController {
             inputObjectWrapper = inputReaderInterface.readTracingData(configuration);
             traceRecord = (TraceRecord) inputObjectWrapper;
         } catch (IOException e) {
-            throw new PMXException(PMXConstants.ERROR_DATAINPUT);
+            throw new PMXException(PMXConstants.ERROR_DATA_INPUT);
         }
     }
 
@@ -141,7 +138,7 @@ public class PMXController {
 
     public IModelBuilder getModelBuilder() throws PMXException {
         if (modelBuilder == null) {
-            throw new PMXException("builder not initialized");
+            throw new PMXException(PMXConstants.ERROR_BUILDER);
         }
         return modelBuilder;
     }

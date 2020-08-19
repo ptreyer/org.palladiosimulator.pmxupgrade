@@ -5,9 +5,7 @@ import org.apache.maven.shared.utils.StringUtils;
 /**
  * This class stores trace meta-information, such as the trace ID. This kept separate from the actual trace
  * information to allow references to traces without the need to keep the trace itself.
- * 
- * @author Holger Knoche
- * 
+ *
  * @since 1.6
  */
 public class TraceInformation {
