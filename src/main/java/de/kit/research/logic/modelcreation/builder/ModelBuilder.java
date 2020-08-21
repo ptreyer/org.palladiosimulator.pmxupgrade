@@ -26,6 +26,7 @@ public abstract class ModelBuilder implements IModelBuilder {
     private final Map<String, EObject> assemblyMap;
     private final Map<String, EObject> connectorMap;
     private final Map<String, EObject> seffMap;
+    public Map<String, EObject> dataTypeMap;
 
     public static String seperatorChar = "#";
 
