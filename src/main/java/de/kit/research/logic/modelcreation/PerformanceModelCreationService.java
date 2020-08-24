@@ -86,17 +86,12 @@ public class PerformanceModelCreationService {
             throw new PMXException("Passed workload is empty!");
         }
 
-        buildPerformanceModel(operationGraph, resourceDemands, workload,
-                systemModelRepository, numCores, builder);
+        buildPerformanceModel();
 
         builder.saveToFile(outputDir);
     }
 
-    private static void buildPerformanceModel(
-            AbstractGraph<DependencyGraphNode<AllocationComponentOperationPair>, WeightedBidirectionalDependencyGraphEdge<AllocationComponentOperationPair>, TraceInformation> operationGraph,
-            HashMap<String, Double> resourceDemands,
-            HashMap<String, List<Double>> workload,
-            SystemModelRepository systemModelRepository, HashMap<String, Integer> numCores, IModelBuilder builder) {
+    private void buildPerformanceModel() {
 
         PerformanceModelCreator.createExecutionContainers(
                 systemModelRepository, builder, numCores);
@@ -123,8 +118,13 @@ public class PerformanceModelCreationService {
                     .getName();
             CallDecoration decoration = node
                     .getDecoration(CallDecoration.class);
-            int numIncomingCalls = Integer.parseInt(decoration
-                    .createFormattedOutput());
+
+            int numIncomingCalls = 0;
+            if (decoration != null) {
+                numIncomingCalls = Integer.parseInt(decoration
+                        .createFormattedOutput());
+            }
+
             List<ExternalCall> externalCalls = new ArrayList<>();
 
             log.info("\t" + hostName + " " + componentName + " " + methodName

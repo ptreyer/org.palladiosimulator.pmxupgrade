@@ -69,7 +69,7 @@ public class PMXController {
             inputObjectWrapper = inputReaderInterface.readTracingData(configuration);
             traceRecord = (TraceRecord) inputObjectWrapper;
         } catch (IOException e) {
-            throw new PMXException(PMXConstants.ERROR_DATA_INPUT);
+            throw new PMXException(PMXConstants.ERROR_DATA_INPUT + e.getMessage());
         }
     }
 

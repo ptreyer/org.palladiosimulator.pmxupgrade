@@ -19,15 +19,6 @@ public class PerformanceModelCreator {
 
 	private static final Logger log = LogManager.getLogger(PerformanceModelCreator.class);
 
-	// public static void createPerformanceModel(SystemModelRepository
-	// systemModel, IModelBuilder builder) {
-	// createExecutionContainers(systemModel, builder);
-	// createAssemblies(systemModel, builder);
-	// createComponentsAndInterfaces(systemModel, builder);
-	// addComponentsToAssemblies(systemModel, builder);
-	// createAllocations(systemModel, builder);
-	// }
-
 	public static void addComponentsToAssemblies(SystemModelRepository systemModel, IModelBuilder builder) {
 		final Collection<AssemblyComponent> assemblyComponents = systemModel.getAssemblyFactory()
 				.getAssemblyComponentInstances();
@@ -74,11 +65,11 @@ public class PerformanceModelCreator {
 		final Collection<ExecutionContainer> executionContainers = systemModel.getExecutionEnvironmentFactory()
 				.getExecutionContainers();
 		for (ExecutionContainer container : executionContainers) {
-			int numberOfCores = 0;
+			int numberOfCores;
 			try {
 				numberOfCores = numCores.get(container.getName());
 			} catch (Exception e) {
-				log.error("could not find number of cores for " + container.getName());
+				log.info("could not find number of cores for " + container.getName());
 				log.info("assumed numberOfCores = 2");
 				numberOfCores = 2;
 			}
