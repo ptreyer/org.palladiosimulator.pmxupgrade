@@ -27,7 +27,7 @@ public class TraceReconstructionFilterTest {
 
         ProcessingObjectWrapper result = filter.filter(configuration, pmxController.getTraceRecord());
 
-        result.getSystemModelRepository().saveSystemToHTMLFile("test.html");
+        result.getSystemModelRepository().saveSystemToHTMLFile("target/test.html");
 
         System.out.println("finish");
     }

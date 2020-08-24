@@ -49,7 +49,7 @@ public class ControlFlowTest {
             SystemModelRepository systemModelRepository) {
         Writer fw = null;
 
-        String outputFn = "output.txt";
+        String outputFn = "target/output.txt";
 
 
         try {
