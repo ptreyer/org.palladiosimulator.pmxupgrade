@@ -24,6 +24,7 @@ public class Span {
     private List<Log> logs;
     private String processID;
 
+    private String component;
     private String componentType;
     private String[] operationParameters;
     private String operationReturnType;
@@ -107,6 +108,16 @@ public class Span {
 
     public void setProcessID(String processID) {
         this.processID = processID;
+    }
+
+    public String getComponent() {
+        if (StringUtils.isEmpty(component)) {
+            this.getTags().forEach(t -> {
+                if (StringUtils.equalsIgnoreCase(t.getKey(), "component"))
+                    component = t.getValue();
+            });
+        }
+        return component;
     }
 
     public String getComponentType() {
