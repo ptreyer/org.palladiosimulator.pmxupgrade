@@ -116,10 +116,11 @@ public class PerformanceModelCreationService {
             Operation method = node.getEntity().getOperation();
             String methodName = node.getEntity().getOperation().getSignature()
                     .getName();
-            CallDecoration decoration = node
-                    .getDecoration(CallDecoration.class);
 
-            int numIncomingCalls = 0;
+            CallDecoration decoration = node
+                    .getDecoration(CallDecoration.class);// ResponseTimeDecoration.class);
+
+            int numIncomingCalls = 1;
             if (decoration != null) {
                 numIncomingCalls = Integer.parseInt(decoration
                         .createFormattedOutput());

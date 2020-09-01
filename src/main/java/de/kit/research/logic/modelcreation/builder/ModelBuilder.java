@@ -1,11 +1,5 @@
 package de.kit.research.logic.modelcreation.builder;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import de.kit.research.logic.modelcreation.util.ModelCreationUtils;
 import de.kit.research.model.systemmodel.component.ComponentType;
 import de.kit.research.model.systemmodel.trace.ExternalCall;
@@ -13,6 +7,12 @@ import de.kit.research.model.systemmodel.util.Signature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class ModelBuilder implements IModelBuilder {
     private static final Logger log = LogManager.getLogger(ModelBuilder.class);

@@ -71,7 +71,7 @@ public class Span {
     }
 
     public Long getStartTime() {
-        return TimeUnit.NANOSECONDS.toMicros(startTime);
+        return TimeUnit.MICROSECONDS.toNanos(startTime);
     }
 
     public void setStartTime(Long startTime) {
@@ -79,7 +79,7 @@ public class Span {
     }
 
     public Long getDuration() {
-        return duration;
+        return TimeUnit.MICROSECONDS.toNanos(duration);
     }
 
     public void setDuration(Long duration) {
