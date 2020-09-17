@@ -5,7 +5,7 @@ import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.D
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.WeightedBidirectionalDependencyGraphEdge;
 import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TimestampFilter;
 import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceIdFilter;
-import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstructionFilter;
+import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstruction;
 import org.palladiosimulator.pmxupgrade.logic.inputreader.InputReaderInterface;
 import org.palladiosimulator.pmxupgrade.logic.inputreader.impl.InputReaderOpenTracingImpl;
 import org.palladiosimulator.pmxupgrade.logic.modelcreation.PerformanceModelCreationService;
@@ -80,7 +80,7 @@ public class PMXController {
         TraceIdFilter traceIdFilter = new TraceIdFilter();
         traceRecord = traceIdFilter.filter(configuration, traceRecord);
 
-        TraceReconstructionFilter traceReconstructionFilter = new TraceReconstructionFilter();
+        TraceReconstruction traceReconstructionFilter = new TraceReconstruction();
         processingObjectWrapper = traceReconstructionFilter.filter(configuration, traceRecord);
     }
 

@@ -5,8 +5,8 @@ import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.Control
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.AbstractDependencyGraph;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.DependencyGraphNode;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.WeightedBidirectionalDependencyGraphEdge;
+import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstruction;
 import org.palladiosimulator.pmxupgrade.model.graph.AbstractGraph;
-import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstructionFilter;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
@@ -30,7 +30,7 @@ public class ControlFlowTest {
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
 
-        TraceReconstructionFilter filter = new TraceReconstructionFilter();
+        TraceReconstruction filter = new TraceReconstruction();
 
         ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
 

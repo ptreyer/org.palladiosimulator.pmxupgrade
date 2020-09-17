@@ -2,7 +2,7 @@ package org.palladiosimulator.pmxupgrade.dataprocessing;
 
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.DataProcessingService;
-import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstructionFilter;
+import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstruction;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
@@ -21,7 +21,7 @@ public class ResourceDemandTest {
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
 
-        TraceReconstructionFilter filter = new TraceReconstructionFilter();
+        TraceReconstruction filter = new TraceReconstruction();
 
         ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
 

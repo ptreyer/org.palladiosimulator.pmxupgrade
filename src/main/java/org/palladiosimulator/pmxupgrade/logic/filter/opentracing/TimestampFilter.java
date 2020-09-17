@@ -1,6 +1,6 @@
 package org.palladiosimulator.pmxupgrade.logic.filter.opentracing;
 
-import org.palladiosimulator.pmxupgrade.logic.filter.AbstractTraceProcessingFilter;
+import org.palladiosimulator.pmxupgrade.logic.filter.TraceProcessingInterface;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger.Span;
 import org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger.Trace;
@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class TimestampFilter implements AbstractTraceProcessingFilter {
+public class TimestampFilter implements TraceProcessingInterface {
 
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {
         List<Trace> tracesToFilter = prepareFiltering(traceRecord).getData();
