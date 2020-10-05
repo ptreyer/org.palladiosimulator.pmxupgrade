@@ -15,13 +15,7 @@ public class WorkloadService {
 
     public HashMap<String, List<Double>> analyzeWorkload(final List<ExecutionTrace> executionTraces) {
         workloadTimeSeriesMap = new HashMap<>();
-
-        for (ExecutionTrace executionTrace : executionTraces) {
-            MessageTrace messageTrace = executionTrace.getMessageTrace();
-            analyzeMessageTrace(messageTrace);
-        }
-
-        //executionTraces.stream().map(ExecutionTrace::getMessageTrace).forEach(this::analyzeMessageTrace);
+        executionTraces.stream().map(ExecutionTrace::getMessageTrace).forEach(this::analyzeMessageTrace);
         return workloadTimeSeriesMap;
     }
 
