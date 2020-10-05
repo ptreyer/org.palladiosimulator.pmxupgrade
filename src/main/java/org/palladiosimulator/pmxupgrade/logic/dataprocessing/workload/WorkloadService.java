@@ -1,5 +1,6 @@
 package org.palladiosimulator.pmxupgrade.logic.dataprocessing.workload;
 
+import org.codehaus.plexus.util.CollectionUtils;
 import org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.ModelBuilder;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.AbstractMessage;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.Execution;
@@ -14,12 +15,21 @@ public class WorkloadService {
 
     public HashMap<String, List<Double>> analyzeWorkload(final List<ExecutionTrace> executionTraces) {
         workloadTimeSeriesMap = new HashMap<>();
-        executionTraces.stream().map(ExecutionTrace::getMessageTrace).forEach(this::analyzeMessageTrace);
+
+        for (ExecutionTrace executionTrace : executionTraces) {
+            MessageTrace messageTrace = executionTrace.getMessageTrace();
+            analyzeMessageTrace(messageTrace);
+        }
+
+        //executionTraces.stream().map(ExecutionTrace::getMessageTrace).forEach(this::analyzeMessageTrace);
         return workloadTimeSeriesMap;
     }
 
     private void analyzeMessageTrace(final MessageTrace mt) {
         AbstractMessage startMessage = getStartMessage(mt);// mt.getSequenceAsVector().get(0);
+        if (startMessage == null)
+            return;
+
         Execution x = startMessage.getReceivingExecution();
         String host = x.getAllocationComponent().getExecutionContainer().getName();
         String function = x.getOperation().getSignature().getName();
@@ -33,6 +43,9 @@ public class WorkloadService {
                 return message;
             }
         }
+        if (mt.getSequenceAsVector().isEmpty())
+            return null;
+
         return mt.getSequenceAsVector().get(0);
     }
 
