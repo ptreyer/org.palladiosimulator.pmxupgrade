@@ -120,7 +120,7 @@ public class TraceReconstruction implements TraceReconstructionInterface {
                         | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE") | StringUtils.equalsIgnoreCase(span.getOperationName(), "SELECT")) {
                     // if first and query
 
-                    // look if there is a omponent auto instrumented, if not use generic component
+                    // look if there is a component auto instrumented, if not use generic component
                     String component = span.getComponent();
                     if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith("unknown")) {
                         String name = StringUtils.replace(component, "-", " ");

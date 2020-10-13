@@ -15,7 +15,7 @@ public class TraceReconstructionFilterTest {
     @Test
     void filter() throws PMXException, FileNotFoundException, UnsupportedEncodingException {
         Configuration configuration = new Configuration();
-        configuration.setInputFileName("src/test/resources/json/combination4.json");
+        configuration.setInputFileName("C:\\Users\\ptreyer\\Desktop\\evaluation_resources_loop_30_ps001\\json_loop30_ps001.json");
         configuration.setOutputDirectory("/test");
 
         PMXController pmxController = new PMXController(configuration);
@@ -25,7 +25,7 @@ public class TraceReconstructionFilterTest {
 
         ProcessingObjectWrapper result = filter.filter(configuration, pmxController.getTraceRecord());
 
-        result.getSystemModelRepository().saveSystemToHTMLFile("target/test.html");
+        result.getSystemModelRepository().saveSystemToHTMLFile("target/json_loop30_ps001.html");
 
         System.out.println("finish");
     }

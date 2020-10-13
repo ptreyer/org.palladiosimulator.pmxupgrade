@@ -47,10 +47,6 @@ public class ResourceDemandEstimationService {
         resourceTimeSeriesMap = new HashMap<>();
     }
 
-    //   public void inputUtilizationLogs(final CPUUtilizationRecord record) {
-    //      addResourceLog(Time.NANOSECONDS.convertTo(record.getLoggingTimestamp(), Time.SECONDS), record.getHostname(), "CPU", record.getTotalUtilization());
-    //  }
-
     public void inputMessageTraces(final MessageTrace mt) {
         Map<Execution, Double> externalCallTime = new HashMap<>();
         Map<Execution, List<Execution>> externalCallMethods = new HashMap<>();

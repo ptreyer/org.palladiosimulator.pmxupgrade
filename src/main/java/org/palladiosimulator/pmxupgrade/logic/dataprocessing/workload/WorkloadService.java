@@ -1,13 +1,15 @@
 package org.palladiosimulator.pmxupgrade.logic.dataprocessing.workload;
 
-import org.codehaus.plexus.util.CollectionUtils;
 import org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.ModelBuilder;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.AbstractMessage;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.Execution;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.ExecutionTrace;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.MessageTrace;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class WorkloadService {
 
@@ -20,7 +22,7 @@ public class WorkloadService {
     }
 
     private void analyzeMessageTrace(final MessageTrace mt) {
-        AbstractMessage startMessage = getStartMessage(mt);// mt.getSequenceAsVector().get(0);
+        AbstractMessage startMessage = getStartMessage(mt);
         if (startMessage == null)
             return;
 
@@ -41,12 +43,6 @@ public class WorkloadService {
             return null;
 
         return mt.getSequenceAsVector().get(0);
-    }
-
-    private void sortMessageTrace(final MessageTrace mt) {
-        List<AbstractMessage> messages = new ArrayList<>(mt.getSequenceAsVector());
-        Comparator<AbstractMessage> timeComparator = Comparator.comparingLong(AbstractMessage::getTimestamp);
-        messages.sort(timeComparator);
     }
 
     private synchronized void addTimeStamp(String host, String component, String function, double timestamp) {
