@@ -51,6 +51,11 @@ public abstract class AbstractDependencyGraphFilter<T extends ISystemModelElemen
 	 *            The target node.
 	 */
 	protected void invokeDecorators(final AbstractMessage message, final DependencyGraphNode<?> sourceNode, final DependencyGraphNode<?> targetNode) {
+		if(this.decorators.isEmpty()){
+			this.decorators.add(new CallNodeDecorator());
+			this.decorators.add(new ResponseTimeNodeDecorator(TimeUnit.NANOSECONDS));
+		}
+
 		for (final AbstractNodeDecorator currentDecorator : this.decorators) {
 			currentDecorator.processMessage(message, sourceNode, targetNode, TimeUnit.NANOSECONDS);
 		}
