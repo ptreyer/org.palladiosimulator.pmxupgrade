@@ -1,8 +1,8 @@
 package org.palladiosimulator.pmxupgrade.logic.dataprocessing.resourcedemands.librede;
 
-import org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.ModelBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.ModelBuilder;
 import tools.descartes.librede.Librede;
 import tools.descartes.librede.LibredeResults;
 import tools.descartes.librede.configuration.*;
@@ -73,11 +73,9 @@ public class LibReDEAdapter {
                 rd.setResource(resource);
                 service.getTasks().add(rd);
             }
-
             ExternalCall ext = ConfigurationFactory.eINSTANCE.createExternalCall();
             ext.setCalledService(service);
             service.getTasks().add(ext);
-
         }
     }
 

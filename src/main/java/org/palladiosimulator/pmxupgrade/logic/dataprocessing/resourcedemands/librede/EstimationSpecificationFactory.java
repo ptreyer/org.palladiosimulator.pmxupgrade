@@ -1,17 +1,8 @@
 package org.palladiosimulator.pmxupgrade.logic.dataprocessing.resourcedemands.librede;
 
-import tools.descartes.librede.algorithm.IKalmanFilterAlgorithm;
 import tools.descartes.librede.approach.ResponseTimeApproximationApproach;
 import tools.descartes.librede.approach.ServiceDemandLawApproach;
-import tools.descartes.librede.approach.WangKalmanFilterApproach;
-import tools.descartes.librede.configuration.ConfigurationFactory;
-import tools.descartes.librede.configuration.EstimationAlgorithmConfiguration;
-import tools.descartes.librede.configuration.EstimationApproachConfiguration;
-import tools.descartes.librede.configuration.EstimationSpecification;
-import tools.descartes.librede.configuration.LibredeConfiguration;
-import tools.descartes.librede.configuration.Resource;
-import tools.descartes.librede.configuration.TraceConfiguration;
-import tools.descartes.librede.configuration.WorkloadDescription;
+import tools.descartes.librede.configuration.*;
 import tools.descartes.librede.datasource.memory.InMemoryDataSource;
 import tools.descartes.librede.exceptions.NonOverlappingRangeException;
 import tools.descartes.librede.repository.TimeSeries;
@@ -81,21 +72,6 @@ public class EstimationSpecificationFactory {
                         .getCanonicalName());
         estimationSpecification.getApproaches().add(
                 estimationApproachConfiguration);
-    }
-
-    private static void addZhangKalmannApproachToEstimationSpecification(
-            EstimationSpecification estimationSpecification) {
-        EstimationApproachConfiguration estimationApproachConfiguration = ConfigurationFactory.eINSTANCE
-                .createEstimationApproachConfiguration();
-        estimationApproachConfiguration.setType(WangKalmanFilterApproach.class
-                .getCanonicalName());
-        estimationSpecification.getApproaches().add(
-                estimationApproachConfiguration);
-        EstimationAlgorithmConfiguration estimationAlgorithmConfiguration = ConfigurationFactory.eINSTANCE.createEstimationAlgorithmConfiguration();
-        estimationSpecification.getAlgorithms().add(estimationAlgorithmConfiguration);
-        String iKalmanFilter = IKalmanFilterAlgorithm.class.getCanonicalName();
-        estimationAlgorithmConfiguration.setType(iKalmanFilter);
-
     }
 
     private static void addServiceDemandLawToEstimationSpecification(
