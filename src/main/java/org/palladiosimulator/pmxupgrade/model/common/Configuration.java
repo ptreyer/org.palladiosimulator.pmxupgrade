@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Configuration object, which can be passed for starting the extraction process.
+ *
+ * @author Patrick Treyer.
+ */
 public final class Configuration extends Properties {
 
     private String inputFileName;

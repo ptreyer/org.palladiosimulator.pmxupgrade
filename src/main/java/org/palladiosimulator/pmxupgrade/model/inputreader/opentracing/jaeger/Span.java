@@ -6,6 +6,11 @@ import org.codehaus.plexus.util.StringUtils;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Span representation of the Opentracing Jaeger data model.
+ *
+ * @author Patrick Treyer
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Span {
 

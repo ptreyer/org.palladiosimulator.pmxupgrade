@@ -2,6 +2,11 @@ package org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger;
 
 import java.util.List;
 
+/**
+ * Log representation of the Opentracing Jaeger data model.
+ *
+ * @author Patrick Treyer
+ */
 public class Log {
 
     private long timestamp;

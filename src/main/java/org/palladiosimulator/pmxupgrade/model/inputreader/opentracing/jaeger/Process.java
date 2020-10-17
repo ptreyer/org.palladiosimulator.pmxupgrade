@@ -4,6 +4,11 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.util.List;
 
+/**
+ * Process representation of the Opentracing Jaeger data model.
+ *
+ * @author Patrick Treyer
+ */
 public class Process {
 
     private String id;

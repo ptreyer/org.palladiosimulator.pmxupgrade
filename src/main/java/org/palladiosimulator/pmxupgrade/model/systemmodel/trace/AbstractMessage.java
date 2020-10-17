@@ -5,9 +5,7 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModel
 /**
  * An abstract base for messages which can later be used and combined in a  kieker.tools.traceAnalysis.systemModel.MessageTrace.
  * 
- * @author Andre van Hoorn
- * 
- * @since 0.95a
+ * @author Patrick Treyer
  */
 public abstract class AbstractMessage {
 

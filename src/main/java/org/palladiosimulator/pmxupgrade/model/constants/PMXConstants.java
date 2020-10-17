@@ -1,5 +1,10 @@
 package org.palladiosimulator.pmxupgrade.model.constants;
 
+/**
+ *  Common constants for the extraction process.
+ *
+ * @author Patrick Treyer.
+ */
 public class PMXConstants {
 
     public static final String ERROR_DATA_INPUT = "Error while Reading the tracing data:";

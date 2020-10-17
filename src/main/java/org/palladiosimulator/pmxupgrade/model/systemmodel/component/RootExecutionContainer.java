@@ -5,22 +5,20 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModel
 
 /**
  * Specific subtype for the root execution container.
- * 
- * @author Holger Knoche
- * 
- * @since 1.6
+ *
+ * @author Patrick Treyer
  */
 public class RootExecutionContainer extends ExecutionContainer {
 
-	/**
-	 * Creates a new root execution container.
-	 */
-	public RootExecutionContainer() {
-		super(AbstractSystemSubRepository.ROOT_ELEMENT_ID, null, SystemModelRepository.ROOT_NODE_LABEL);
-	}
+    /**
+     * Creates a new root execution container.
+     */
+    public RootExecutionContainer() {
+        super(AbstractSystemSubRepository.ROOT_ELEMENT_ID, null, SystemModelRepository.ROOT_NODE_LABEL);
+    }
 
-	@Override
-	public boolean isRootContainer() {
-		return true;
-	}
+    @Override
+    public boolean isRootContainer() {
+        return true;
+    }
 }

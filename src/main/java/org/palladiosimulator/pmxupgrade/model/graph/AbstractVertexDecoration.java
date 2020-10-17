@@ -4,8 +4,6 @@ package org.palladiosimulator.pmxupgrade.model.graph;
  * This is an abstract base for vertex decorations.
  * 
  * @author Holger Knoche
- * 
- * @since 1.5
  */
 public abstract class AbstractVertexDecoration {
 

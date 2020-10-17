@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Trace representation of the Opentracing Jaeger data model.
+ *
+ * @author Patrick Treyer
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Trace {
 

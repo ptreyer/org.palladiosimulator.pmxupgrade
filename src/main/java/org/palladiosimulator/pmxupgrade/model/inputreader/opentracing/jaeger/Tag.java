@@ -1,5 +1,10 @@
 package org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger;
 
+/**
+ * Tag representation of the Opentracing Jaeger data model.
+ *
+ * @author Patrick Treyer
+ */
 public class Tag {
 
     private String key;

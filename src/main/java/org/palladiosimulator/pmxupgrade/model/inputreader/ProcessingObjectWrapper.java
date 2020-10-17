@@ -6,6 +6,11 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.ExecutionTrace;
 
 import java.util.List;
 
+/**
+ * Wrapper for the processing the input data, which includes the system model and the input-dependent execution traces.
+ *
+ * @author Patrick Treyer
+ */
 public class ProcessingObjectWrapper {
 
     private SystemModelRepository systemModelRepository;

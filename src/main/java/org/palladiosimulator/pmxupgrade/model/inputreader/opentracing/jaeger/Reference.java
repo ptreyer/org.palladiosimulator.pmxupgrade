@@ -1,10 +1,12 @@
 package org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger;
 
+/**
+ * References of the Opentracing Jaeger data model.
+ *
+ * @author Patrick Treyer
+ */
 public class Reference {
 
-    /**
-     * to verify, enum
-     */
     private String refType;
     private String traceID;
     private String spanID;

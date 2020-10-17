@@ -7,6 +7,8 @@ import java.util.Comparator;
 
 /**
  * Comparator which compares abstract traces according to their start timestamps.
+ *
+ * @author Patrick Treyer
  */
 public class TraceStartTimestampComparator implements Comparator<AbstractTrace>, Serializable {
 

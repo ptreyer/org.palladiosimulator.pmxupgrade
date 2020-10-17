@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  * timestamps are made.
  *
  * @author Andre van Hoorn
- * @since 0.95a
  */
 public class ExecutionTrace extends AbstractTrace {
 

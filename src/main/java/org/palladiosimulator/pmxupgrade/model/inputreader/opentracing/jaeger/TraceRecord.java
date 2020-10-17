@@ -7,30 +7,30 @@ import org.palladiosimulator.pmxupgrade.model.inputreader.InputObjectWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-/** 
- * 
- * @author ptreyer
+/**
+ * Full trace record representation of the Opentracing Jaeger data model.
  *
+ * @author Patrick Treyer
  */
 @XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TraceRecord extends InputObjectWrapper {
-	
-	private List<Trace> data;
 
-	public TraceRecord() {
-	}
+    private List<Trace> data;
 
-	public TraceRecord(List<Trace> data) {
-		this.data = data;
-	}
+    public TraceRecord() {
+    }
 
-	public List<Trace> getData() {
-		return data;
-	}
+    public TraceRecord(List<Trace> data) {
+        this.data = data;
+    }
 
-	public void setData(List<Trace> data) {
-		this.data = data;
-	}
+    public List<Trace> getData() {
+        return data;
+    }
+
+    public void setData(List<Trace> data) {
+        this.data = data;
+    }
 }
