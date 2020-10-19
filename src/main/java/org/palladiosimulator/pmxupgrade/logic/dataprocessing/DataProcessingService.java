@@ -5,6 +5,8 @@ import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.A
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.failureestimation.FailureEstimationService;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.resourcedemands.ResourceDemandEstimationService;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.workload.WorkloadService;
+import org.palladiosimulator.pmxupgrade.logic.parametricdependencies.ParametricDependenciesResolverInterface;
+import org.palladiosimulator.pmxupgrade.logic.parametricdependencies.impl.ParametricDependenciesResolverApproachImpl;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModelRepository;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.ExecutionTrace;
@@ -19,6 +21,7 @@ public class DataProcessingService {
     private WorkloadService workloadService = new WorkloadService();
     private ResourceDemandEstimationService resourceDemandEstimationService = new ResourceDemandEstimationService(new Configuration());
     private FailureEstimationService failureEstimationService = new FailureEstimationService();
+    private ParametricDependenciesResolverInterface parametricDependenciesResolver = new ParametricDependenciesResolverApproachImpl();
 
 
     public HashMap<String, List<Double>> analyzeWorkload(List<ExecutionTrace> executionTraces) {
@@ -34,12 +37,13 @@ public class DataProcessingService {
         return resourceDemandEstimationService.terminate();
     }
 
-    public void calculateFailureProbabilities() {
-        // TODO
+    public SystemModelRepository calculateFailureProbabilities(SystemModelRepository systemModelRepository) {
+        return failureEstimationService.calculateFailurePobabilities(systemModelRepository);
     }
 
-    public void resolveParametricDependencies() {
-        // TODO
+    public SystemModelRepository resolveParametricDependencies(SystemModelRepository systemModelRepository) {
+        SystemModelRepository updatedSystemModel = parametricDependenciesResolver.identifyParametricDependencies(systemModelRepository);
+        return parametricDependenciesResolver.characterizeParametricDependencies(updatedSystemModel);
     }
 
 }

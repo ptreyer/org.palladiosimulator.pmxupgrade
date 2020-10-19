@@ -165,7 +165,6 @@ public class LibReDEAdapter {
                 .createInputSpecification();
         conf.setInput(inputSpecification);
 
-        //set output
         OutputSpecification outputSpecification = ConfigurationFactory.eINSTANCE
                 .createOutputSpecification();
         ExporterConfiguration csvExporterConfiguration = ConfigurationFactory.eINSTANCE
