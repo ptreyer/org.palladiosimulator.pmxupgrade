@@ -8,6 +8,12 @@ import org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger.Tra
 
 import java.io.*;
 
+/**
+ * Reads the tracing data of the OpenTracing standard, which are exported as json data ans stored
+ * in a specific directory which is transferred via the configuration object.
+ *
+ * @author Patrick Treyer
+ */
 public class InputReaderOpenTracingImpl implements InputReaderInterface {
 
     @Override

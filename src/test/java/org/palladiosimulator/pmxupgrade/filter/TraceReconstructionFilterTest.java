@@ -1,7 +1,7 @@
 package org.palladiosimulator.pmxupgrade.filter;
 
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
-import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstruction;
+import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
@@ -21,7 +21,7 @@ public class TraceReconstructionFilterTest {
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
 
-        TraceReconstruction filter = new TraceReconstruction();
+        TraceReconstructionService filter = new TraceReconstructionService();
 
         ProcessingObjectWrapper result = filter.filter(configuration, pmxController.getTraceRecord());
 

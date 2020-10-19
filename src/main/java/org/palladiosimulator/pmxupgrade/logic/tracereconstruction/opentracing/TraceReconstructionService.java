@@ -1,6 +1,6 @@
-package org.palladiosimulator.pmxupgrade.logic.filter.opentracing;
+package org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing;
 
-import org.palladiosimulator.pmxupgrade.logic.filter.TraceReconstructionInterface;
+import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.TraceReconstructionInterface;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.InvalidTraceException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TraceReconstruction implements TraceReconstructionInterface {
+public class TraceReconstructionService implements TraceReconstructionInterface {
 
     private final String[] emptyArray = new String[0];
     private AtomicInteger numberOfValidExecutions = new AtomicInteger(-1);

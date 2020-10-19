@@ -7,6 +7,11 @@ import org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger.Tra
 
 import java.util.List;
 
+/**
+ * Filters the tracing data based on a given black-listed trace id's.
+ *
+ * @author Patrick Treyer
+ */
 public class TraceIdFilter implements TraceProcessingInterface {
 
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {

@@ -10,6 +10,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Filters the tracing data based on a given timestamp.
+ *
+ * @author Patrick Treyer
+ */
 public class TimestampFilter implements TraceProcessingInterface {
 
     public TraceRecord filter(Configuration configuration, TraceRecord traceRecord) {

@@ -5,7 +5,7 @@ import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.D
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.WeightedBidirectionalDependencyGraphEdge;
 import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TimestampFilter;
 import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceIdFilter;
-import org.palladiosimulator.pmxupgrade.logic.filter.opentracing.TraceReconstruction;
+import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
 import org.palladiosimulator.pmxupgrade.logic.inputreader.InputReaderInterface;
 import org.palladiosimulator.pmxupgrade.logic.inputreader.impl.InputReaderOpenTracingImpl;
 import org.palladiosimulator.pmxupgrade.logic.modelcreation.PerformanceModelCreationService;
@@ -25,7 +25,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-// TODO change method signature
+/**
+ * Central class for the execution of the extraction process. This class is invoked from the specific exporter.
+ *
+ * @author Patrick Treyer
+ */
 public class PMXController {
 
     private final InputReaderInterface inputReaderInterface;
@@ -57,9 +61,15 @@ public class PMXController {
         dataProcessingService = new DataProcessingService();
     }
 
+    /**
+     * This method indicates the starting point of the extraction process and can be called by the external processes.
+     *
+     * @throws PMXException, if an error occurs during the execution.
+     */
     public void buildPerformanceModel() throws PMXException {
         readTracingData();
         initAndExecuteFilters();
+        reconstructTrace();
         processTracingData();
         createModel();
     }
@@ -73,14 +83,22 @@ public class PMXController {
         }
     }
 
+    /**
+     * Input-dependent Filter-pipeline
+     */
     public void initAndExecuteFilters() {
         TimestampFilter timestampFilter = new TimestampFilter();
         traceRecord = timestampFilter.filter(configuration, traceRecord);
 
         TraceIdFilter traceIdFilter = new TraceIdFilter();
         traceRecord = traceIdFilter.filter(configuration, traceRecord);
+    }
 
-        TraceReconstruction traceReconstructionFilter = new TraceReconstruction();
+    /**
+     * Input-dependent trace reconstruction.
+     */
+    private void reconstructTrace() {
+        TraceReconstructionService traceReconstructionFilter = new TraceReconstructionService();
         processingObjectWrapper = traceReconstructionFilter.filter(configuration, traceRecord);
     }
 

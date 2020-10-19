@@ -62,9 +62,6 @@ public class CSVBuilder {
         createInterarrivalCSV(workload, "welcomeGET#WelcomeControllerHTTP#petclinic");
 
         display(workload);
-
-        // nimm immer das erste aus zwei
-
     }
 
     public static void createCombinedCSV(HashMap<String, List<Double>> workload) {

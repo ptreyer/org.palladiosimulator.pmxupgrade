@@ -5,6 +5,11 @@ import org.palladiosimulator.pmxupgrade.model.inputreader.InputObjectWrapper;
 
 import java.io.IOException;
 
+/**
+ * General interface for the import of the tracing data.
+ *
+ * @author Patrick Treyer
+ */
 public interface InputReaderInterface {
 
     InputObjectWrapper readTracingData(Configuration configuration) throws IOException;
