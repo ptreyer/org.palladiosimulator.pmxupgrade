@@ -15,6 +15,12 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.util.AllocationCompone
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Central service for processing the input data. This includes processing of the control flow, workloads, resource demand estimation,
+ * failure estimation and resolving of parametric dependencies.
+ *
+ * @author Patrick Treyer
+ */
 public class DataProcessingService {
 
     private ControlFlowService controlFlowService = new ControlFlowService();

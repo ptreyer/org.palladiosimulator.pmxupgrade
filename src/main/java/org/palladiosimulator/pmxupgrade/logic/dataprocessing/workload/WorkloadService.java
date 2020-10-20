@@ -11,10 +11,22 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Service for resolving and analyzing the workload. The workload is then written into an workload time series map
+ * for further processing.
+ *
+ * @author Patrick Treyer
+ */
 public class WorkloadService {
 
     private static HashMap<String, List<Double>> workloadTimeSeriesMap;
 
+    /**
+     * Analyzes the workload of all gathered execution traces.
+     *
+     * @param executionTraces, the list of all execution traces
+     * @return the generated workloadTimeSeriesMap as {@link HashMap}
+     */
     public HashMap<String, List<Double>> analyzeWorkload(final List<ExecutionTrace> executionTraces) {
         workloadTimeSeriesMap = new HashMap<>();
         executionTraces.stream().map(ExecutionTrace::getMessageTrace).forEach(this::analyzeMessageTrace);
