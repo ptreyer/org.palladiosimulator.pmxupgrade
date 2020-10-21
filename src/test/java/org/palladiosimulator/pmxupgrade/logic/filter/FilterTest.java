@@ -1,4 +1,4 @@
-package org.palladiosimulator.pmxupgrade.filter;
+package org.palladiosimulator.pmxupgrade.logic.filter;
 
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;

@@ -1,21 +1,21 @@
-package org.palladiosimulator.pmxupgrade.dataprocessing;
+package org.palladiosimulator.pmxupgrade.logic.filter;
 
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
-import org.palladiosimulator.pmxupgrade.logic.dataprocessing.DataProcessingService;
 import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 
-public class ResourceDemandTest {
+public class TraceReconstructionFilterTest {
 
     @Test
-    void filter() throws PMXException {
+    void filter() throws PMXException, FileNotFoundException, UnsupportedEncodingException {
         Configuration configuration = new Configuration();
-        configuration.setInputFileName("src/test/resources/json/combination4.json");
+        configuration.setInputFileName("C:\\Users\\ptreyer\\Desktop\\evaluation_resources_loop_30_ps001\\json_loop30_ps001.json");
         configuration.setOutputDirectory("/test");
 
         PMXController pmxController = new PMXController(configuration);
@@ -23,12 +23,10 @@ public class ResourceDemandTest {
 
         TraceReconstructionService filter = new TraceReconstructionService();
 
-        ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper result = filter.filter(configuration, pmxController.getTraceRecord());
 
-        DataProcessingService service = new DataProcessingService();
-        HashMap<String, Double> estimationResults =  service.calculateResourceDemands(processingObjectWrapper.getExecutionTraces());
+        result.getSystemModelRepository().saveSystemToHTMLFile("target/json_loop30_ps001.html");
 
-        System.out.println("HashMap<String, Double>: " + estimationResults.size());
-
+        System.out.println("finish");
     }
 }

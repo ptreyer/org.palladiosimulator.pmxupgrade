@@ -1,4 +1,4 @@
-package org.palladiosimulator.pmxupgrade.dataprocessing;
+package org.palladiosimulator.pmxupgrade.logic.dataprocessing;
 
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
