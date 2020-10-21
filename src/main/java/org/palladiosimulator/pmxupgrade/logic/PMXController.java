@@ -84,7 +84,7 @@ public class PMXController {
     }
 
     /**
-     * Input-dependent Filter-pipeline
+     * Input-dependent Filter-pipeline.
      */
     public void initAndExecuteFilters() {
         TimestampFilter timestampFilter = new TimestampFilter();
@@ -102,11 +102,15 @@ public class PMXController {
         processingObjectWrapper = traceReconstructionFilter.filter(configuration, traceRecord);
     }
 
+    /**
+     * Non-input-dependent processing of the tracing data.
+     */
     public void processTracingData() {
         workload = dataProcessingService.analyzeWorkload(processingObjectWrapper.getExecutionTraces());
         operationGraph = dataProcessingService.resolveControlFlow(processingObjectWrapper.getExecutionTraces(), processingObjectWrapper.getSystemModelRepository());
         resourceDemands = dataProcessingService.calculateResourceDemands(processingObjectWrapper.getExecutionTraces());
-        // TODO call FailureEstimation
+        processingObjectWrapper.setSystemModelRepository(dataProcessingService.calculateFailureProbabilities(processingObjectWrapper.getSystemModelRepository()));
+        processingObjectWrapper.setSystemModelRepository(dataProcessingService.resolveParametricDependencies(processingObjectWrapper.getSystemModelRepository()));
     }
 
     public void createModel() throws PMXException {
