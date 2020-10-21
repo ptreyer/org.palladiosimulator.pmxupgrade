@@ -1,14 +1,15 @@
-package org.palladiosimulator.pmxupgrade.dataprocessing;
+package org.palladiosimulator.pmxupgrade.logic.dataprocessing;
 
-import org.junit.jupiter.api.Test;
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
-import org.palladiosimulator.pmxupgrade.logic.dataprocessing.DataProcessingService;
 import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
+import org.junit.jupiter.api.Test;
 
-public class WorkloadTest {
+import java.util.HashMap;
+
+public class ResourceDemandTest {
 
     @Test
     void filter() throws PMXException {
@@ -24,9 +25,9 @@ public class WorkloadTest {
         ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
 
         DataProcessingService service = new DataProcessingService();
-        service.analyzeWorkload(processingObjectWrapper.getExecutionTraces());
+        HashMap<String, Double> estimationResults =  service.calculateResourceDemands(processingObjectWrapper.getExecutionTraces());
 
-        System.out.println("finish");
+        System.out.println("HashMap<String, Double>: " + estimationResults.size());
 
     }
 }

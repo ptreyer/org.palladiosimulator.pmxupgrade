@@ -5,8 +5,8 @@ import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.A
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.failureestimation.FailureEstimationService;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.resourcedemands.ResourceDemandEstimationService;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.workload.WorkloadService;
-import org.palladiosimulator.pmxupgrade.logic.parametricdependencies.ParametricDependenciesResolverInterface;
-import org.palladiosimulator.pmxupgrade.logic.parametricdependencies.impl.ParametricDependenciesResolverApproachImpl;
+import org.palladiosimulator.pmxupgrade.logic.dataprocessing.parametricdependencies.ParametricDependenciesResolverInterface;
+import org.palladiosimulator.pmxupgrade.logic.dataprocessing.parametricdependencies.impl.ParametricDependenciesResolverApproachImpl;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModelRepository;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.ExecutionTrace;

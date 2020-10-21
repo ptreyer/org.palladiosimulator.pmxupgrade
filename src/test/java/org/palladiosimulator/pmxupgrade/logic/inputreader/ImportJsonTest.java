@@ -1,4 +1,4 @@
-package org.palladiosimulator.pmxupgrade.inputreader;
+package org.palladiosimulator.pmxupgrade.logic.inputreader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.palladiosimulator.pmxupgrade.logic.PMXController;

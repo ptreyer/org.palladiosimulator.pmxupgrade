@@ -1,4 +1,4 @@
-package org.palladiosimulator.pmxupgrade.logic.parametricdependencies;
+package org.palladiosimulator.pmxupgrade.logic.dataprocessing.parametricdependencies;
 
 import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModelRepository;
 
