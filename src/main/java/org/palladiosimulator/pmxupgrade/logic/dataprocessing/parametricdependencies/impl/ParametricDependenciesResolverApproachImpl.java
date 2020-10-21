@@ -1,6 +1,6 @@
-package org.palladiosimulator.pmxupgrade.logic.parametricdependencies.impl;
+package org.palladiosimulator.pmxupgrade.logic.dataprocessing.parametricdependencies.impl;
 
-import org.palladiosimulator.pmxupgrade.logic.parametricdependencies.ParametricDependenciesResolverInterface;
+import org.palladiosimulator.pmxupgrade.logic.dataprocessing.parametricdependencies.ParametricDependenciesResolverInterface;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModelRepository;
 
 /**
