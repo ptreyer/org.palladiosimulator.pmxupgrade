@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
 import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
+import org.palladiosimulator.pmxupgrade.model.exception.InvalidTraceException;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
 
 public class WorkloadTest {
 
     @Test
-    void filter() throws PMXException {
+    void filter() throws PMXException, InvalidTraceException {
         Configuration configuration = new Configuration();
         configuration.setInputFileName("src/test/resources/json/combination4.json");
         configuration.setOutputDirectory("/test");
@@ -18,9 +19,9 @@ public class WorkloadTest {
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
 
-        TraceReconstructionService filter = new TraceReconstructionService();
+        TraceReconstructionService traceReconstructionService = new TraceReconstructionService();
 
-        ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper processingObjectWrapper = traceReconstructionService.reconstructTrace(configuration, pmxController.getTraceRecord());
 
         DataProcessingService service = new DataProcessingService();
         service.analyzeWorkload(processingObjectWrapper.getExecutionTraces());

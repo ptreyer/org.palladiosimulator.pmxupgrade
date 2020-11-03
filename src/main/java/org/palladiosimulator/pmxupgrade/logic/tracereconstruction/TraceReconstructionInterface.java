@@ -1,6 +1,7 @@
 package org.palladiosimulator.pmxupgrade.logic.tracereconstruction;
 
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
+import org.palladiosimulator.pmxupgrade.model.exception.InvalidTraceException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
 import org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger.TraceRecord;
 
@@ -11,6 +12,6 @@ import org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger.Tra
  */
 public interface TraceReconstructionInterface {
 
-    ProcessingObjectWrapper filter(Configuration configuration, TraceRecord traceRecord);
+    ProcessingObjectWrapper reconstructTrace(Configuration configuration, TraceRecord traceRecord) throws InvalidTraceException;
 
 }

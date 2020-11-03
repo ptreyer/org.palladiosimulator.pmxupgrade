@@ -3,6 +3,7 @@ package org.palladiosimulator.pmxupgrade.logic.filter;
 import org.palladiosimulator.pmxupgrade.logic.PMXController;
 import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
+import org.palladiosimulator.pmxupgrade.model.exception.InvalidTraceException;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.inputreader.ProcessingObjectWrapper;
 import org.junit.jupiter.api.Test;
@@ -10,12 +11,12 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
-public class TraceReconstructionFilterTest {
+public class TraceReconstructionTest {
 
     @Test
-    void filter() throws PMXException, FileNotFoundException, UnsupportedEncodingException {
+    void reconstructTrace() throws PMXException, FileNotFoundException, UnsupportedEncodingException, InvalidTraceException {
         Configuration configuration = new Configuration();
-        configuration.setInputFileName("C:\\Users\\ptreyer\\Desktop\\evaluation_resources_loop_30_ps001\\json_loop30_ps001.json");
+        configuration.setInputFileName("src/test/resources/json/combination4.json");
         configuration.setOutputDirectory("/test");
 
         PMXController pmxController = new PMXController(configuration);
@@ -23,9 +24,9 @@ public class TraceReconstructionFilterTest {
 
         TraceReconstructionService filter = new TraceReconstructionService();
 
-        ProcessingObjectWrapper result = filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper result = filter.reconstructTrace(configuration, pmxController.getTraceRecord());
 
-        result.getSystemModelRepository().saveSystemToHTMLFile("target/json_loop30_ps001.html");
+        result.getSystemModelRepository().saveSystemToHTMLFile("target/system2.html");
 
         System.out.println("finish");
     }

@@ -12,6 +12,7 @@ import org.palladiosimulator.pmxupgrade.logic.modelcreation.PerformanceModelCrea
 import org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.IModelBuilder;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.constants.PMXConstants;
+import org.palladiosimulator.pmxupgrade.model.exception.InvalidTraceException;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
 import org.palladiosimulator.pmxupgrade.model.graph.AbstractGraph;
 import org.palladiosimulator.pmxupgrade.model.inputreader.InputObjectWrapper;
@@ -97,9 +98,13 @@ public class PMXController {
     /**
      * Input-dependent trace reconstruction.
      */
-    private void reconstructTrace() {
+    private void reconstructTrace() throws PMXException {
         TraceReconstructionService traceReconstructionFilter = new TraceReconstructionService();
-        processingObjectWrapper = traceReconstructionFilter.filter(configuration, traceRecord);
+        try {
+            processingObjectWrapper = traceReconstructionFilter.reconstructTrace(configuration, traceRecord);
+        } catch (InvalidTraceException e) {
+            throw new PMXException(PMXConstants.ERROR_RECONSTRUCT_TRACE + e.getMessage());
+        }
     }
 
     /**

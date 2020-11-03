@@ -27,6 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Service for reconstructing the traces. This refers to the transformation of the input-dependent
+ * tracing data into an uniform internal data format. In addition, the system architecture is extracted as this
+ * is also an input-dependent step.
+ *
+ * @author Patrick Treyer
+ */
 public class TraceReconstructionService implements TraceReconstructionInterface {
 
     private final String[] emptyArray = new String[0];
@@ -34,21 +41,37 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
 
     private SystemModelRepository systemModelRepository;
     private List<ExecutionTrace> executionTraces = new ArrayList<>();
-
-    // TODO unnecessary
     private List<Execution> invalidExecutions = new ArrayList<>();
 
+    private final String GENERIC_ASSEMBLY_COMPONENT_TYPE = "org.palladiosimulatpr.pmxupgrade.generic.";
+    private final String UNKNOWN_ASSEMBLY_COMPONENT_TYPE = "unknown";
+    private final String DATABASE_CALL = "databaseCall";
+    private final String NETWORK_CALL = "networkCall";
+    private final String HTTP_CLIENT = "HttpClient";
+    private final String DATABASE_DRIVER = "DatabaseDriver";
+    private final String SRV_INDICATION = "-SRV";
+
+
     @Override
-    public ProcessingObjectWrapper filter(Configuration configuration, TraceRecord traceRecord) {
+    public ProcessingObjectWrapper reconstructTrace(Configuration configuration, TraceRecord traceRecord) throws InvalidTraceException {
         systemModelRepository = new SystemModelRepository();
 
-        traceRecord.getData().forEach(t -> executionTraces.add(mapExectionTraces(t)));
+        for (Trace t : traceRecord.getData()) {
+            executionTraces.add(mapExectionTraces(t));
+        }
         executionTraces.forEach(this::mapMessageTraces);
 
         return new ProcessingObjectWrapper(systemModelRepository, executionTraces, invalidExecutions);
     }
 
-    private ExecutionTrace mapExectionTraces(Trace trace) {
+    /**
+     * Transforms the trace into an internal data format and extracts information about the system architecture.
+     *
+     * @param trace, the {@link Trace} which has to be transformed.
+     * @return the transformed @{@link Execution}
+     * @throws InvalidTraceException, if the trace is invalid.
+     */
+    private ExecutionTrace mapExectionTraces(Trace trace) throws InvalidTraceException {
         numberOfValidExecutions.set(-1);
 
         ExecutionTrace executionTrace = new ExecutionTrace(trace.getTraceID());
@@ -59,23 +82,17 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
         for (Map.Entry<String, Process> stringProcessEntry : trace.getProcesses().entrySet()) {
             Map.Entry pair = stringProcessEntry;
             Process p = (Process) pair.getValue();
-            String executionContainerName = p.getServiceName().toUpperCase() + "-SRV";
+            String executionContainerName = p.getServiceName().toUpperCase() + SRV_INDICATION;
             systemModelRepository.getExecutionEnvironmentFactory()
                     .lookupExecutionContainerByNamedIdentifier(executionContainerName);
             executionContainer.put((String) pair.getKey(), executionContainerName);
         }
 
-        trace.getSpans().forEach(t -> {
-            try {
-                Execution execution = mapExecution(t, executionContainer);
-                if (execution != null)
-                    executionTrace.add(execution);
-            } catch (InvalidTraceException e) {
-                // TODO Exception handling
-                e.printStackTrace();
-            }
-
-        });
+        for (Span t : trace.getSpans()) {
+            Execution execution = mapExecution(t, executionContainer);
+            if (execution != null)
+                executionTrace.add(execution);
+        }
         executionTrace.getInvalidExecutions().addAll(invalidExecutions);
         return executionTrace;
     }
@@ -88,121 +105,70 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
         String allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
         String operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
 
-        // TODO handleQueries
         if (StringUtils.isEmpty(assemblyComponentTypeName)) {
 
             long tout = span.getStartTime() + span.getDuration();
 
-            if (StringUtils.equalsIgnoreCase(span.getSpanID(), span.getTraceID()) && span.getReferences() == null) {
-                // if first
+            if (StringUtils.equalsIgnoreCase(span.getOperationName(), "GET") | StringUtils.equalsIgnoreCase(span.getOperationName(), "POST") |
+                    StringUtils.equalsIgnoreCase(span.getOperationName(), "PUT") | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE")
+                    | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
+                // if network call
 
-                if (StringUtils.equalsIgnoreCase(span.getOperationName(), "GET") | StringUtils.equalsIgnoreCase(span.getOperationName(), "POST") |
-                        StringUtils.equalsIgnoreCase(span.getOperationName(), "PUT") | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE")
-                        | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
-                    // if first and network
-
-                    // look if there is a omponent auto instrumented, if not use generic component
-                    String component = span.getComponent();
-                    if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith("unknown")) {
-                        String name = StringUtils.replace(component, "-", " ");
-                        String name2 = StringUtils.capitaliseAllWords(name).replace(" ", "");
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic." + name2;
-                    } else {
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic.HttpClient";
-                    }
-                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
-                    span.setOperationName("networkCall");
-                    span.setOperationParameters(emptyArray);
-                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
-
-
-                } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY") | StringUtils.equalsIgnoreCase(span.getOperationName(), "UPDATE")
-                        | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE") | StringUtils.equalsIgnoreCase(span.getOperationName(), "SELECT")) {
-                    // if first and query
-
-                    // look if there is a component auto instrumented, if not use generic component
-                    String component = span.getComponent();
-                    if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith("unknown")) {
-                        String name = StringUtils.replace(component, "-", " ");
-                        String name2 = StringUtils.capitaliseAllWords(name).replace(" ", "");
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic." + name2;
-                    } else {
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic.DatabaseDriver";
-                    }
-                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
-                    span.setOperationName("databaseCall");
-                    span.setOperationParameters(emptyArray);
-                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
-
+                // look if there is a component auto instrumented, if not use generic component
+                String component = span.getComponent();
+                if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith(UNKNOWN_ASSEMBLY_COMPONENT_TYPE)) {
+                    String name = StringUtils.replace(component, "-", " ");
+                    String capitalizedName = StringUtils.capitaliseAllWords(name).replace(" ", "");
+                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + capitalizedName;
                 } else {
-                    // invalid
-                    Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
-                    invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
-                    return null;
-
+                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + HTTP_CLIENT;
                 }
+                allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+                span.setOperationName(NETWORK_CALL);
+                span.setOperationParameters(emptyArray);
+                operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+
+
+            } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY") | StringUtils.equalsIgnoreCase(span.getOperationName(), "UPDATE")
+                    | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE") | StringUtils.equalsIgnoreCase(span.getOperationName(), "SELECT")) {
+                // if database call
+
+                // look if there is a component auto instrumented, if not use generic component
+                String component = span.getComponent();
+                if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith(UNKNOWN_ASSEMBLY_COMPONENT_TYPE)) {
+                    String name = StringUtils.replace(component, "-", " ");
+                    String capitalizedName = StringUtils.capitaliseAllWords(name).replace(" ", "");
+                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + capitalizedName;
+                } else {
+                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + DATABASE_DRIVER;
+                }
+                allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
+                span.setOperationName(DATABASE_CALL);
+                span.setOperationParameters(emptyArray);
+                operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
+
             } else {
-                // not first
-
-                if (StringUtils.equalsIgnoreCase(span.getOperationName(), "GET") | StringUtils.equalsIgnoreCase(span.getOperationName(), "POST") |
-                        StringUtils.equalsIgnoreCase(span.getOperationName(), "PUT") | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE")
-                        | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
-                    // if not first and network
-
-                    // look if there is a omponent auto instrumented, if not use generic component
-                    String component = span.getComponent();
-                    if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith("unknown")) {
-                        String name = StringUtils.replace(component, "-", " ");
-                        String name2 = StringUtils.capitaliseAllWords(name).replace(" ", "");
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic." + name2;
-                    } else {
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic.HttpClient";
-                    }
-                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
-                    span.setOperationName("networkCall");
-                    span.setOperationParameters(emptyArray);
-                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
-
-
-                } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY")) {
-                    // if not first and query
-
-                    // look if there is a omponent auto instrumented, if not use generic component
-                    String component = span.getComponent();
-                    if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith("unknown")) {
-                        String name = StringUtils.replace(component, "-", " ");
-                        String name2 = StringUtils.capitaliseAllWords(name).replace(" ", "");
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic." + name2;
-                    } else {
-                        assemblyComponentTypeName = "org.palladiosimulatpr.pmxupgrade.generic.DatabaseDriver";
-                    }
-                    allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
-                    span.setOperationName("databaseCall");
-                    span.setOperationParameters(emptyArray);
-                    operationFactoryName = assemblyComponentTypeName + "." + span.getOperationName();
-
-                } else {
-                    // invalid
-                    Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
-                    invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
-                    return null;
-                }
-
+                // invalid
+                Operation op = new Operation(-1, null, new Signature(span.getOperationName(), new String[0], null, new String[0]));
+                invalidExecutions.add(new Execution(op, new AllocationComponent(-1, null, null), span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), -1, -1, span.getStartTime(), tout, false));
+                return null;
             }
-
-
         }
         numberOfValidExecutions.getAndIncrement();
 
         AllocationComponent allocInst = systemModelRepository.getAllocationFactory()
                 .lookupAllocationComponentInstanceByNamedIdentifier(allocationComponentName);
 
-        if (allocInst == null) { // Allocation component instance doesn't exist
+        // Allocation component instance doesn't exist
+        if (allocInst == null) {
             AssemblyComponent assemblyComponent = systemModelRepository.getAssemblyFactory()
                     .lookupAssemblyComponentInstanceByNamedIdentifier(assemblyComponentTypeName);
-            if (assemblyComponent == null) { // assembly instance doesn't exist
+
+            // assembly instance doesn't exist
+            if (assemblyComponent == null) {
                 ComponentType componentType = systemModelRepository.getTypeRepositoryFactory().lookupComponentTypeByNamedIdentifier(assemblyComponentTypeName);
-                if (componentType == null) { // NOPMD NOCS (NestedIf)
+
+                if (componentType == null) {
                     // Component type doesn't exist
                     componentType = systemModelRepository.getTypeRepositoryFactory().createAndRegisterComponentType(assemblyComponentTypeName,
                             assemblyComponentTypeName);
@@ -210,19 +176,25 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
                 assemblyComponent = systemModelRepository.getAssemblyFactory()
                         .createAndRegisterAssemblyComponentInstance(assemblyComponentTypeName, componentType);
             }
+
             ExecutionContainer execContainer = systemModelRepository.getExecutionEnvironmentFactory()
                     .lookupExecutionContainerByNamedIdentifier(executionContainerName);
-            if (execContainer == null) { // doesn't exist, yet
+
+            // doesn't exist, yet
+            if (execContainer == null) {
                 execContainer = systemModelRepository.getExecutionEnvironmentFactory()
                         .createAndRegisterExecutionContainer(executionContainerName);
             }
+
             allocInst = systemModelRepository.getAllocationFactory()
                     .createAndRegisterAllocationComponentInstance(allocationComponentName, assemblyComponent, execContainer);
         }
 
         Signature operationSignature = new Signature(span.getOperationName(), emptyArray, span.getReturnType(), span.getParameters());
         Operation op = systemModelRepository.getOperationFactory().lookupOperationByNamedIdentifier(operationFactoryName);
-        if (op == null) { // Operation doesn't exist
+
+        // Operation doesn't exist
+        if (op == null) {
             op = systemModelRepository.getOperationFactory()
                     .createAndRegisterOperation(operationFactoryName, allocInst.getAssemblyComponent().getType(), operationSignature);
             allocInst.getAssemblyComponent().getType().addOperation(op);
