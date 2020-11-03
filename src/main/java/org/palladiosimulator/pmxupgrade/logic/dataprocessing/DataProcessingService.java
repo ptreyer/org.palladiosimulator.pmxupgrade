@@ -44,7 +44,7 @@ public class DataProcessingService {
     }
 
     public SystemModelRepository calculateFailureProbabilities(SystemModelRepository systemModelRepository) {
-        return failureEstimationService.calculateFailurePobabilities(systemModelRepository);
+        return failureEstimationService.calculateFailureProbabilities(systemModelRepository);
     }
 
     public SystemModelRepository resolveParametricDependencies(SystemModelRepository systemModelRepository) {

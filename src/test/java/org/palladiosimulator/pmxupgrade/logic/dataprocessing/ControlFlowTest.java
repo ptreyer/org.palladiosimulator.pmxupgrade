@@ -6,6 +6,7 @@ import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.A
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.DependencyGraphNode;
 import org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph.WeightedBidirectionalDependencyGraphEdge;
 import org.palladiosimulator.pmxupgrade.logic.tracereconstruction.opentracing.TraceReconstructionService;
+import org.palladiosimulator.pmxupgrade.model.exception.InvalidTraceException;
 import org.palladiosimulator.pmxupgrade.model.graph.AbstractGraph;
 import org.palladiosimulator.pmxupgrade.model.common.Configuration;
 import org.palladiosimulator.pmxupgrade.model.exception.PMXException;
@@ -22,7 +23,7 @@ import java.io.*;
 public class ControlFlowTest {
 
     @Test
-    void filter() throws PMXException {
+    void filter() throws PMXException, InvalidTraceException {
         Configuration configuration = new Configuration();
         configuration.setInputFileName("src/test/resources/json/combination4.json");
         configuration.setOutputDirectory("/test");
@@ -30,9 +31,9 @@ public class ControlFlowTest {
         PMXController pmxController = new PMXController(configuration);
         pmxController.readTracingData();
 
-        TraceReconstructionService filter = new TraceReconstructionService();
+        TraceReconstructionService traceReconstructionService = new TraceReconstructionService();
 
-        ProcessingObjectWrapper processingObjectWrapper = filter.filter(configuration, pmxController.getTraceRecord());
+        ProcessingObjectWrapper processingObjectWrapper = traceReconstructionService.reconstructTrace(configuration, pmxController.getTraceRecord());
 
         ControlFlowService service = new ControlFlowService();
 

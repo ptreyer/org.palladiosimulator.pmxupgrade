@@ -4,7 +4,7 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.repository.SystemModel
 
 public class FailureEstimationService {
 
-    public SystemModelRepository calculateFailurePobabilities(SystemModelRepository systemModelRepository) {
+    public SystemModelRepository calculateFailureProbabilities(SystemModelRepository systemModelRepository) {
         // TODO
         return systemModelRepository;
     }
