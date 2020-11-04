@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Builder for an CSV-Export of the extracted workload information.
+ *
+ * @author Holger Knoche
+ */
 public class CSVBuilder {
 
     private static final Logger log = LogManager.getLogger(CSVBuilder.class);

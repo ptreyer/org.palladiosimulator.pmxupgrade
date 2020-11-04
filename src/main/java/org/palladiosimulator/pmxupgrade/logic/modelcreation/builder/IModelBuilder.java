@@ -8,7 +8,11 @@ import org.eclipse.emf.ecore.EObject;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * Interface for the Model builder, which can be implemented for specific performance model representations.
+ *
+ * @author Holger Knoche
+ */
 public interface IModelBuilder {
 
     EObject createAssembly(String asseblyName);
