@@ -5,7 +5,7 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.AbstractMessage;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Call bode decorator for generating the callgraph.
+ * Call bode decorator for generating the call graph.
  *
  * @author Holger Knoche
  * @since 1.5
