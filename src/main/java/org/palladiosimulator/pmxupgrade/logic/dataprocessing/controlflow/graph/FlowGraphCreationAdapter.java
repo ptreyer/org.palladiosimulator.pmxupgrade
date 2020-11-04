@@ -10,10 +10,15 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.Operation;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.SynchronousReplyMessage;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.util.AllocationComponentOperationPair;
 
+/**
+ * Adapter for executing the extraction of the control flow statistics and therefore the creation of an operation callgraph.
+ *
+ * @author Patrick Treyer
+ */
 public class FlowGraphCreationAdapter extends AbstractDependencyGraphFilter<AllocationComponentOperationPair> {
 
     /**
-     * Creates a new abstract dependency graph filter using the given data.
+     * Creates a new dependency graph using the given data.
      *
      * @param graph The graph to produce / extend
      */
@@ -86,6 +91,5 @@ public class FlowGraphCreationAdapter extends AbstractDependencyGraphFilter<Allo
             this.invokeDecorators(m, senderNode, receiverNode);
         }
     }
-
 
 }

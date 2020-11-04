@@ -29,7 +29,6 @@ public class DataProcessingService {
     private FailureEstimationService failureEstimationService = new FailureEstimationService();
     private ParametricDependenciesResolverInterface parametricDependenciesResolver = new ParametricDependenciesResolverApproachImpl();
 
-
     public HashMap<String, List<Double>> analyzeWorkload(List<ExecutionTrace> executionTraces) {
         return workloadService.analyzeWorkload(executionTraces);
     }

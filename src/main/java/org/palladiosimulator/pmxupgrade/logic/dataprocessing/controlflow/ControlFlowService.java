@@ -12,6 +12,11 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.util.AllocationCompone
 
 import java.util.List;
 
+/**
+ * Service for Extracting the control flow using an operation callgraph including calls weights that allow deriving call probabilities.
+ *
+ * @author Patrick Treyer
+ */
 public class ControlFlowService {
 
     public AbstractDependencyGraph<AllocationComponentOperationPair> resolveControlFlow(final List<ExecutionTrace> executionTraces, final SystemModelRepository systemModelRepository) {

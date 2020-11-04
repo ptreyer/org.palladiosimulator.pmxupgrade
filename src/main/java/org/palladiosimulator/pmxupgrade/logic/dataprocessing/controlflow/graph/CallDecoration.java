@@ -2,6 +2,12 @@ package org.palladiosimulator.pmxupgrade.logic.dataprocessing.controlflow.graph;
 
 import org.palladiosimulator.pmxupgrade.model.graph.AbstractVertexDecoration;
 
+/**
+ * Call Decoration for generating the callgraph.
+ *
+ * @author Holger Knoche
+ * @since 1.5
+ */
 public class CallDecoration extends AbstractVertexDecoration {
 
     int executionCount;

@@ -70,7 +70,7 @@ public class PerformanceModelCreationService {
     }
 
     public void createPerformanceModel() throws PMXException {
-        log.info("starting model creation " + "|||||||||||||||||||||||||||||||||||||||||||||||||");
+        log.info("starting model creation");
 
         if (operationGraph == null) {
             throw new PMXException("No operation graph has been passed!");
