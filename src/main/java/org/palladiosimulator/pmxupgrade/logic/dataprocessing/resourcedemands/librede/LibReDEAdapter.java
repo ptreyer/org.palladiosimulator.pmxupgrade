@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Adapter for initializing and running the resource demand estimation with LibReDE.
+ *
+ * @author Patrick Treyer
+ */
 public class LibReDEAdapter {
 
     private static final Logger log = LogManager.getLogger(LibReDEAdapter.class);

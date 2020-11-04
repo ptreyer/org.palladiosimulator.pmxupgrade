@@ -11,6 +11,12 @@ import tools.descartes.librede.units.UnitsFactory;
 import tools.descartes.librede.util.RepositoryUtil;
 import tools.descartes.librede.util.RepositoryUtil.Range;
 
+/**
+ * Factory which prepares the resource demand estimation with LibREdE by specifying concrete approaches
+ * for the estimation.
+ *
+ * @author Patrick Treyer
+ */
 public class EstimationSpecificationFactory {
 
     public static EstimationSpecification createEstimationSpecification(

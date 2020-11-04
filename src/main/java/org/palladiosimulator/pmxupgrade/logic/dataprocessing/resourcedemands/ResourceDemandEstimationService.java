@@ -23,6 +23,11 @@ import tools.descartes.librede.units.Time;
 
 import java.util.*;
 
+/**
+ * Service for estimating the resource demands using LibReDE.
+ *
+ * @author Patrick Treyer
+ */
 public class ResourceDemandEstimationService {
 
     private static Map<String, TimeSeries> serviceTimeSeriesMap;
@@ -79,7 +84,7 @@ public class ResourceDemandEstimationService {
                     }
                 }
 
-                // ad externalCallTime
+                // add externalCallTime
                 double externalTime = (receiver.getTout() - receiver.getTin());
                 externalCallTime.put(sender, externalCallTime.get(sender) + externalTime);
 
@@ -227,7 +232,7 @@ public class ResourceDemandEstimationService {
                     cores = numCores.get(host);
                 }
                 if (cores == null) {
-                    log.warn("no value passed for numer of cores at " + host);
+                    log.warn("no value passed for number of cores at " + host);
                     log.info("did set number of cores to " + 2);
                     cores = 2;
                 }
