@@ -97,6 +97,12 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
         return executionTrace;
     }
 
+    /**
+     * todo extract method
+     * @param span
+     * @param executionContainer
+     * @return
+     */
     private Execution mapExecution(Span span, HashMap<String, String> executionContainer) {
         String executionContainerId = span.getProcessID();
 

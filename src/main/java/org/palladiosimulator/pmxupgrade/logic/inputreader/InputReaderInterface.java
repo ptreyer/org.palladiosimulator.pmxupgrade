@@ -12,6 +12,12 @@ import java.io.IOException;
  */
 public interface InputReaderInterface {
 
+    /**
+     * TODO generic
+     * @param configuration
+     * @return
+     * @throws IOException
+     */
     InputObjectWrapper readTracingData(Configuration configuration) throws IOException;
 
 }

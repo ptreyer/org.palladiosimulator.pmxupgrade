@@ -15,7 +15,15 @@ import java.util.List;
 public class Trace {
 
     private String traceID;
+
+    /**
+     * todo null check
+     */
     private List<Span> spans;
+
+    /**
+     * todo map
+     */
     private HashMap<String, Process> processes;
 
     @JsonIgnore

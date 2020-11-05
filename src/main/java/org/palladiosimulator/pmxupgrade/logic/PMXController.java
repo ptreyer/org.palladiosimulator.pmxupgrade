@@ -53,8 +53,16 @@ public class PMXController {
         dataProcessingService = new DataProcessingService();
     }
 
+    /**
+     * TODO
+     * @param configuration
+     * @param modelBuilder
+     * @throws PMXException
+     */
     public PMXController(Configuration configuration, IModelBuilder modelBuilder) throws PMXException {
         validateConfiguration(configuration);
+
+        // TODO cosntrcutor aufruf
 
         this.configuration = configuration;
         this.modelBuilder = modelBuilder;
@@ -78,14 +86,17 @@ public class PMXController {
     public void readTracingData() throws PMXException {
         try {
             inputObjectWrapper = inputReaderInterface.readTracingData(configuration);
+            // todo type check
             traceRecord = (TraceRecord) inputObjectWrapper;
+            // TODO Runtime Exception, generelles Exception Handling überdenken - muss es eine Exception sein?
         } catch (IOException e) {
-            throw new PMXException(PMXConstants.ERROR_DATA_INPUT + e.getMessage());
+            throw new PMXException(PMXConstants.ERROR_DATA_INPUT + e.getMessage(), e);
         }
     }
 
     /**
      * Input-dependent Filter-pipeline.
+     * Future Work: Producer, Consumer
      */
     public void initAndExecuteFilters() {
         TimestampFilter timestampFilter = new TimestampFilter();

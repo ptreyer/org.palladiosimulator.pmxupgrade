@@ -52,6 +52,10 @@ public class ResourceDemandEstimationService {
         resourceTimeSeriesMap = new HashMap<>();
     }
 
+    /**
+     * todo extract method
+     * @param mt
+     */
     public void inputMessageTraces(final MessageTrace mt) {
         Map<Execution, Double> externalCallTime = new HashMap<>();
         Map<Execution, List<Execution>> externalCallMethods = new HashMap<>();
