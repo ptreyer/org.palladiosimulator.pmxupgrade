@@ -45,6 +45,12 @@ public class PMXController {
     private AbstractGraph<DependencyGraphNode<AllocationComponentOperationPair>, WeightedBidirectionalDependencyGraphEdge<AllocationComponentOperationPair>, TraceInformation> operationGraph;
     private HashMap<String, Double> resourceDemands;
 
+    /**
+     * Constructor for the PMX Controller for the external starting points.
+     *
+     * @param configuration, the configuration object including the necessary configuration parameters.
+     * @throws PMXException, throws an @{@link PMXException} if an unexpected error occurs.
+     */
     public PMXController(Configuration configuration) throws PMXException {
         validateConfiguration(configuration);
 
@@ -54,20 +60,17 @@ public class PMXController {
     }
 
     /**
-     * TODO
-     * @param configuration
-     * @param modelBuilder
-     * @throws PMXException
+     * Constructor for the PMX Controller for the external starting points.
+     *
+     * @param configuration, the configuration object including the necessary configuration parameters.
+     * @param modelBuilder,  the implementation of the @{@link org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.ModelBuilder} for
+     *                       the specific model representation.
+     * @throws PMXException, throws an @{@link PMXException} if an unexpected error occurs.
      */
     public PMXController(Configuration configuration, IModelBuilder modelBuilder) throws PMXException {
-        validateConfiguration(configuration);
+        this(configuration);
 
-        // TODO cosntrcutor aufruf
-
-        this.configuration = configuration;
         this.modelBuilder = modelBuilder;
-        inputReaderInterface = new InputReaderOpenTracingImpl();
-        dataProcessingService = new DataProcessingService();
     }
 
     /**
