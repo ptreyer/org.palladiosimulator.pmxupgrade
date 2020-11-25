@@ -57,7 +57,7 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
         systemModelRepository = new SystemModelRepository();
 
         for (Trace t : traceRecord.getData()) {
-            executionTraces.add(mapExectionTraces(t));
+            executionTraces.add(mapExecutionTraces(t));
         }
         executionTraces.forEach(this::mapMessageTraces);
 
@@ -71,7 +71,7 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
      * @return the transformed @{@link Execution}
      * @throws InvalidTraceException, if the trace is invalid.
      */
-    private ExecutionTrace mapExectionTraces(Trace trace) throws InvalidTraceException {
+    private ExecutionTrace mapExecutionTraces(Trace trace) throws InvalidTraceException {
         numberOfValidExecutions.set(-1);
 
         ExecutionTrace executionTrace = new ExecutionTrace(trace.getTraceID());
