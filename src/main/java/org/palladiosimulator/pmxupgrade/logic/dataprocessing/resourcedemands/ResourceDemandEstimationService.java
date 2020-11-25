@@ -37,13 +37,6 @@ public class ResourceDemandEstimationService {
     private String outputPath;
     private HashMap<String, Integer> numCores = new HashMap<>();
 
-    public void addCPUCoreNumber(String host, Integer number) {
-        if (numCores == null) {
-            numCores = new HashMap<>();
-        }
-        numCores.put(host, number);
-    }
-
     private static final Logger log = LogManager.getLogger(ResourceDemandEstimationService.class);
 
     public ResourceDemandEstimationService(final Configuration configuration) {
@@ -53,13 +46,65 @@ public class ResourceDemandEstimationService {
     }
 
     /**
-     * todo extract method
-     * @param mt
+     * Method for initiating the resource demand estimation with LibReDE.
+     *
+     * @param mt, the individual @{@link MessageTrace} of the tracing data.
      */
     public void inputMessageTraces(final MessageTrace mt) {
         Map<Execution, Double> externalCallTime = new HashMap<>();
         Map<Execution, List<Execution>> externalCallMethods = new HashMap<>();
 
+        calculateExternalCallTime(mt, externalCallTime, externalCallMethods);
+
+        for (Execution execution : externalCallTime.keySet()) {
+            // ignore entry calls
+            if (StringUtils.contains(execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName(), "Entry")) {
+                continue;
+            }
+
+            double time = (execution.getTout() - execution.getTin());
+            double externalTime = externalCallTime.get(execution);
+            if (time < 0) {
+                log.error("time < 0: time = " + time);
+            }
+
+            if (externalTime - time > 0.001 * time) {        // measurement >10% uncertain
+                boolean error = true;
+                AllocationComponent ac = execution.getAllocationComponent();
+                for (Execution sub : externalCallMethods.get(execution)) {
+                    if (!ac.equals(sub.getAllocationComponent())) {
+                        error = false;
+                        break;
+                    }
+                }
+                if (error) {
+                    log.error("time < external time (trace id " + execution.getTraceId() + ") " + execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " " + execution.getOperation().getSignature().getName());
+                    log.error("\t" + "time = " + time);
+                    log.error("\t" + "exte = " + externalTime);
+                    if (externalCallMethods.get(execution) != null) {
+                        for (Execution sub : externalCallMethods.get(execution))
+                            log.error("\t" + "       " + (sub.getTout() - sub.getTin()) + " << " + sub.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " " + sub.getOperation().getSignature().getName() + "(trace id " + sub.getTraceId() + ") ");
+                    }
+                } else {
+                    log.warn(execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " "
+                            + execution.getOperation().getSignature().getName()
+                            + " has been abortet before external call response (trace id " + execution.getTraceId()
+                            + ")");
+                }
+                externalTime = 0.0;
+            }
+
+            // Data connection to superclass
+            addExecutionLog(Time.NANOSECONDS.convertTo(execution.getTin(), Time.SECONDS),
+                    execution.getAllocationComponent().getAssemblyComponent()
+                            .getType().getTypeName()
+                            + ModelBuilder.seperatorChar + execution.getOperation().getSignature().getName(), execution.getAllocationComponent()
+                            .getExecutionContainer().getName(),
+                    (time - externalTime));
+        }
+    }
+
+    private void calculateExternalCallTime(MessageTrace mt, Map<Execution, Double> externalCallTime, Map<Execution, List<Execution>> externalCallMethods) {
         List<AbstractMessage> messages = mt.getSequenceAsVector();
         for (AbstractMessage message : messages) {
             Execution sender = message.getSendingExecution();
@@ -69,12 +114,10 @@ public class ResourceDemandEstimationService {
             if (sender.getEss() < receiver.getEss()) {
 
                 // put sender and receiver in list
-                if (!externalCallTime.containsKey(sender)) {
+                if (!externalCallTime.containsKey(sender))
                     externalCallTime.put(sender, (double) 0);
-                }
-                if (!externalCallTime.containsKey(receiver)) {
+                if (!externalCallTime.containsKey(receiver))
                     externalCallTime.put(receiver, (double) 0);
-                }
 
                 // Time lost at linking resources -> add network delay
                 if (!sender.getAllocationComponent()
@@ -99,55 +142,6 @@ public class ResourceDemandEstimationService {
                 externalCallMethods.put(sender, list);
             }
         }
-
-        for (Execution execution : externalCallTime.keySet()) {
-            // ignore entry calls
-            if (StringUtils.contains(execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName(), "Entry")) {
-                continue;
-            }
-
-            double time = (execution.getTout() - execution.getTin());
-            double externalTime = externalCallTime.get(execution);
-            if (time < 0) {
-                log.error("time < 0: time = " + time);
-            }
-
-            if (externalTime - time > 0.001 * time) {        // measurement >10% uncertain
-                boolean error = true;
-                AllocationComponent ac = execution.getAllocationComponent();
-                for (Execution sub : externalCallMethods.get(execution)) {
-                    if (!ac.equals(sub.getAllocationComponent())) {
-                        error = false;
-                        break;
-                    }
-                }
-
-                if (error) {
-                    log.error("time < external time (trace id " + execution.getTraceId() + ") " + execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " " + execution.getOperation().getSignature().getName());
-                    log.error("\t" + "time = " + time);
-                    log.error("\t" + "exte = " + externalTime);
-                    if (externalCallMethods.get(execution) != null) {
-                        for (Execution sub : externalCallMethods.get(execution)) {
-                            log.error("\t" + "       " + (sub.getTout() - sub.getTin()) + " << " + sub.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " " + sub.getOperation().getSignature().getName() + "(trace id " + sub.getTraceId() + ") ");
-                        }
-                    }
-                } else {
-                    log.warn(execution.getAllocationComponent().getAssemblyComponent().getType().getTypeName() + " "
-                            + execution.getOperation().getSignature().getName()
-                            + " has been abortet before external call response (trace id " + execution.getTraceId()
-                            + ")");
-                }
-                externalTime = 0.0;
-            }
-
-            // Data connection to superclass
-            addExecutionLog(Time.NANOSECONDS.convertTo(execution.getTin(), Time.SECONDS),
-                    execution.getAllocationComponent().getAssemblyComponent()
-                            .getType().getTypeName()
-                            + ModelBuilder.seperatorChar + execution.getOperation().getSignature().getName(), execution.getAllocationComponent()
-                            .getExecutionContainer().getName(),
-                    (time - externalTime));
-        }
     }
 
     public static void addNetworkLog(double timestamp, double delay) {
@@ -165,6 +159,14 @@ public class ResourceDemandEstimationService {
         }
     }
 
+    /**
+     * Starting point for adding other metrics in future version of the approach.
+     *
+     * @param timestamp,   timestamp of the executions.
+     * @param host,        host of the executed operation.
+     * @param resource,    name of the resource.
+     * @param utilization, the obtained system utilizaton
+     */
     public static synchronized void addResourceLog(double timestamp, String host, String resource, double utilization) {
         TimeSeries timeSeries;
         String key = resource + "_" + host;
@@ -284,6 +286,13 @@ public class ResourceDemandEstimationService {
         }
 
         return resourceDemandMap;
+    }
+
+    public void addCPUCoreNumber(String host, Integer number) {
+        if (numCores == null) {
+            numCores = new HashMap<>();
+        }
+        numCores.put(host, number);
     }
 
 
