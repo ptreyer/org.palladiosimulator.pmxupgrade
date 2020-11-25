@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Note that no assumptions about the {@link java.util.concurrent.TimeUnit} used for the
  * timestamps are made.
  *
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class ExecutionTrace extends AbstractTrace {
 
@@ -117,7 +117,7 @@ public class ExecutionTrace extends AbstractTrace {
                         Execution invalidPrevE;
                         prevE = inExecutions.get(curE.getChildOf());
                         if (prevE != null) {
-                            // TODO Queries, currently: iterate till previous Node is no query
+                            // Queries, currently: iterate till previous Node is no query
                             boolean invalid = true;
                             while (invalid) {
                                 validPrevE = executions.get(prevE.getChildOf());
@@ -127,7 +127,7 @@ public class ExecutionTrace extends AbstractTrace {
                                 } else {
                                     invalidPrevE = inExecutions.get(prevE.getChildOf());
                                     if (invalidPrevE == null) {
-                                        // TODO comment: nicht gefunden dann prev = root ansonsten weiter
+                                        // nicht gefunden dann prev = root ansonsten weiter
                                         prevE = rootExecution;
                                         invalid = false;
                                     } else {

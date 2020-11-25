@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <V> The type of the graph's vertices
  * @param <E> The type of the graph's edges
  * @param <O> The type of object from which the graph's elements originate
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class AbstractVertex<V extends AbstractVertex<V, E, O>, E extends AbstractEdge<V, E, O>, O> extends AbstractGraphElement<O> {
 

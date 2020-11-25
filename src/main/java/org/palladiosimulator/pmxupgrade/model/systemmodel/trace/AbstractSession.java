@@ -9,7 +9,7 @@ import java.util.TreeSet;
  * Sessions group traces which belong to the same high-level user interaction.
  *
  * @param <T> The concrete type of trace this session is based on
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * @since 1.10
  */
 public abstract class AbstractSession<T extends AbstractTrace> {

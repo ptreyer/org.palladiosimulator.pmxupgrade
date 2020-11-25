@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @param <T>
  * 
- * @author Andre van Hoorn, Lena Stoever, Matthias Rohr,
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.1
  */

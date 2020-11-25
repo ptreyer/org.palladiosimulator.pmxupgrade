@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.graph;
 /**
  * (RGB-based) Color implementation for the visualization package.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class Color {
 

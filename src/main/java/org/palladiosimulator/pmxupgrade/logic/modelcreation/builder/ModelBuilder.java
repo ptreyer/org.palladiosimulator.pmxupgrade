@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Implementation of the {@link IModelBuilder} for extracting language independent concepts.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class ModelBuilder implements IModelBuilder {
     private static final Logger log = LogManager.getLogger(ModelBuilder.class);

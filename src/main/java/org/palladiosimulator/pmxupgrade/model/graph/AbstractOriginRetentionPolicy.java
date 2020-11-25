@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.graph;
 /**
  * Abstract superclass for all origin retention policies.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class AbstractOriginRetentionPolicy implements IOriginRetentionPolicy {
 

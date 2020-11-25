@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.systemmodel.trace;
 /**
  * This object represents an somehow invalid trace of executions.
  *
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class InvalidExecutionTrace {
 

@@ -8,7 +8,7 @@ import java.util.Collection;
  * @param <V> The type of the graph's vertices
  * @param <E> The type of the graph's edges
  * @param <O> The type of object from which the graph's elements originate
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class AbstractGraph<V extends AbstractVertex<V, E, O>, E extends AbstractEdge<V, E, O>, O> {
 
@@ -57,7 +57,7 @@ public abstract class AbstractGraph<V extends AbstractVertex<V, E, O>, E extends
      *
      * @param <V> The type of the graph's vertices
      * @param <E> The type of the graph's edges
-     * @author Holger Knoche
+     * @author PMX, Universitaet Wuerzburg.
      * @since 1.6
      */
     public interface IGraphVisitor<V, E> {

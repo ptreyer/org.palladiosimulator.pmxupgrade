@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * Response time decoration for graph vertices. This decoration extracts response times from executions and keeps track of the minimal, maximal and average response
  * time.
  * 
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.5
  */

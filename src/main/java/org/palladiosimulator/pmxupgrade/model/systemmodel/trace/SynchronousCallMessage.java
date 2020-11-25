@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.systemmodel.trace;
 /**
  * A specified class of messages which represent synchronous calls.
  *
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class SynchronousCallMessage extends AbstractMessage {
 

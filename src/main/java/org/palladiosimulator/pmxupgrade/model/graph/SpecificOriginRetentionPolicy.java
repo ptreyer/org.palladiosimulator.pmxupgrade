@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Specific origin retention policy.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class SpecificOriginRetentionPolicy extends AbstractOriginRetentionPolicy {
 

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * This class is a container for a whole trace of messages (represented as actual instances of {@link AbstractMessage}).
  *
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class MessageTrace extends AbstractTrace {
 

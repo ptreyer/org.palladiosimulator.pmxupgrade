@@ -7,7 +7,7 @@ package org.palladiosimulator.pmxupgrade.model.graph;
  * @param <E> The type of the graph's edges
  * @param <O> The type of the graph's elements origin
  * @param <P> The type of the payload
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class AbstractPayloadedVertex<V extends AbstractPayloadedVertex<V, E, O, P>, E extends AbstractEdge<V, E, O>, O, P> extends AbstractVertex<V, E, O> {
 

@@ -15,7 +15,7 @@ import tools.descartes.librede.util.RepositoryUtil.Range;
  * Factory which prepares the resource demand estimation with LibREdE by specifying concrete approaches
  * for the estimation.
  *
- * @author Patrick Treyer
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class EstimationSpecificationFactory {
 

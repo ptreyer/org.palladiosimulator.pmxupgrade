@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Specialized sub-class for sessions based on message traces (see {@link MessageTrace}).
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class MessageTraceBasedSession extends AbstractSession<MessageTrace> {
 

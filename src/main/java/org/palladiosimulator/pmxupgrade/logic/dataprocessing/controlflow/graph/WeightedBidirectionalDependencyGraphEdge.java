@@ -11,7 +11,7 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.trace.TraceInformation
  * @param <T>
  *            The type of the entity stored in the nodes linked by this edge.
  * 
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.1
  */

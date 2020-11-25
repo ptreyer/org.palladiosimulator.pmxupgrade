@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T>
  *            The type of the entity to be stored in this node.
  * 
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.1
  */

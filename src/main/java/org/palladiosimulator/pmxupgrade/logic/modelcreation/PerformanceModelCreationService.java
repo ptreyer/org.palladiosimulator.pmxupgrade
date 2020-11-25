@@ -34,7 +34,7 @@ public class PerformanceModelCreationService {
     private static final Logger log = LogManager.getLogger(PerformanceModelCreationService.class);
 
     /**
-     * By default, writes output files to this file in the working directory.
+     * By default, extracts output files to this working directory.
      */
     private final String outputDir;
     private final IModelBuilder builder;

@@ -6,7 +6,7 @@ import org.palladiosimulator.pmxupgrade.model.systemmodel.util.AllocationCompone
 /**
  * This class represents operation dependency graphs on the allocation level.
  * 
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.6
  */

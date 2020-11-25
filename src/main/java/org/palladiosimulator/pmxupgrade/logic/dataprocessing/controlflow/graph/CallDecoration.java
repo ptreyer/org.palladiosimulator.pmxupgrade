@@ -5,7 +5,7 @@ import org.palladiosimulator.pmxupgrade.model.graph.AbstractVertexDecoration;
 /**
  * Call Decoration for generating the call graph.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * @since 1.5
  */
 public class CallDecoration extends AbstractVertexDecoration {

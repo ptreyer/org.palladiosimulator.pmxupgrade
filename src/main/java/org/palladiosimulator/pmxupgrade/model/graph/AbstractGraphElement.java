@@ -8,7 +8,7 @@ import java.util.Set;
  * Superclass for graph elements, i.e. edges and vertices, in the visualization package.
  *
  * @param <O> The type of the objects which caused the creation of this graph element
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class AbstractGraphElement<O> {
 

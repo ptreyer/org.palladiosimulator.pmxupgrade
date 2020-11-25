@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Specialized sub-class for sessions which are derived from execution traces (see {@link ExecutionTrace}).
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class ExecutionTraceBasedSession extends AbstractSession<ExecutionTrace> {
 

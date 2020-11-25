@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.systemmodel.trace;
 /**
  * This is the abstract base for a trace (like a message trace e.g.).
  *
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  */
 public abstract class AbstractTrace {
 

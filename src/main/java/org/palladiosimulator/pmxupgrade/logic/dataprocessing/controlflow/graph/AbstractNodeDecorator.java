@@ -8,7 +8,7 @@ import org.apache.maven.shared.utils.StringUtils;
 /**
  * Abstract superclass for all node decorators.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * @since 1.5
  */
 public abstract class AbstractNodeDecorator {

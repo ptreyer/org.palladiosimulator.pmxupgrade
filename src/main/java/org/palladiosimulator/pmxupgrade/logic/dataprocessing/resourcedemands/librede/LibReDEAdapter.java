@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Adapter for initializing and running the resource demand estimation with LibReDE.
  *
- * @author Patrick Treyer
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class LibReDEAdapter {
 

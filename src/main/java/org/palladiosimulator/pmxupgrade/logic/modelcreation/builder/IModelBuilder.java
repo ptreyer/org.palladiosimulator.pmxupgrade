@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Interface for the Model builder, which can be implemented for specific performance model representations.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public interface IModelBuilder {
 

@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.graph;
 /**
  * No origin retention policy.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public final class NoOriginRetentionPolicy extends AbstractOriginRetentionPolicy {
 

@@ -5,7 +5,7 @@ package org.palladiosimulator.pmxupgrade.model.graph;
  * These policies are implemented by subtypes of {@link AbstractOriginRetentionPolicy}, this enum just
  * serves as the basis for the order relation.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public enum OriginRetentionPolicyKind {
     /**

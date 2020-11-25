@@ -9,7 +9,7 @@ import org.apache.maven.shared.utils.StringUtils;
  * Note that no assumptions about the {@link java.util.concurrent.TimeUnit} used for the
  * timestamps are made @link kieker.tools.traceAnalysis.systemModel.Execution#getTin() and kieker.tools.traceAnalysis.systemModel.Execution#getTout()).
  *
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class Execution {
 

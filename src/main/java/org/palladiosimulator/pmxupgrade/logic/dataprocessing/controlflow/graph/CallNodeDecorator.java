@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Call bode decorator for generating the call graph.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * @since 1.5
  */
 public class CallNodeDecorator extends AbstractNodeDecorator {

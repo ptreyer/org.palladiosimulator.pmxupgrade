@@ -8,7 +8,7 @@ import org.palladiosimulator.pmxupgrade.model.exception.AnalysisConfigurationExc
 /**
  * Interface for graph-producing filters.
  * 
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @param <G>
  *            The type of the produced graph

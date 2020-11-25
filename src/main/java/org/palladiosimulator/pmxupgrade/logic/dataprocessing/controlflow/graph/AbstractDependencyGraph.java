@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T>
  *            The type of the nodes' payload
  * 
- * @author Andre van Hoorn, Lena St&ouml;ver
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.6
  */

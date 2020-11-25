@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Abstract superclass for weighted edges in the visualization package. This class provides weights for the
  * edge itself and both source and target ends.
  * 
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @param <V>
  *            The type of the graph's vertices

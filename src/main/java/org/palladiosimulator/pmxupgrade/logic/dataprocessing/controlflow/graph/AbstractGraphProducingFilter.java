@@ -10,7 +10,7 @@ import org.palladiosimulator.pmxupgrade.model.exception.AnalysisConfigurationExc
  * Abstract superclass for graph-producing filters.
  *
  * @param <G> The graph type created by this filter
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * @since 1.6
  */
 public abstract class AbstractGraphProducingFilter<G extends AbstractGraph<?, ?, ?>> implements

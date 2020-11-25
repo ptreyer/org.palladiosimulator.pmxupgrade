@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Builder for an CSV-Export of the extracted workload information.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public class CSVBuilder {
 

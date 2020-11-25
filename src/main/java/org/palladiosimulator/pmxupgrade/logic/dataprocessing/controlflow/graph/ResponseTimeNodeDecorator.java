@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Decorator to attach response time data to graph nodes.
  * 
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  * 
  * @since 1.5
  */

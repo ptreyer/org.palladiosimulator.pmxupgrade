@@ -3,7 +3,7 @@ package org.palladiosimulator.pmxupgrade.model.systemmodel.component;
 import org.palladiosimulator.pmxupgrade.model.systemmodel.ISystemModelElement;
 
 /**
- * @author Andre van Hoorn
+ * @author PMX, Universitaet Wuerzburg.
  * @since 1.1
  */
 public class AllocationComponent implements ISystemModelElement {

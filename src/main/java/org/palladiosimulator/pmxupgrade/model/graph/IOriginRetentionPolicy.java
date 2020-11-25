@@ -5,7 +5,7 @@ package org.palladiosimulator.pmxupgrade.model.graph;
  * policies, graph consumers may specify precisely which origin data needs to be kept and avoid wasting
  * resources for storing unneccessary data.
  *
- * @author Holger Knoche
+ * @author PMX, Universitaet Wuerzburg.
  */
 public interface IOriginRetentionPolicy {
 
