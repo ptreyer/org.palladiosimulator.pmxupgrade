@@ -14,12 +14,8 @@ import java.util.List;
  * @author Holger Knoche
  */
 public interface IModelBuilder {
-    /**
-     * todo typo
-     * @param asseblyName
-     * @return
-     */
-    EObject createAssembly(String asseblyName);
+
+    EObject createAssembly(String assemblyName);
 
     EObject createComponent(String componentName);
 
