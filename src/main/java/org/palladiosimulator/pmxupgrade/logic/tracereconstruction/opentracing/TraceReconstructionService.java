@@ -98,10 +98,12 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
     }
 
     /**
-     * todo extract method
-     * @param span
-     * @param executionContainer
-     * @return
+     * Custom processing of the data to transfer the tracing ata into an uniform data model. Therefore,
+     * technical component names are abstracted. After that, the system architecture is extracted.
+     *
+     * @param span,               the corresponding @{@link Span} to be processed.
+     * @param executionContainer, the {@link ExecutionContainer} of the transferred span.
+     * @return the created {@link Execution} if the an obtained @{@link Span}.
      */
     private Execution mapExecution(Span span, HashMap<String, String> executionContainer) {
         String executionContainerId = span.getProcessID();
@@ -118,17 +120,9 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
             if (StringUtils.equalsIgnoreCase(span.getOperationName(), "GET") | StringUtils.equalsIgnoreCase(span.getOperationName(), "POST") |
                     StringUtils.equalsIgnoreCase(span.getOperationName(), "PUT") | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE")
                     | StringUtils.equalsIgnoreCase(span.getOperationName(), "HEAD") | StringUtils.equalsIgnoreCase(span.getOperationName(), "OPTIONS")) {
-                // if network call
+                // resolve http requests
+                assemblyComponentTypeName = resolveHttpRequests(span);
 
-                // look if there is a component auto instrumented, if not use generic component
-                String component = span.getComponent();
-                if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith(UNKNOWN_ASSEMBLY_COMPONENT_TYPE)) {
-                    String name = StringUtils.replace(component, "-", " ");
-                    String capitalizedName = StringUtils.capitaliseAllWords(name).replace(" ", "");
-                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + capitalizedName;
-                } else {
-                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + HTTP_CLIENT;
-                }
                 allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
                 span.setOperationName(NETWORK_CALL);
                 span.setOperationParameters(emptyArray);
@@ -137,17 +131,9 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
 
             } else if (StringUtils.equalsIgnoreCase(span.getOperationName(), "QUERY") | StringUtils.equalsIgnoreCase(span.getOperationName(), "UPDATE")
                     | StringUtils.equalsIgnoreCase(span.getOperationName(), "DELETE") | StringUtils.equalsIgnoreCase(span.getOperationName(), "SELECT")) {
-                // if database call
+                // resolve database queries
+                assemblyComponentTypeName = resolveDatabaseQueries(span);
 
-                // look if there is a component auto instrumented, if not use generic component
-                String component = span.getComponent();
-                if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith(UNKNOWN_ASSEMBLY_COMPONENT_TYPE)) {
-                    String name = StringUtils.replace(component, "-", " ");
-                    String capitalizedName = StringUtils.capitaliseAllWords(name).replace(" ", "");
-                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + capitalizedName;
-                } else {
-                    assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + DATABASE_DRIVER;
-                }
                 allocationComponentName = executionContainerName + "::" + assemblyComponentTypeName;
                 span.setOperationName(DATABASE_CALL);
                 span.setOperationParameters(emptyArray);
@@ -165,17 +151,30 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
         AllocationComponent allocInst = systemModelRepository.getAllocationFactory()
                 .lookupAllocationComponentInstanceByNamedIdentifier(allocationComponentName);
 
+        return resolveSystemArchitecture(span, executionContainerName, assemblyComponentTypeName, allocationComponentName, operationFactoryName, allocInst);
+    }
+
+    /**
+     * Extracts the system architecture out of the data. This process is executed incrementally for each span in order to
+     * not miss an details and achieve a precise architecture.
+     *
+     * @param span,                      the @{@link Span} to be processed.
+     * @param executionContainerName,    name of the {@link ExecutionContainer}
+     * @param assemblyComponentTypeName, name of the {@link AssemblyComponent}
+     * @param allocationComponentName,   name of the {@link AllocationComponent}
+     * @param operationFactoryName,      name of the {@link Operation}.
+     * @param allocInst,                 the corresponding allocation instance.
+     * @return the created {@link Execution} if the an obtained @{@link Span}.
+     */
+    private Execution resolveSystemArchitecture(Span span, String executionContainerName, String assemblyComponentTypeName, String allocationComponentName, String operationFactoryName, AllocationComponent allocInst) {
         // Allocation component instance doesn't exist
         if (allocInst == null) {
             AssemblyComponent assemblyComponent = systemModelRepository.getAssemblyFactory()
                     .lookupAssemblyComponentInstanceByNamedIdentifier(assemblyComponentTypeName);
-
-            // assembly instance doesn't exist
             if (assemblyComponent == null) {
                 ComponentType componentType = systemModelRepository.getTypeRepositoryFactory().lookupComponentTypeByNamedIdentifier(assemblyComponentTypeName);
 
                 if (componentType == null) {
-                    // Component type doesn't exist
                     componentType = systemModelRepository.getTypeRepositoryFactory().createAndRegisterComponentType(assemblyComponentTypeName,
                             assemblyComponentTypeName);
                 }
@@ -185,8 +184,6 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
 
             ExecutionContainer execContainer = systemModelRepository.getExecutionEnvironmentFactory()
                     .lookupExecutionContainerByNamedIdentifier(executionContainerName);
-
-            // doesn't exist, yet
             if (execContainer == null) {
                 execContainer = systemModelRepository.getExecutionEnvironmentFactory()
                         .createAndRegisterExecutionContainer(executionContainerName);
@@ -208,6 +205,34 @@ public class TraceReconstructionService implements TraceReconstructionInterface 
 
         long tout = span.getStartTime() + span.getDuration();
         return new Execution(op, allocInst, span.getTraceID(), span.getSpanID(), Execution.NO_SESSION_ID, span.getChildOf(), numberOfValidExecutions.get(), numberOfValidExecutions.get(), span.getStartTime(), tout, false);
+    }
+
+    private String resolveDatabaseQueries(Span span) {
+        String assemblyComponentTypeName;
+        String component = span.getComponent();
+        if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith(UNKNOWN_ASSEMBLY_COMPONENT_TYPE)) {
+            String name = StringUtils.replace(component, "-", " ");
+            String capitalizedName = StringUtils.capitaliseAllWords(name).replace(" ", "");
+            assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + capitalizedName;
+        } else {
+            assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + DATABASE_DRIVER;
+        }
+        return assemblyComponentTypeName;
+    }
+
+    private String resolveHttpRequests(Span span) {
+        String assemblyComponentTypeName;
+        String component = span.getComponent();
+
+        // look if there is a component auto instrumented, if not use generic component
+        if (StringUtils.isNotEmpty(span.getComponent()) && !component.startsWith(UNKNOWN_ASSEMBLY_COMPONENT_TYPE)) {
+            String name = StringUtils.replace(component, "-", " ");
+            String capitalizedName = StringUtils.capitaliseAllWords(name).replace(" ", "");
+            assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + capitalizedName;
+        } else {
+            assemblyComponentTypeName = GENERIC_ASSEMBLY_COMPONENT_TYPE + HTTP_CLIENT;
+        }
+        return assemblyComponentTypeName;
     }
 
     private void mapMessageTraces(ExecutionTrace executionTrace) {
