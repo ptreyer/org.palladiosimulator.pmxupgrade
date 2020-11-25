@@ -1,6 +1,7 @@
 package org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author Patrick Treyer
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Span {
 
     private String traceID;

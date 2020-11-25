@@ -1,5 +1,7 @@
 package org.palladiosimulator.pmxupgrade.model.inputreader.opentracing.jaeger;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  *
  * @author Patrick Treyer
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Log {
 
     private long timestamp;
