@@ -48,6 +48,8 @@ public class PMXController {
     /**
      * Constructor for the PMX Controller for the external starting points.
      *
+     * Future Work: update exception handling
+     *
      * @param configuration, the configuration object including the necessary configuration parameters.
      * @throws PMXException, throws an @{@link PMXException} if an unexpected error occurs.
      */
@@ -61,6 +63,8 @@ public class PMXController {
 
     /**
      * Constructor for the PMX Controller for the external starting points.
+     *
+     * Future Work: update exception handling
      *
      * @param configuration, the configuration object including the necessary configuration parameters.
      * @param modelBuilder,  the implementation of the @{@link org.palladiosimulator.pmxupgrade.logic.modelcreation.builder.ModelBuilder} for
@@ -89,9 +93,7 @@ public class PMXController {
     public void readTracingData() throws PMXException {
         try {
             inputObjectWrapper = inputReaderInterface.readTracingData(configuration);
-            // todo type check
             traceRecord = (TraceRecord) inputObjectWrapper;
-            // TODO Runtime Exception, generelles Exception Handling überdenken - muss es eine Exception sein?
         } catch (IOException e) {
             throw new PMXException(PMXConstants.ERROR_DATA_INPUT + e.getMessage(), e);
         }

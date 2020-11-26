@@ -91,9 +91,6 @@ public class PerformanceModelCreationService {
         builder.saveToFile(outputDir);
     }
 
-    /**
-     * todo extract method
-     */
     private void buildPerformanceModel() {
 
         PerformanceModelCreator.createExecutionContainers(
